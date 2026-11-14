@@ -1,0 +1,50 @@
+[
+  {
+    "id": 7,
+    "author": "neelo mubashar",
+    "role": "Verified Google Reviewer · 6 reviews",
+    "quote": "Best hotel laundry service in NYC.",
+    "rating": 5,
+    "source": "Google Review",
+    "display_order": 1,
+    "active": true,
+    "created_at": "2026-11-14T02:23:37.228Z",
+    "updated_at": "2026-11-14T02:23:37.228Z"
+  },
+  {
+    "id": 8,
+    "author": "Aleja Bennett",
+    "role": "Local Guide · 17 reviews · 4 photos",
+    "quote": "Nice service and reliable turnaround.",
+    "rating": 5,
+    "source": "Google Review",
+    "display_order": 2,
+    "active": true,
+    "created_at": "2026-11-14T02:23:37.814Z",
+    "updated_at": "2026-11-14T02:23:37.814Z"
+  },
+  {
+    "id": 9,
+    "author": "Charles N. Rock",
+    "role": "Commercial & Residential Client",
+    "quote": "Absolutely the best in town! The clothes are returned neatly folded, clean and smelling great.",
+    "rating": 5,
+    "source": "Google Review",
+    "display_order": 3,
+    "active": true,
+    "created_at": "2026-11-14T02:23:38.079Z",
+    "updated_at": "2026-11-14T02:23:38.079Z"
+  },
+  {
+    "id": 10,
+    "author": "Elena Rostova",
+    "role": "Boutique Hotel General Manager, Manhattan",
+    "quote": "Mulan Laundries handles our entire hotel linen rotation with zero downtime. Reliable, pristine pressing, and emergency deliveries when occupancy peaks.",
+    "rating": 5,
+    "source": "Verified Customer Review",
+    "display_order": 4,
+    "active": true,
+    "created_at": "2026-11-14T02:23:38.346Z",
+    "updated_at": "2026-11-14T02:23:38.346Z"
+  }
+]

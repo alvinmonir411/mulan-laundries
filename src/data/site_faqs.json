@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "category": "Commercial Services",
+    "question": "How do commercial laundry accounts and customized pricing work?",
+    "answer": "Every commercial facility has unique volume, turnaround, and linen requirements. We provide tailored, call-based custom proposals with no hidden fees. Call us at (917) 365-4366 for a customized quote.",
+    "display_order": 1,
+    "active": true,
+    "created_at": "2026-11-13T10:03:11.362Z",
+    "updated_at": "2026-11-13T10:03:11.362Z"
+  },
+  {
+    "id": 2,
+    "category": "Turnaround & Timing",
+    "question": "What is your standard turnaround time?",
+    "answer": "Standard wash & fold is returned within 24 to 48 hours. For urgent commercial linen or hospitality needs, we offer express 12-hour and emergency same-day turnaround across New York City.",
+    "display_order": 2,
+    "active": true,
+    "created_at": "2026-11-13T10:03:11.623Z",
+    "updated_at": "2026-11-13T10:03:11.623Z"
+  },
+  {
+    "id": 3,
+    "category": "Coverage & Delivery",
+    "question": "Which areas of New York City do you cover?",
+    "answer": "We provide full door-to-door pickup and delivery across all five NYC boroughs: Manhattan, Brooklyn, Queens, The Bronx, and Staten Island, 24 hours a day, 7 days a week.",
+    "display_order": 3,
+    "active": true,
+    "created_at": "2026-11-13T10:03:11.875Z",
+    "updated_at": "2026-11-13T10:03:11.875Z"
+  },
+  {
+    "id": 4,
+    "category": "Hygiene & Standards",
+    "question": "What sanitization and hygiene protocols do you follow?",
+    "answer": "We adhere strictly to universal precautions, OSHA regulations, and healthcare standards. All commercial and medical textiles are processed at high thermal temperatures with eco-friendly hospital-grade detergents.",
+    "display_order": 4,
+    "active": true,
+    "created_at": "2026-11-13T10:03:12.136Z",
+    "updated_at": "2026-11-13T10:03:12.136Z"
+  },
+  {
+    "id": 5,
+    "category": "Pickup & Ordering",
+    "question": "How do I schedule a pickup?",
+    "answer": "You can book directly through our online Book a Free Pickup form or call our dispatch desk at (917) 365-4366 anytime 24/7.",
+    "display_order": 5,
+    "active": true,
+    "created_at": "2026-11-13T10:03:12.388Z",
+    "updated_at": "2026-11-13T10:03:12.388Z"
+  }
+]
