@@ -32,7 +32,7 @@ const SERVICES_CARDS = [
   {
     title: "Hospital Laundry",
     desc: "OSHA & Joint Commission universal precautions clinical sanitization.",
-    defaultImage: "/images/hospitals1.jpg",
+    defaultImage: "/images/hospital-loundry-img.jpg",
     slotKey: "service_hospital",
     icon: ShieldCheck,
     href: "/services/hospital-laundry"

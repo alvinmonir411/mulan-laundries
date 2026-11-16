@@ -7,6 +7,7 @@ import { COMMERCIAL_SERVICES, COMMERCIAL_HUB_DATA } from "@/data/services";
 import { BUSINESS_INFO } from "@/data/business";
 import { getSiteImages } from "@/lib/images";
 import { getSiteSettings } from "@/lib/settings";
+import { ServiceSearchBar } from "@/components/navigation/ServiceSearchBar";
 
 export const metadata: Metadata = {
   title: "Laundry & Linen Management Services NYC | Commercial & Residential | Mulan Laundries",
@@ -40,7 +41,7 @@ const SERVICE_CARDS = [
     title: "Hotel & Hospitality Linens",
     href: "/services/hotel-laundry",
     imageSlot: "service_rotary_pressing",
-    defaultImg: "/images/service-hotel.jpg",
+    defaultImg: "/images/hotels.jpg",
     badge: "Hospitality & Lodging",
     description: "Rotary iron pressing for 300+ thread count sheets, duvet covers, pillowcases, and ultra-absorbent bath sheets.",
     features: ["Industrial flatwork rotary ironing", "Same-day turnover replenishment", "Damage inspection & reporting"],
@@ -49,7 +50,7 @@ const SERVICE_CARDS = [
     title: "Hospital & Clinical Healthcare",
     href: "/services/hospital-laundry",
     imageSlot: "service_hospital",
-    defaultImg: "/images/service-hospital.jpg",
+    defaultImg: "/images/hospital-loundry-img.jpg",
     badge: "Universal Precautions",
     description: "Sanitized linen management adhering strictly to OSHA and Joint Commission infection control standards.",
     features: ["Universal precautions barrier handling", "Thermal disinfection wash chemistry", "Separated bio-containment staging"],
@@ -58,7 +59,7 @@ const SERVICE_CARDS = [
     title: "Short-Term Rentals & Airbnb",
     href: "/services/short-term-rentals",
     imageSlot: "service_rentals",
-    defaultImg: "/images/service-airbnb.jpg",
+    defaultImg: "/images/residential-services.jpg",
     badge: "Property Management",
     description: "Fast turnarounds for vacation hosts and building managers with unit-packed bedding, linens, and towels.",
     features: ["Turnover-day rapid scheduling", "Pre-bundled unit kits", "Keyless drop-off coordination"],
@@ -67,7 +68,7 @@ const SERVICE_CARDS = [
     title: "Gyms & Health Clubs",
     href: "/services/gyms",
     imageSlot: "service_gyms",
-    defaultImg: "/images/service-gyms.jpg",
+    defaultImg: "/images/gym.jpg",
     badge: "Fitness Centers",
     description: "Continuous towel management and odor-neutralizing thermal sanitization for boutique fitness and athletic clubs.",
     features: ["High-absorbency towel supply", "Sweat & mildew odor extraction", "Scheduled par inventory replenishment"],
@@ -76,7 +77,7 @@ const SERVICE_CARDS = [
     title: "Salons & Luxury Spas",
     href: "/services/salons-spas",
     imageSlot: "service_salons_spas",
-    defaultImg: "/images/service-salons.jpg",
+    defaultImg: "/images/salons-_-spas.jpg",
     badge: "Spa & Wellness",
     description: "Specialized oil-extraction formulas preserving plush textures and vibrant colors for towels, robes, and capes.",
     features: ["Deep massage oil extraction", "Ultra-soft botanical fabric finishing", "Stain prevention treatment"],
@@ -85,7 +86,7 @@ const SERVICE_CARDS = [
     title: "Schools, Dorms & Student Housing",
     href: "/services/schools-dorms",
     imageSlot: "service_schools_dorms",
-    defaultImg: "/images/service-schools.jpg",
+    defaultImg: "/images/schools.jpg",
     badge: "Campus & Dorms",
     description: "Semester laundry contracts and student housing linen services with designated pickup stations across NYC.",
     features: ["Bulk campus delivery logistics", "Individual student bundle bags", "Reliable weekly exchange days"],
@@ -94,7 +95,7 @@ const SERVICE_CARDS = [
     title: "Shelter Homes & Non-Profit Housing",
     href: "/services/shelter-homes",
     imageSlot: "service_shelter_homes",
-    defaultImg: "/images/service-shelters.jpg",
+    defaultImg: "/images/shelterHomes.jpg",
     badge: "Community Care",
     description: "Dignified, heavy-duty commercial linen support and bulk bedding processing for transitional facilities.",
     features: ["Non-profit budget consideration", "Heavy thermal sanitization", "High-volume blanket & sheet loads"],
@@ -103,7 +104,7 @@ const SERVICE_CARDS = [
     title: "Bed & Breakfasts / Boutique Inns",
     href: "/services/bed-and-breakfast",
     imageSlot: "service_special_care",
-    defaultImg: "/images/service-bnb.jpg",
+    defaultImg: "/images/bedbreakfast.jpg",
     badge: "Boutique Lodging",
     description: "Artisan care for antique bed coverings, delicate table napery, and luxury guest linens.",
     features: ["Custom temperature profile washing", "Gentle steam & iron finish", "Hand-inspection before packaging"],
@@ -150,6 +151,14 @@ export default async function ServicesHubPage() {
                 <Phone className="w-4 h-4 text-blue-300" />
                 Call {phone}
               </a>
+            </div>
+
+            {/* Quick Live Search Bar */}
+            <div className="mt-6 pt-6 border-t border-white/10 max-w-xl">
+              <span className="text-xs font-semibold uppercase tracking-wider text-blue-200 block mb-2">
+                Quick Service Filter
+              </span>
+              <ServiceSearchBar variant="hero" placeholder="Search service catalog by name, industry or keyword..." />
             </div>
           </div>
         </div>

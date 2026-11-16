@@ -36,7 +36,7 @@
     "title": "Services: Commercial Linen Card",
     "section": "Services",
     "image_url": "/images/commercial-laundry.jpg",
-    "alt_text": "Commercial laundry services machinery",
+    "alt_text": "High-capacity commercial laundry automated processing plant",
     "updated_at": "2026-11-13T06:07:15.919Z"
   },
   "service_rotary_pressing": {
@@ -51,8 +51,8 @@
     "slot_key": "service_hospital",
     "title": "Services: Hospital & Healthcare Card",
     "section": "Services",
-    "image_url": "/images/hospitals1.jpg",
-    "alt_text": "Hospital healthcare laundry sanitization",
+    "image_url": "/images/hospital-loundry-img.jpg",
+    "alt_text": "Hygienic hospital linen and clinical healthcare sanitization",
     "updated_at": "2026-11-13T06:07:21.572Z"
   },
   "service_rentals": {
@@ -68,7 +68,7 @@
     "title": "Services: Special Care Items / B&B Card",
     "section": "Services",
     "image_url": "/images/bedbreakfast.jpg",
-    "alt_text": "Specialty delicates and blankets",
+    "alt_text": "Luxury bed linens, duvet and specialty blanket care",
     "updated_at": "2026-11-13T06:07:26.347Z"
   },
   "pricing_basket": {
@@ -92,15 +92,15 @@
     "title": "About Us: Facility Showcase Image",
     "section": "About",
     "image_url": "/images/about-us.webp",
-    "alt_text": "Mulan Laundries NYC commercial facility",
+    "alt_text": "Mulan Laundries NYC high-capacity commercial laundry facility",
     "updated_at": "2026-11-13T06:07:34.872Z"
   },
   "about_team": {
     "slot_key": "about_team",
     "title": "About Us: Dedicated Workers & Staff",
     "section": "About",
-    "image_url": "/uploads/screenshot_2026-11-13_114247_1794561556106.png",
-    "alt_text": "Mulan Laundries team of workers",
+    "image_url": "/images/3449.jpg",
+    "alt_text": "Dedicated Mulan Laundries professional laundry specialists",
     "updated_at": "2026-11-13T09:19:29.385Z"
   },
   "pickup_banner": {
@@ -124,7 +124,7 @@
     "title": "Commercial: Health Clubs & Wellness",
     "section": "Commercial Verticals",
     "image_url": "/images/health-clubs.jpg",
-    "alt_text": "Health clubs laundry service",
+    "alt_text": "Health clubs and luxury wellness plush towels laundry",
     "updated_at": "2026-11-13T06:07:45.521Z"
   },
   "service_salons_spas": {

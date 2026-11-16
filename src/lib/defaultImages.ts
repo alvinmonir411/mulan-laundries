@@ -42,7 +42,7 @@ export const DEFAULT_SITE_IMAGES: SiteImage[] = [
     title: "Services: Commercial Linen Card",
     section: "Services",
     image_url: "/images/commercial-laundry.jpg",
-    alt_text: "Commercial laundry services machinery"
+    alt_text: "High-capacity commercial laundry automated processing plant"
   },
   {
     slot_key: "service_rotary_pressing",
@@ -55,7 +55,7 @@ export const DEFAULT_SITE_IMAGES: SiteImage[] = [
     slot_key: "service_hospital",
     title: "Services: Hospital & Healthcare Card",
     section: "Services",
-    image_url: "/images/hospitals1.jpg",
+    image_url: "/images/hospital-loundry-img.jpg",
     alt_text: "Hospital healthcare laundry sanitization"
   },
   {
@@ -70,7 +70,7 @@ export const DEFAULT_SITE_IMAGES: SiteImage[] = [
     title: "Services: Special Care Items / B&B Card",
     section: "Services",
     image_url: "/images/bedbreakfast.jpg",
-    alt_text: "Specialty delicates and blankets"
+    alt_text: "Luxury bed linens, duvet and specialty blanket care"
   },
   {
     slot_key: "pricing_basket",
@@ -97,8 +97,8 @@ export const DEFAULT_SITE_IMAGES: SiteImage[] = [
     slot_key: "about_team",
     title: "About Us: Dedicated Workers & Staff",
     section: "About",
-    image_url: "/images/about-4.jpg",
-    alt_text: "Mulan Laundries team of workers"
+    image_url: "/images/3449.jpg",
+    alt_text: "Dedicated Mulan Laundries professional laundry specialists"
   },
   {
     slot_key: "pickup_banner",
@@ -119,7 +119,7 @@ export const DEFAULT_SITE_IMAGES: SiteImage[] = [
     title: "Commercial: Health Clubs & Wellness",
     section: "Commercial Verticals",
     image_url: "/images/health-clubs.jpg",
-    alt_text: "Health clubs laundry service"
+    alt_text: "Health clubs and luxury wellness plush towels laundry"
   },
   {
     slot_key: "service_salons_spas",

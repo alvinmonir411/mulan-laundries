@@ -33,7 +33,7 @@ export const COMMERCIAL_SERVICES: ServiceItem[] = [
     title: "Hospital Laundry Services",
     tagline: "Precision Cleaning & Hygienic Linen Management for Healthcare Facilities",
     shortDesc: "Universal precautions, soil-level sorting to prevent cross-contamination, and 24/7/365 coverage for New York hospitals and surgical centers.",
-    heroImage: "/images/hospitals1.jpg",
+    heroImage: "/images/hospital-loundry-img.jpg",
     badge: "Healthcare & Clinical Sanitation",
     fullOverview: [
       "At Mulan Laundries, we understand the critical pressures hospitals face. Clean linens, patient gowns, towels, and staff uniforms are essential to smooth operations, staff efficiency, and patient comfort.",

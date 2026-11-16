@@ -3,10 +3,11 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ChevronDown, Menu, Phone, Calendar, ArrowRight, Waves } from "lucide-react";
+import { ChevronDown, Menu, Phone, Calendar, ArrowRight, Waves, Search } from "lucide-react";
 import { NAV_LINKS } from "@/data/navigation";
 import { BUSINESS_INFO } from "@/data/business";
 import { MobileMenu } from "./MobileMenu";
+import { ServiceSearchBar } from "@/components/navigation/ServiceSearchBar";
 
 interface NavbarProps {
   logoUrl?: string;
@@ -188,18 +189,28 @@ export const Navbar: React.FC<NavbarProps> = ({
               </Link>
             </nav>
 
-            {/* Single Clean Primary CTA Button (Matching Original Inspiration) */}
-            <div className="hidden lg:flex items-center">
+            {/* Search Bar + Primary CTA in Navbar */}
+            <div className="hidden lg:flex items-center gap-3">
+              <ServiceSearchBar variant="navbar" />
+
               <Link
                 href="/pickup-request"
-                className="inline-flex items-center justify-center px-7 py-2.5 bg-[#005BD3] hover:bg-[#004BB5] text-white font-bold text-sm rounded-full shadow-sm hover:shadow transition-all"
+                className="inline-flex items-center justify-center px-6 py-2.5 bg-[#005BD3] hover:bg-[#004BB5] text-white font-bold text-sm rounded-full shadow-sm hover:shadow transition-all shrink-0"
               >
                 Book a Pickup
               </Link>
             </div>
 
-            {/* Mobile Hamburger */}
-            <div className="flex items-center gap-2 lg:hidden">
+            {/* Mobile Actions: Search Trigger, Call, Menu */}
+            <div className="flex items-center gap-1.5 lg:hidden">
+              <button
+                onClick={() => setMobileMenuOpen(true)}
+                className="p-2 text-slate-700 hover:text-[#005BD3] hover:bg-blue-50 rounded-lg transition-colors"
+                aria-label="Search services"
+              >
+                <Search className="w-5 h-5" />
+              </button>
+
               <a
                 href={`tel:${BUSINESS_INFO.phoneRaw}`}
                 className="p-2 text-[#005BD3] hover:bg-blue-50 rounded-lg transition-colors"

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ChevronDown, Phone, Calendar, ArrowRight, X } from "lucide-react";
 import { NAV_LINKS } from "@/data/navigation";
 import { BUSINESS_INFO } from "@/data/business";
+import { ServiceSearchBar } from "@/components/navigation/ServiceSearchBar";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -29,7 +30,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
       <div className="fixed inset-y-0 right-0 max-w-sm w-full bg-white shadow-2xl flex flex-col justify-between overflow-y-auto">
         <div className="p-6">
           {/* Header */}
-          <div className="flex items-center justify-between pb-6 border-b border-slate-100">
+          <div className="flex items-center justify-between pb-4 border-b border-slate-100">
             <span className="font-bold text-lg text-navy-900 tracking-tight">
               Mulan Laundries
             </span>
@@ -40,6 +41,11 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
             >
               <X className="w-5 h-5" />
             </button>
+          </div>
+
+          {/* Quick Service Search in Mobile Drawer */}
+          <div className="pt-4 pb-2">
+            <ServiceSearchBar variant="navbar" onSelect={onClose} className="w-full !w-full" />
           </div>
 
           {/* Links */}
