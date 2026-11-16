@@ -24,7 +24,7 @@ export default async function HomePage() {
       <HeroInspiration
         heroImage={siteImages.hero_main?.image_url}
         heroAlt={siteImages.hero_main?.alt_text}
-        heroVideo={siteSettings.hero_video_url || "/videos/mulan-laundry-hero.mp4"}
+        heroVideo={siteSettings.hero_video_url || "/videos/laundry-drum-washing.mp4"}
         videoPoster={siteImages.hero_main?.image_url || "/images/laundry-hero-inspiration.jpg"}
         titleLine1={siteSettings.hero_title_line1}
         titleLine2={siteSettings.hero_title_line2}

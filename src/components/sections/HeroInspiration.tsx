@@ -34,7 +34,7 @@ interface HeroInspirationProps {
 export const HeroInspiration: React.FC<HeroInspirationProps> = ({
   heroImage = "/images/laundry-hero-inspiration.jpg",
   heroAlt = "Mulan Laundries high-capacity commercial and residential laundry facility",
-  heroVideo = "/videos/hero-cinematic.mp4",
+  heroVideo = "/videos/laundry-drum-washing.mp4",
   videoPoster = "/images/laundry-hero-inspiration.jpg",
   titleLine1 = "Clean Clothes,",
   titleLine2 = "Fresh Life!",
@@ -126,10 +126,10 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
             }`}
             aria-label="Mulan Laundries NYC commercial laundry operation background video"
           >
-            <source src="/videos/hero-cinematic.webm" type="video/webm" />
-            <source src="/videos/hero-cinematic.mp4" type="video/mp4" />
+            <source src={heroVideo} type="video/mp4" />
+            <source src="/videos/laundry-drum-washing.mp4" type="video/mp4" />
+            <source src="/videos/laundry-facility-machines.mp4" type="video/mp4" />
             <source src="/videos/mulan-laundry-hero.webm" type="video/webm" />
-            <source src="/videos/mulan-laundry-hero.mp4" type="video/mp4" />
           </video>
         )}
 
