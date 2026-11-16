@@ -92,6 +92,11 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
     setIsMuted(!isMuted);
   };
 
+  const isExplicitImageOnly =
+    heroVideo === "none" ||
+    heroVideo === "disabled" ||
+    heroVideo.match(/\.(jpe?g|png|webp|avif|gif|svg)$/i);
+
   return (
     <section className="relative w-full min-h-[640px] lg:min-h-[760px] xl:min-h-[820px] flex items-center justify-center overflow-hidden bg-slate-950 text-white">
       {/* 1. FULL BACKGROUND VIDEO & POSTER LAYER */}
@@ -105,14 +110,15 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
           fetchPriority="high"
           sizes="100vw"
           className={`object-cover object-center transition-opacity duration-1000 ${
-            isVideoLoaded && !hasVideoError ? "opacity-0" : "opacity-100 scale-105"
+            !isExplicitImageOnly && isVideoLoaded && !hasVideoError ? "opacity-0" : "opacity-100 scale-105"
           }`}
         />
 
         {/* Cinematic Ambient Background Video Loop */}
-        {!hasVideoError && (
+        {!isExplicitImageOnly && !hasVideoError && (
           <video
             ref={videoRef}
+            key={heroVideo}
             autoPlay
             loop
             muted

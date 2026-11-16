@@ -14,7 +14,11 @@ import {
   Phone,
   FolderUp,
   Sliders,
-  CheckCircle2
+  CheckCircle2,
+  Upload,
+  Video,
+  ImageIcon,
+  RefreshCw
 } from "lucide-react";
 import { SiteSettings } from "@/lib/settingsTypes";
 import { SiteImage } from "@/lib/defaultImages";
@@ -244,23 +248,105 @@ export const HomepageEditor: React.FC<HomepageEditorProps> = ({
                 </div>
               </div>
 
-              {/* Hero Background Video URL & Controls */}
-              <div className="pt-2 border-t border-slate-100 space-y-3">
-                <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-                    Hero Video Path / CDN URL
+              {/* Hero Background Video / Media Upload & Quick Select */}
+              <div className="pt-4 border-t border-slate-200 space-y-3 bg-slate-50 p-4 rounded-xl border">
+                <div className="flex items-center justify-between">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
+                    <Video className="w-4 h-4 text-[#005BD3]" />
+                    <span>Hero Media (Video or Image Background)</span>
                   </label>
+                  <span className="text-[10px] font-semibold text-slate-500">
+                    Direct Upload or Instant Pick
+                  </span>
+                </div>
+
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
                   <input
                     type="text"
-                    value={settings.hero_video_url || "/videos/mulan-laundry-hero.mp4"}
+                    value={settings.hero_video_url || "/videos/laundry-drum-washing.mp4"}
                     onChange={(e) => onSettingChange("hero_video_url", e.target.value)}
-                    placeholder="/videos/mulan-laundry-hero.mp4"
-                    className="w-full px-4 py-2.5 text-xs font-mono rounded-xl border border-slate-200 focus:border-[#005BD3] outline-none"
+                    placeholder="/videos/laundry-drum-washing.mp4"
+                    className="flex-1 px-4 py-2.5 text-xs font-mono rounded-xl border border-slate-200 bg-white focus:border-[#005BD3] outline-none shadow-sm"
                   />
-                  <p className="text-[11px] text-slate-400 mt-1">
-                    Ambient lightweight video loop with image poster fallback (guarantees top Lighthouse LCP).
-                  </p>
+
+                  {/* Direct Upload Button for Video / Image */}
+                  <label
+                    className="cursor-pointer py-2.5 px-4 bg-[#005BD3] hover:bg-[#0048A8] text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shrink-0 shadow-sm"
+                    title="Upload video or image from computer"
+                  >
+                    {uploadingField === "hero_video_url" ? (
+                      <>
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                        <span>Uploading...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Upload className="w-3.5 h-3.5" />
+                        <span>Upload File</span>
+                      </>
+                    )}
+                    <input
+                      type="file"
+                      accept="video/*,image/*"
+                      className="hidden"
+                      disabled={uploadingField === "hero_video_url"}
+                      onChange={(e) => onFileUpload("hero_video_url", false, e)}
+                    />
+                  </label>
                 </div>
+
+                {/* Quick Presets / Selection Pill Buttons */}
+                <div>
+                  <span className="block text-[11px] font-bold text-slate-600 mb-1.5">
+                    Click to Use Any Laundry Media:
+                  </span>
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    {[
+                      {
+                        label: "🌀 Drum Wash (Video)",
+                        url: "/videos/laundry-drum-washing.mp4",
+                        type: "video",
+                      },
+                      {
+                        label: "🏭 Facility Machines (Video)",
+                        url: "/videos/laundry-facility-machines.mp4",
+                        type: "video",
+                      },
+                      {
+                        label: "🧺 Fast Drum Loop (Video)",
+                        url: "/videos/mulan-laundry-hero.mp4",
+                        type: "video",
+                      },
+                      {
+                        label: "🖼️ High-Res Laundry Poster (Image Only)",
+                        url: "/images/laundry-hero-inspiration.jpg",
+                        type: "image",
+                      },
+                      {
+                        label: "🏢 Commercial Facility (Image Only)",
+                        url: "/images/commercial-laundry.jpg",
+                        type: "image",
+                      },
+                    ].map((item) => (
+                      <button
+                        key={item.url}
+                        type="button"
+                        onClick={() => onSettingChange("hero_video_url", item.url)}
+                        className={`px-2.5 py-1 text-[11px] font-semibold rounded-lg border transition-all ${
+                          settings.hero_video_url === item.url
+                            ? "bg-[#005BD3] text-white border-[#005BD3] shadow-sm font-bold"
+                            : "bg-white text-slate-700 border-slate-200 hover:bg-slate-100"
+                        }`}
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <p className="text-[11px] text-slate-500">
+                  Select or upload any video (MP4/WebM) or image (JPG/PNG). Whatever you choose will automatically be used in the full hero background.
+                </p>
               </div>
             </div>
           </div>

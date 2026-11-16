@@ -28,12 +28,13 @@ export async function POST(req: NextRequest) {
 
     // Try uploading to Cloudinary
     try {
-      const mimeType = file.type || "image/jpeg";
+      const mimeType = file.type || "application/octet-stream";
+      const isVideo = mimeType.startsWith("video/") || file.name.match(/\.(mp4|webm|mov|m4v|ogg)$/i);
       const base64Data = `data:${mimeType};base64,${buffer.toString("base64")}`;
 
       const uploadResult = await cloudinary.uploader.upload(base64Data, {
         folder: "mulan-laundries",
-        resource_type: "image",
+        resource_type: isVideo ? "video" : "auto",
       });
 
       if (uploadResult && uploadResult.secure_url) {
@@ -45,7 +46,7 @@ export async function POST(req: NextRequest) {
           format: uploadResult.format,
           bytes: uploadResult.bytes,
           provider: "cloudinary",
-          message: "Image uploaded to Cloudinary successfully!",
+          message: isVideo ? "Video uploaded to Cloudinary successfully!" : "File uploaded to Cloudinary successfully!",
         });
       }
     } catch (cloudinaryErr: any) {
