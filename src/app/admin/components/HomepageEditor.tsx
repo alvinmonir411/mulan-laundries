@@ -243,6 +243,25 @@ export const HomepageEditor: React.FC<HomepageEditorProps> = ({
                   />
                 </div>
               </div>
+
+              {/* Hero Background Video URL & Controls */}
+              <div className="pt-2 border-t border-slate-100 space-y-3">
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+                    Hero Video Path / CDN URL
+                  </label>
+                  <input
+                    type="text"
+                    value={settings.hero_video_url || "/videos/mulan-laundry-hero.mp4"}
+                    onChange={(e) => onSettingChange("hero_video_url", e.target.value)}
+                    placeholder="/videos/mulan-laundry-hero.mp4"
+                    className="w-full px-4 py-2.5 text-xs font-mono rounded-xl border border-slate-200 focus:border-[#005BD3] outline-none"
+                  />
+                  <p className="text-[11px] text-slate-400 mt-1">
+                    Ambient lightweight video loop with image poster fallback (guarantees top Lighthouse LCP).
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
 

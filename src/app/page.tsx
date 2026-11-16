@@ -20,10 +20,12 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* 1. Hero Section matching Design Inspiration */}
+      {/* 1. Hero Section matching Design Inspiration with Motion Video & Fallback Poster */}
       <HeroInspiration
         heroImage={siteImages.hero_main?.image_url}
         heroAlt={siteImages.hero_main?.alt_text}
+        heroVideo={siteSettings.hero_video_url || "/videos/mulan-laundry-hero.mp4"}
+        videoPoster={siteImages.hero_main?.image_url || "/images/laundry-hero-inspiration.jpg"}
         titleLine1={siteSettings.hero_title_line1}
         titleLine2={siteSettings.hero_title_line2}
         subtitle={siteSettings.hero_subtitle}
