@@ -14,8 +14,9 @@ import {
   Clock,
   Award,
   Sparkles,
-  Maximize2
+  Phone
 } from "lucide-react";
+import { BUSINESS_INFO } from "@/data/business";
 
 interface HeroInspirationProps {
   heroImage?: string;
@@ -32,12 +33,12 @@ interface HeroInspirationProps {
 
 export const HeroInspiration: React.FC<HeroInspirationProps> = ({
   heroImage = "/images/laundry-hero-inspiration.jpg",
-  heroAlt = "Clean modern washing machine with colorful folded towels in wicker basket",
-  heroVideo = "/videos/mulan-laundry-hero.mp4",
+  heroAlt = "Mulan Laundries high-capacity commercial and residential laundry facility",
+  heroVideo = "/videos/hero-cinematic.mp4",
   videoPoster = "/images/laundry-hero-inspiration.jpg",
   titleLine1 = "Clean Clothes,",
   titleLine2 = "Fresh Life!",
-  subtitle = "Professional laundry & commercial linen management service with care, universal precautions hygiene & 24/7 on-time delivery across New York City.",
+  subtitle = "Professional laundry & commercial linen management service with hospital-grade hygiene, universal precautions & 24/7 on-time delivery across all 5 NYC boroughs.",
   badge = "New York Premier Laundry & Linen Management",
   ctaPrimary = "Book a Free Pickup",
   ctaSecondary = "How It Works",
@@ -47,9 +48,8 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [hasVideoError, setHasVideoError] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
 
-  // Lazy load video only when in or near viewport using IntersectionObserver to protect LCP / TBT
+  // Lazy pause video when scrolled out of view to preserve CPU/GPU battery
   useEffect(() => {
     const videoElement = videoRef.current;
     if (!videoElement) return;
@@ -58,208 +58,215 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            // In view: ensure video source is loaded and playing smoothly
             if (videoElement.paused && isPlaying) {
-              videoElement.play().catch(() => {
-                // Autoplay may be restricted if unmuted
-              });
+              videoElement.play().catch(() => {});
             }
           } else {
-            // Out of view: pause video to save CPU/GPU/battery
             if (!videoElement.paused) {
               videoElement.pause();
             }
           }
         });
       },
-      { threshold: 0.25 }
+      { threshold: 0.15 }
     );
 
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
-
-    return () => {
-      observer.disconnect();
-    };
+    observer.observe(videoElement);
+    return () => observer.disconnect();
   }, [isPlaying]);
 
   const togglePlay = () => {
     if (!videoRef.current) return;
-    if (videoRef.current.paused) {
-      videoRef.current.play();
-      setIsPlaying(true);
-    } else {
+    if (isPlaying) {
       videoRef.current.pause();
       setIsPlaying(false);
+    } else {
+      videoRef.current.play().catch(() => {});
+      setIsPlaying(true);
     }
   };
 
   const toggleMute = () => {
     if (!videoRef.current) return;
-    videoRef.current.muted = !videoRef.current.muted;
-    setIsMuted(videoRef.current.muted);
+    videoRef.current.muted = !isMuted;
+    setIsMuted(!isMuted);
   };
 
   return (
-    <section className="relative bg-white pt-8 pb-16 lg:pt-14 lg:pb-24 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-          {/* Left Column (7 cols): Copy, Value Proposition, Action CTAs */}
-          <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-            {/* Small Pill Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-[#005BD3] text-xs font-bold uppercase tracking-wider">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>{badge}</span>
-            </div>
+    <section className="relative w-full min-h-[640px] lg:min-h-[760px] xl:min-h-[820px] flex items-center justify-center overflow-hidden bg-slate-950 text-white">
+      {/* 1. FULL BACKGROUND VIDEO & POSTER LAYER */}
+      <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
+        {/* Instant LCP Poster Image (Priority Loaded with Zero CLS) */}
+        <Image
+          src={videoPoster || heroImage}
+          alt={heroAlt}
+          fill
+          priority
+          fetchPriority="high"
+          sizes="100vw"
+          className={`object-cover object-center transition-opacity duration-1000 ${
+            isVideoLoaded && !hasVideoError ? "opacity-0" : "opacity-100 scale-105"
+          }`}
+        />
 
-            {/* Main Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#0A192F] tracking-tight leading-[1.12]">
-              {titleLine1} <br className="hidden sm:inline" />
-              <span className="text-[#005BD3]">{titleLine2}</span>
+        {/* Cinematic Ambient Background Video Loop */}
+        {!hasVideoError && (
+          <video
+            ref={videoRef}
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            poster={videoPoster || heroImage}
+            onLoadedData={() => setIsVideoLoaded(true)}
+            onError={() => setHasVideoError(true)}
+            className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000 scale-[1.03] ${
+              isVideoLoaded ? "opacity-100" : "opacity-0"
+            }`}
+            aria-label="Mulan Laundries NYC commercial laundry operation background video"
+          >
+            <source src="/videos/hero-cinematic.webm" type="video/webm" />
+            <source src="/videos/hero-cinematic.mp4" type="video/mp4" />
+            <source src="/videos/mulan-laundry-hero.webm" type="video/webm" />
+            <source src="/videos/mulan-laundry-hero.mp4" type="video/mp4" />
+          </video>
+        )}
+
+        {/* Multi-layered Cinematic Dark Gradient Overlay for Maximum Text Contrast & Readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/70 to-slate-900/60 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/50 z-10" />
+        <div className="absolute inset-0 backdrop-blur-[1.5px] z-10 pointer-events-none" />
+      </div>
+
+      {/* 2. FOREGROUND CONTENT LAYER */}
+      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28 w-full">
+        <div className="max-w-3xl space-y-6 sm:space-y-8">
+          {/* Top Badge: Facility & Location Status */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 hover:bg-white/15 border border-white/20 backdrop-blur-md transition-all shadow-sm">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+            <Sparkles className="w-3.5 h-3.5 text-sky-300" />
+            <span className="text-xs sm:text-sm font-semibold tracking-wide text-sky-100">
+              {badge}
+            </span>
+          </div>
+
+          {/* Main Headline */}
+          <div className="space-y-1">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08] text-white">
+              <span className="block text-white drop-shadow-sm">{titleLine1}</span>
+              <span className="block bg-gradient-to-r from-sky-400 via-blue-300 to-indigo-300 bg-clip-text text-transparent drop-shadow-sm">
+                {titleLine2}
+              </span>
             </h1>
+          </div>
 
-            {/* Subheadline */}
-            <p className="text-base sm:text-lg text-slate-600 max-w-xl mx-auto lg:mx-0 leading-relaxed font-normal">
-              {subtitle}
-            </p>
+          {/* Subheadline */}
+          <p className="text-base sm:text-lg md:text-xl text-slate-200 max-w-2xl leading-relaxed font-normal drop-shadow">
+            {subtitle}
+          </p>
 
-            {/* 4 Feature Badges */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2 pb-2">
-              <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-2 sm:gap-2.5 p-2 rounded-xl">
-                <div className="w-9 h-9 rounded-full border border-blue-200 bg-blue-50/60 text-[#005BD3] flex items-center justify-center shrink-0">
-                  <Truck className="w-4 h-4" />
-                </div>
-                <div>
-                  <h4 className="text-xs font-bold text-slate-800 leading-snug">Free Pickup</h4>
-                  <span className="text-[11px] text-slate-500 block leading-tight">& Delivery</span>
-                </div>
+          {/* 4 Trust Feature Badges */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 pt-2">
+            <div className="flex items-center gap-2.5 p-3 rounded-xl bg-white/10 border border-white/15 backdrop-blur-md shadow-sm">
+              <div className="w-9 h-9 rounded-lg bg-sky-500/20 text-sky-300 border border-sky-400/30 flex items-center justify-center shrink-0">
+                <Truck className="w-4 h-4" />
               </div>
-
-              <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-2 sm:gap-2.5 p-2 rounded-xl">
-                <div className="w-9 h-9 rounded-full border border-blue-200 bg-blue-50/60 text-[#005BD3] flex items-center justify-center shrink-0">
-                  <ShieldCheck className="w-4 h-4" />
-                </div>
-                <div>
-                  <h4 className="text-xs font-bold text-slate-800 leading-snug">100% Hygienic</h4>
-                  <span className="text-[11px] text-slate-500 block leading-tight">OSHA / JCAHO</span>
-                </div>
-              </div>
-
-              <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-2 sm:gap-2.5 p-2 rounded-xl">
-                <div className="w-9 h-9 rounded-full border border-blue-200 bg-blue-50/60 text-[#005BD3] flex items-center justify-center shrink-0">
-                  <Clock className="w-4 h-4" />
-                </div>
-                <div>
-                  <h4 className="text-xs font-bold text-slate-800 leading-snug">Express Delivery</h4>
-                  <span className="text-[11px] text-slate-500 block leading-tight">Within Hours</span>
-                </div>
-              </div>
-
-              <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-2 sm:gap-2.5 p-2 rounded-xl">
-                <div className="w-9 h-9 rounded-full border border-blue-200 bg-blue-50/60 text-[#005BD3] flex items-center justify-center shrink-0">
-                  <Award className="w-4 h-4" />
-                </div>
-                <div>
-                  <h4 className="text-xs font-bold text-slate-800 leading-snug">18+ Years</h4>
-                  <span className="text-[11px] text-slate-500 block leading-tight">Brand Heritage</span>
-                </div>
+              <div>
+                <h4 className="text-xs font-bold text-white leading-tight">Free Pickup</h4>
+                <span className="text-[11px] text-slate-300 block">& Delivery</span>
               </div>
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
-              <Link
-                href="/pickup-request"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-[#005BD3] hover:bg-[#004BB5] text-white font-bold text-sm rounded-lg shadow-md hover:shadow-lg transition-all"
-              >
-                <span>{ctaPrimary}</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+            <div className="flex items-center gap-2.5 p-3 rounded-xl bg-white/10 border border-white/15 backdrop-blur-md shadow-sm">
+              <div className="w-9 h-9 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 flex items-center justify-center shrink-0">
+                <ShieldCheck className="w-4 h-4" />
+              </div>
+              <div>
+                <h4 className="text-xs font-bold text-white leading-tight">100% Hygienic</h4>
+                <span className="text-[11px] text-slate-300 block">OSHA / JCAHO</span>
+              </div>
+            </div>
 
-              <Link
-                href="/#how-it-works"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white border border-slate-300 hover:border-[#005BD3] text-slate-800 hover:text-[#005BD3] font-bold text-sm rounded-lg transition-all"
-              >
-                <div className="w-5 h-5 rounded-full border border-slate-400 flex items-center justify-center text-slate-600">
-                  <Play className="w-2.5 h-2.5 fill-current ml-0.5" />
-                </div>
-                <span>{ctaSecondary}</span>
-              </Link>
+            <div className="flex items-center gap-2.5 p-3 rounded-xl bg-white/10 border border-white/15 backdrop-blur-md shadow-sm">
+              <div className="w-9 h-9 rounded-lg bg-blue-500/20 text-blue-300 border border-blue-400/30 flex items-center justify-center shrink-0">
+                <Clock className="w-4 h-4" />
+              </div>
+              <div>
+                <h4 className="text-xs font-bold text-white leading-tight">Express Service</h4>
+                <span className="text-[11px] text-slate-300 block">24h Turnaround</span>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2.5 p-3 rounded-xl bg-white/10 border border-white/15 backdrop-blur-md shadow-sm">
+              <div className="w-9 h-9 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-400/30 flex items-center justify-center shrink-0">
+                <Award className="w-4 h-4" />
+              </div>
+              <div>
+                <h4 className="text-xs font-bold text-white leading-tight">18+ Years</h4>
+                <span className="text-[11px] text-slate-300 block">NYC Heritage</span>
+              </div>
             </div>
           </div>
 
-          {/* Right Column (5 cols): High-Performance Motion Video Hero with Image Poster Guard */}
-          <div className="lg:col-span-5 relative flex items-center justify-center" ref={containerRef}>
-            {/* Ambient Background Glow */}
-            <div className="absolute w-[340px] h-[340px] sm:w-[440px] sm:h-[440px] bg-gradient-to-tr from-sky-100 to-blue-50 rounded-full blur-2xl -z-10" />
+          {/* Action CTAs */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-4">
+            <Link
+              href="/pickup-request"
+              className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-[#005BD3] hover:bg-[#004BB5] text-white font-bold text-base rounded-xl shadow-lg hover:shadow-sky-500/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+            >
+              <span>{ctaPrimary}</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
 
-            <div className="relative w-full max-w-lg aspect-square sm:aspect-[4/3] lg:aspect-square rounded-2xl overflow-hidden shadow-card border border-slate-100/80 bg-slate-900 group">
-              {/* Fallback Static Poster Image (Guarantees Instant LCP) */}
-              <Image
-                src={videoPoster || heroImage}
-                alt={heroAlt}
-                fill
-                priority
-                fetchPriority="high"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 500px"
-                className={`object-cover transition-opacity duration-700 ${
-                  isVideoLoaded && !hasVideoError ? "opacity-0" : "opacity-100"
-                }`}
-              />
+            <a
+              href={`tel:${BUSINESS_INFO.phoneRaw}`}
+              className="inline-flex items-center justify-center gap-2.5 px-7 py-4 bg-white/10 hover:bg-white/20 text-white border border-white/25 backdrop-blur-md font-bold text-base rounded-xl transition-all"
+            >
+              <Phone className="w-4 h-4 text-sky-400" />
+              <span>Call ({BUSINESS_INFO.phone})</span>
+            </a>
 
-              {/* Ambient Motion Video */}
-              {!hasVideoError && (
-                <video
-                  ref={videoRef}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  preload="metadata"
-                  poster={videoPoster || heroImage}
-                  onLoadedData={() => setIsVideoLoaded(true)}
-                  onError={() => setHasVideoError(true)}
-                  className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
-                    isVideoLoaded ? "opacity-100" : "opacity-0"
-                  }`}
-                  aria-label="Mulan Laundries high-capacity commercial laundry facility motion preview"
-                >
-                  <source src="/videos/mulan-laundry-hero.webm" type="video/webm" />
-                  <source src={heroVideo} type="video/mp4" />
-                </video>
-              )}
-
-              {/* Top Glass Live Tag */}
-              <div className="absolute top-3.5 left-3.5 z-10 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#001D40]/80 backdrop-blur-md text-white text-[11px] font-bold border border-white/10 shadow-sm">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                <span>NYC Commercial Laundry Facility</span>
+            <Link
+              href="/how-it-works"
+              className="inline-flex items-center justify-center gap-2 px-6 py-4 text-slate-300 hover:text-white font-semibold text-sm transition-colors"
+            >
+              <div className="w-5 h-5 rounded-full border border-slate-400 flex items-center justify-center text-slate-300">
+                <Play className="w-2.5 h-2.5 fill-current ml-0.5" />
               </div>
-
-              {/* Bottom Video Floating Controls (Play/Pause & Mute) */}
-              {isVideoLoaded && !hasVideoError && (
-                <div className="absolute bottom-3.5 right-3.5 z-10 flex items-center gap-2 bg-[#001D40]/80 backdrop-blur-md p-1.5 rounded-xl border border-white/10 shadow-lg">
-                  <button
-                    onClick={togglePlay}
-                    aria-label={isPlaying ? "Pause video" : "Play video"}
-                    className="p-1.5 rounded-lg text-white hover:bg-white/20 transition-colors"
-                  >
-                    {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 fill-current" />}
-                  </button>
-
-                  <button
-                    onClick={toggleMute}
-                    aria-label={isMuted ? "Unmute video" : "Mute video"}
-                    className="p-1.5 rounded-lg text-white hover:bg-white/20 transition-colors"
-                  >
-                    {isMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
-                  </button>
-                </div>
-              )}
-            </div>
+              <span>{ctaSecondary}</span>
+            </Link>
           </div>
         </div>
       </div>
+
+      {/* 3. FLOATING AMBIENT VIDEO CONTROLS (BOTTOM-RIGHT) */}
+      <div className="absolute bottom-6 right-6 z-30 flex items-center gap-2 bg-slate-900/80 backdrop-blur-md px-3 py-2 rounded-xl border border-white/15 shadow-xl text-xs text-slate-300">
+        <span className="hidden sm:inline-block font-mono text-[11px] text-slate-400 pr-1">
+          Ambient Motion
+        </span>
+
+        <button
+          onClick={togglePlay}
+          aria-label={isPlaying ? "Pause video" : "Play video"}
+          className="p-1.5 rounded-lg text-white hover:bg-white/20 transition-colors"
+          title={isPlaying ? "Pause Video" : "Play Video"}
+        >
+          {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-current" />}
+        </button>
+
+        <button
+          onClick={toggleMute}
+          aria-label={isMuted ? "Unmute video" : "Mute video"}
+          className="p-1.5 rounded-lg text-white hover:bg-white/20 transition-colors"
+          title={isMuted ? "Unmute Sound" : "Mute Sound"}
+        >
+          {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+        </button>
+      </div>
+
+      {/* Decorative Bottom Wave Transition */}
+      <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-white to-transparent pointer-events-none z-20" />
     </section>
   );
 };
