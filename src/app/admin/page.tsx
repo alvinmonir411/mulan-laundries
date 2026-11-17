@@ -189,20 +189,29 @@ export default function AdminDashboardPage() {
     }
   };
 
-  const refreshSubmissions = async () => {
-    setLoadingSubmissions(true);
+  const refreshSubmissions = async (silent = false) => {
+    if (!silent) setLoadingSubmissions(true);
     try {
-      const res = await fetch("/api/admin/submissions");
+      const res = await fetch("/api/admin/submissions", { cache: "no-store" });
       const data = await res.json();
-      if (data.success) {
-        setSubmissions(data.submissions || []);
-        setSuccessMessage("Inquiries refreshed from Neon DB!");
-        setTimeout(() => setSuccessMessage(null), 3000);
+      if (data.success && Array.isArray(data.submissions)) {
+        setSubmissions((prev) => {
+          if (data.submissions.length > prev.length && prev.length > 0) {
+            const newest = data.submissions[0];
+            setSuccessMessage(`🔔 New Lead Received! ${newest.name || "Client"} (${newest.reference_id})`);
+            setTimeout(() => setSuccessMessage(null), 8000);
+          }
+          return data.submissions;
+        });
+        if (!silent) {
+          setSuccessMessage("Inquiries refreshed from Neon DB!");
+          setTimeout(() => setSuccessMessage(null), 3000);
+        }
       }
     } catch (e) {
-      setErrorMessage("Failed to refresh submissions");
+      if (!silent) setErrorMessage("Failed to refresh submissions");
     } finally {
-      setLoadingSubmissions(false);
+      if (!silent) setLoadingSubmissions(false);
     }
   };
 
@@ -253,6 +262,24 @@ export default function AdminDashboardPage() {
   useEffect(() => {
     if (isAuthenticated) {
       loadDashboardData();
+
+      // Real-Time Live Auto-Sync: Polls every 6s in background + instant sync on tab switch
+      const handleFocus = () => {
+        refreshSubmissions(true);
+      };
+
+      window.addEventListener("focus", handleFocus);
+      document.addEventListener("visibilitychange", handleFocus);
+
+      const interval = setInterval(() => {
+        refreshSubmissions(true);
+      }, 6000);
+
+      return () => {
+        window.removeEventListener("focus", handleFocus);
+        document.removeEventListener("visibilitychange", handleFocus);
+        clearInterval(interval);
+      };
     }
   }, [isAuthenticated]);
 
@@ -1274,7 +1301,7 @@ export default function AdminDashboardPage() {
                   </div>
                   <div className="flex items-center gap-2">
                     <button
-                      onClick={refreshSubmissions}
+                      onClick={() => refreshSubmissions()}
                       className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors"
                     >
                       <RefreshCw className={`w-3.5 h-3.5 ${loadingSubmissions ? "animate-spin" : ""}`} />
@@ -1459,7 +1486,7 @@ export default function AdminDashboardPage() {
             <AllLeadsPage
               submissions={submissions}
               loadingSubmissions={loadingSubmissions}
-              onRefreshSubmissions={refreshSubmissions}
+              onRefreshSubmissions={() => refreshSubmissions()}
               onUpdateStatus={handleUpdateSubmissionStatus}
             />
           )}

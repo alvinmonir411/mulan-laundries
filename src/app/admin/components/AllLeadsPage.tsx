@@ -83,14 +83,21 @@ export const AllLeadsPage: React.FC<AllLeadsPageProps> = ({
           </p>
         </div>
 
-        <button
-          onClick={onRefreshSubmissions}
-          disabled={loadingSubmissions}
-          className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[#005BD3] hover:bg-[#0048A8] text-white font-bold text-xs uppercase tracking-wider shadow-md transition-all self-start md:self-auto shrink-0 disabled:opacity-70"
-        >
-          <RefreshCw className={`w-4 h-4 ${loadingSubmissions ? "animate-spin" : ""}`} />
-          <span>Refresh Database</span>
-        </button>
+        <div className="flex items-center gap-2 self-start md:self-auto shrink-0">
+          <div className="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-xs font-semibold backdrop-blur-sm">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span>Live Auto-Sync (6s)</span>
+          </div>
+          <button
+            onClick={onRefreshSubmissions}
+            disabled={loadingSubmissions}
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#005BD3] hover:bg-[#0048A8] text-white font-bold text-xs uppercase tracking-wider shadow-md transition-all shrink-0 disabled:opacity-70"
+            title="Manual force sync with Neon PostgreSQL"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${loadingSubmissions ? "animate-spin" : ""}`} />
+            <span>Refresh</span>
+          </button>
+        </div>
       </div>
 
       {/* 2. Key Metrics Bar */}

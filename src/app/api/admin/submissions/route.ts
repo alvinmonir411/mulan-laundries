@@ -1,14 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 import { fetchAllSubmissions, updateSubmissionStatus, deleteSubmission } from "@/lib/submissions";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function GET() {
   try {
     const submissions = await fetchAllSubmissions();
-    return NextResponse.json({
-      success: true,
-      submissions,
-      count: submissions.length,
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        submissions,
+        count: submissions.length,
+      },
+      {
+        headers: {
+          "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+        },
+      }
+    );
   } catch (err: any) {
     console.error("[ADMIN SUBMISSIONS GET ERROR]", err);
     return NextResponse.json(

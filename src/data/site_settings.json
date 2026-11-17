@@ -6,8 +6,8 @@
   "hero_badge": "New York Premier Laundry & Linen Management",
   "hero_cta_primary": "Book a Free Pickup",
   "hero_cta_secondary": "How It Works",
-  "hero_video_url": "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794909389/mulan-laundries/uploads/nyc-laundry-service-in-brooklyn.webp",
-  "phone": "(917) 365-4366",
+  "hero_video_url": "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794909729/mulan-laundries/uploads/xnud3prvekdpmhsfjdni.webp",
+  "phone": "(917) 365-4367",
   "phone_raw": "+19173654366",
   "email": "info@mulanlaundries.com",
   "address": "New York City, Bronx, NY",
@@ -15,8 +15,8 @@
   "favicon_url": "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908949/mulan-laundries/new-logo.webp",
   "logo_header": "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908949/mulan-laundries/new-logo.webp",
   "logo_footer": "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908949/mulan-laundries/new-logo-footer1.webp",
-  "announcement_bar": "QA Persistence Test Active",
   "google_maps_url": "https://www.google.com/maps/place/Mulan+Laundries/@40.7911231,-73.9454053,17z/data=!3m1!4b1!4m6!3m5!1s0x89c2590b25cfa8d3:0x79bbf3629678f0e2!8m2!3d40.7911231!4d-73.9454053!16s%2Fg%2F11pprs7bcr",
   "google_rating": "4.0",
-  "google_review_count": "3"
+  "google_review_count": "3",
+  "announcement_bar": "QA Persistence Test Active"
 }
