@@ -439,13 +439,13 @@ export default function AdminDashboardPage() {
           });
         }
 
-        setSuccessMessage(`✓ Uploaded (${data.provider || "CDN"}) & live triggered: ${uploadedUrl}`);
+        setSuccessMessage(`✓ Uploaded (${data.provider || "CDN"}) & live triggered!`);
         setTimeout(() => setSuccessMessage(null), 5000);
       } else {
         setErrorMessage(data.error || "File upload failed.");
       }
     } catch (err: any) {
-      setErrorMessage("Error uploading image file.");
+      setErrorMessage(err?.message || "Error uploading image file.");
     } finally {
       setUploadingField(null);
     }

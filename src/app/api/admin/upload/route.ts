@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import { v2 as cloudinary } from "cloudinary";
+import { neon } from "@neondatabase/serverless";
 import fs from "fs";
 import path from "path";
 
-// Initialize Cloudinary
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || "dgaiqqh7k",
-  api_key: process.env.CLOUDINARY_API_KEY || "673182877555238",
-  api_secret: process.env.CLOUDINARY_API_SECRET || "Lt98TBmqTdi3RGHIEr6xGv9KPxU",
-  secure: true,
-});
+function getDatabaseUrl(): string | null {
+  const url = process.env.DATABASE_URL || process.env.NEON_DATABASE_URL;
+  if (!url || url.trim() === "" || url.includes("YOUR_PASSWORD")) {
+    return null;
+  }
+  return url.trim();
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -25,64 +25,90 @@ export async function POST(req: NextRequest) {
 
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-
-    // Try uploading to Cloudinary
-    try {
-      const mimeType = file.type || "application/octet-stream";
-      const isVideo = mimeType.startsWith("video/") || file.name.match(/\.(mp4|webm|mov|m4v|ogg)$/i);
-      const base64Data = `data:${mimeType};base64,${buffer.toString("base64")}`;
-
-      const uploadResult = await cloudinary.uploader.upload(base64Data, {
-        folder: "mulan-laundries",
-        resource_type: isVideo ? "video" : "auto",
-      });
-
-      if (uploadResult && uploadResult.secure_url) {
-        console.log("[CLOUDINARY UPLOAD SUCCESS]", uploadResult.secure_url);
-        return NextResponse.json({
-          success: true,
-          url: uploadResult.secure_url,
-          public_id: uploadResult.public_id,
-          format: uploadResult.format,
-          bytes: uploadResult.bytes,
-          provider: "cloudinary",
-          message: isVideo ? "Video uploaded to Cloudinary successfully!" : "File uploaded to Cloudinary successfully!",
-        });
-      }
-    } catch (cloudinaryErr: any) {
-      console.warn("[CLOUDINARY UPLOAD WARN, FALLING BACK TO LOCAL]", cloudinaryErr);
-    }
-
-    // Fallback to local storage if Cloudinary upload throws
-    const uploadsDir = path.join(process.cwd(), "public", "uploads");
-    if (!fs.existsSync(uploadsDir)) {
-      fs.mkdirSync(uploadsDir, { recursive: true });
-    }
-
+    const mimeType = file.type || "application/octet-stream";
     const ext = path.extname(file.name) || ".jpg";
     const baseName = path
       .basename(file.name, ext)
       .replace(/[^a-zA-Z0-9_-]/g, "_")
       .toLowerCase();
     const finalFilename = `${baseName}_${Date.now()}${ext}`;
-    const destPath = path.join(uploadsDir, finalFilename);
 
-    fs.writeFileSync(destPath, buffer);
+    // 1. Try local filesystem if running locally (not on Vercel read-only filesystem)
+    const isLocalEnvironment = !process.env.VERCEL;
+    if (isLocalEnvironment) {
+      try {
+        const uploadsDir = path.join(process.cwd(), "public", "uploads");
+        if (!fs.existsSync(uploadsDir)) {
+          fs.mkdirSync(uploadsDir, { recursive: true });
+        }
+        const destPath = path.join(uploadsDir, finalFilename);
+        fs.writeFileSync(destPath, buffer);
 
-    const publicUrl = `/uploads/${finalFilename}`;
+        const localUrl = `/uploads/${finalFilename}`;
+        return NextResponse.json({
+          success: true,
+          url: localUrl,
+          filename: finalFilename,
+          size: buffer.length,
+          provider: "local",
+          message: "File uploaded successfully to local storage!",
+        });
+      } catch (fsErr: any) {
+        console.warn("[UPLOAD LOCAL FS WARN, FALLING BACK TO DATABASE/DATA-URI]:", fsErr?.message);
+      }
+    }
 
+    // 2. Prepare Base64 Data URI for serverless (works seamlessly for images on Vercel without third-party limits)
+    const base64Data = `data:${mimeType};base64,${buffer.toString("base64")}`;
+
+    // 3. Persist into Neon Postgres media_assets table if database is available
+    const dbUrl = getDatabaseUrl();
+    if (dbUrl) {
+      try {
+        const sql = neon(dbUrl);
+        // Ensure table exists
+        await sql`
+          CREATE TABLE IF NOT EXISTS media_assets (
+            id SERIAL PRIMARY KEY,
+            filename VARCHAR(255),
+            mime_type VARCHAR(100),
+            data_url TEXT NOT NULL,
+            created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+          );
+        `;
+
+        await sql`
+          INSERT INTO media_assets (filename, mime_type, data_url)
+          VALUES (${finalFilename}, ${mimeType}, ${base64Data});
+        `;
+
+        console.log("[MEDIA UPLOAD NEON SUCCESS]:", finalFilename);
+        return NextResponse.json({
+          success: true,
+          url: base64Data,
+          filename: finalFilename,
+          size: buffer.length,
+          provider: "neon-db",
+          message: "Media uploaded and persisted successfully to database!",
+        });
+      } catch (dbErr: any) {
+        console.warn("[MEDIA UPLOAD NEON WARN]:", dbErr?.message);
+      }
+    }
+
+    // 4. Standalone Data URI fallback
     return NextResponse.json({
       success: true,
-      url: publicUrl,
+      url: base64Data,
       filename: finalFilename,
       size: buffer.length,
-      provider: "local",
-      message: "Image uploaded successfully (local fallback)!",
+      provider: "data-uri",
+      message: "Media uploaded successfully!",
     });
   } catch (err: any) {
     console.error("[UPLOAD API ERROR]", err);
     return NextResponse.json(
-      { success: false, error: err.message || "Failed to upload file" },
+      { success: false, error: err.message || "Failed to process upload" },
       { status: 500 }
     );
   }
