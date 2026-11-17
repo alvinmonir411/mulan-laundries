@@ -17,7 +17,18 @@ export const NAV_LINKS = [
     ]
   },
   { name: "Wash & Fold", href: "/wash-fold" },
-  { name: "Commercial Laundry", href: "/commercial-laundry" },
+  {
+    name: "Commercial Laundry",
+    href: "/commercial-laundry",
+    dropdown: [
+      { name: "Commercial Laundry Overview", href: "/commercial-laundry", desc: "1,000,000+ lbs capacity & institutional coverage" },
+      ...COMMERCIAL_SERVICES.map(s => ({
+        name: s.title,
+        href: `/services/${s.slug}`,
+        desc: s.tagline
+      }))
+    ]
+  },
   { name: "How It Works", href: "/how-it-works" },
   { name: "About Us", href: "/about" },
   { name: "Contact Us", href: "/contact" }

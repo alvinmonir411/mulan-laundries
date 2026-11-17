@@ -13,7 +13,14 @@ interface MobileMenuProps {
 }
 
 export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
-  const [commercialOpen, setCommercialOpen] = useState(false);
+  const [openDropdowns, setOpenDropdowns] = useState<Record<string, boolean>>({});
+
+  const toggleDropdown = (name: string) => {
+    setOpenDropdowns((prev) => ({
+      ...prev,
+      [name]: !prev[name],
+    }));
+  };
 
   if (!isOpen) return null;
 
@@ -52,20 +59,21 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
           <nav className="mt-6 space-y-1">
             {NAV_LINKS.map((link) => {
               if (link.dropdown) {
+                const isOpen = !!openDropdowns[link.name];
                 return (
                   <div key={link.name} className="py-2">
                     <button
-                      onClick={() => setCommercialOpen(!commercialOpen)}
+                      onClick={() => toggleDropdown(link.name)}
                       className="flex items-center justify-between w-full px-3 py-2 text-base font-semibold text-navy-900 hover:bg-slate-50 rounded-lg transition-colors"
                     >
                       <span>{link.name}</span>
                       <ChevronDown
                         className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
-                          commercialOpen ? "rotate-180 text-sky-600" : ""
+                          isOpen ? "rotate-180 text-sky-600" : ""
                         }`}
                       />
                     </button>
-                    {commercialOpen && (
+                    {isOpen && (
                       <div className="mt-2 pl-4 space-y-1 border-l-2 border-sky-100">
                         {link.dropdown.map((sub) => (
                           <Link

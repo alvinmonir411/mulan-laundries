@@ -24,7 +24,8 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
+  const [commercialDropdownOpen, setCommercialDropdownOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -60,7 +61,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </Link>
 
             {/* Desktop Navigation Links (Clean, Spacious Original Layout) */}
-            <nav className="hidden lg:flex items-center gap-7 xl:gap-9">
+            <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
               <Link
                 href="/"
                 className="text-sm font-semibold text-[#005BD3] hover:text-blue-700 transition-colors"
@@ -71,30 +72,30 @@ export const Navbar: React.FC<NavbarProps> = ({
               {/* Services Dropdown */}
               <div
                 className="relative"
-                onMouseEnter={() => setDropdownOpen(true)}
-                onMouseLeave={() => setDropdownOpen(false)}
+                onMouseEnter={() => setServicesDropdownOpen(true)}
+                onMouseLeave={() => setServicesDropdownOpen(false)}
               >
                 <button
-                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-700 hover:text-[#005BD3] transition-colors py-1 focus:outline-none"
-                  aria-expanded={dropdownOpen}
+                  className="inline-flex items-center gap-1 text-sm font-semibold text-slate-700 hover:text-[#005BD3] transition-colors py-1 focus:outline-none"
+                  aria-expanded={servicesDropdownOpen}
                 >
                   <Link href="/services" className="hover:text-[#005BD3]">
                     Services
                   </Link>
-                  <ChevronDown className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#005BD3] transition-transform" />
+                  <ChevronDown className="w-3.5 h-3.5 text-slate-400 transition-transform" />
                 </button>
 
-                {dropdownOpen && (
+                {servicesDropdownOpen && (
                   <div className="absolute top-full left-0 w-80 bg-white rounded-xl shadow-xl border border-slate-100 py-3 mt-1 animate-in fade-in duration-150 z-50">
                     <div className="px-3 pb-2 mb-2 border-b border-slate-100">
                       <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
-                        Commercial & Residential Services
+                        All Laundry Services
                       </span>
                     </div>
                     <div className="max-h-[380px] overflow-y-auto px-1 space-y-0.5">
                       <Link
                         href="/services"
-                        onClick={() => setDropdownOpen(false)}
+                        onClick={() => setServicesDropdownOpen(false)}
                         className="block px-3 py-2 rounded-lg bg-blue-50/70 hover:bg-blue-100/70 transition-colors mb-1"
                       >
                         <div className="text-sm font-bold text-[#005BD3]">
@@ -104,7 +105,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       </Link>
                       <Link
                         href="/wash-fold"
-                        onClick={() => setDropdownOpen(false)}
+                        onClick={() => setServicesDropdownOpen(false)}
                         className="block px-3 py-2 rounded-lg hover:bg-blue-50 transition-colors"
                       >
                         <div className="text-sm font-semibold text-slate-800 hover:text-[#005BD3]">
@@ -114,7 +115,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       </Link>
                       <Link
                         href="/commercial-laundry"
-                        onClick={() => setDropdownOpen(false)}
+                        onClick={() => setServicesDropdownOpen(false)}
                         className="block px-3 py-2 rounded-lg hover:bg-blue-50 transition-colors"
                       >
                         <div className="text-sm font-semibold text-slate-800 hover:text-[#005BD3]">
@@ -122,46 +123,86 @@ export const Navbar: React.FC<NavbarProps> = ({
                         </div>
                         <div className="text-xs text-slate-500">1,000,000+ lbs capacity & OSHA/JCAHO</div>
                       </Link>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Wash & Fold Link */}
+              <Link
+                href="/wash-fold"
+                className="text-sm font-semibold text-slate-700 hover:text-[#005BD3] transition-colors whitespace-nowrap"
+              >
+                Wash & Fold
+              </Link>
+
+              {/* Commercial Laundry Dropdown (Commercial Service Divisions) */}
+              <div
+                className="relative"
+                onMouseEnter={() => setCommercialDropdownOpen(true)}
+                onMouseLeave={() => setCommercialDropdownOpen(false)}
+              >
+                <button
+                  className="inline-flex items-center gap-1 text-sm font-semibold text-slate-700 hover:text-[#005BD3] transition-colors py-1 focus:outline-none"
+                  aria-expanded={commercialDropdownOpen}
+                >
+                  <Link href="/commercial-laundry" className="hover:text-[#005BD3] whitespace-nowrap">
+                    Commercial Laundry
+                  </Link>
+                  <ChevronDown className="w-3.5 h-3.5 text-slate-400 transition-transform" />
+                </button>
+
+                {commercialDropdownOpen && (
+                  <div className="absolute top-full left-0 w-84 sm:w-96 bg-white rounded-xl shadow-xl border border-slate-100 py-3 mt-1 animate-in fade-in duration-150 z-50">
+                    <div className="px-4 pb-2 mb-2 border-b border-slate-100 flex items-center justify-between">
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                        Commercial Service Divisions
+                      </span>
                       <Link
-                        href="/services/hotel-laundry"
-                        onClick={() => setDropdownOpen(false)}
-                        className="block px-3 py-2 rounded-lg hover:bg-blue-50 transition-colors"
+                        href="/commercial-laundry"
+                        onClick={() => setCommercialDropdownOpen(false)}
+                        className="text-[11px] font-bold text-[#005BD3] hover:underline"
                       >
-                        <div className="text-sm font-semibold text-slate-800 hover:text-[#005BD3]">
-                          Hotels & Hospitality
-                        </div>
-                        <div className="text-xs text-slate-500">Rotary pressing & crisp bedding</div>
+                        Overview →
                       </Link>
+                    </div>
+                    <div className="max-h-[420px] overflow-y-auto px-1.5 space-y-0.5">
                       <Link
-                        href="/services/hospital-laundry"
-                        onClick={() => setDropdownOpen(false)}
-                        className="block px-3 py-2 rounded-lg hover:bg-blue-50 transition-colors"
+                        href="/commercial-laundry"
+                        onClick={() => setCommercialDropdownOpen(false)}
+                        className="block px-3 py-2 rounded-lg bg-blue-50/70 hover:bg-blue-100/70 transition-colors mb-1"
                       >
-                        <div className="text-sm font-semibold text-slate-800 hover:text-[#005BD3]">
-                          Hospital Laundry Services
+                        <div className="text-sm font-bold text-[#005BD3]">
+                          Commercial Hub Overview →
                         </div>
-                        <div className="text-xs text-slate-500">Universal precautions & clinical hygiene</div>
+                        <div className="text-xs text-slate-500">1,000,000+ lbs capacity & institutional coverage</div>
                       </Link>
-                      <Link
-                        href="/services/short-term-rentals"
-                        onClick={() => setDropdownOpen(false)}
-                        className="block px-3 py-2 rounded-lg hover:bg-blue-50 transition-colors"
-                      >
-                        <div className="text-sm font-semibold text-slate-800 hover:text-[#005BD3]">
-                          Short-Term Rentals & Airbnb
-                        </div>
-                        <div className="text-xs text-slate-500">Fast guest turnovers & unit-ready sets</div>
-                      </Link>
-                      <Link
-                        href="/services/gyms"
-                        onClick={() => setDropdownOpen(false)}
-                        className="block px-3 py-2 rounded-lg hover:bg-blue-50 transition-colors"
-                      >
-                        <div className="text-sm font-semibold text-slate-800 hover:text-[#005BD3]">
-                          Gyms & Fitness Centers
-                        </div>
-                        <div className="text-xs text-slate-500">Towel swaps & sweat odor removal</div>
-                      </Link>
+
+                      {[
+                        { name: "Hospital Laundry Services", href: "/services/hospital-laundry", desc: "Universal precautions & clinical hygiene" },
+                        { name: "Short-Term Residential & Airbnb", href: "/services/short-term-rentals", desc: "Fast guest turnovers & unit-ready bundles" },
+                        { name: "Hotels & Hospitality Laundry", href: "/services/hotel-laundry", desc: "Rotary pressing & crisp bedding" },
+                        { name: "Gyms & Fitness Centers", href: "/services/gyms", desc: "Towel swaps & sweat odor removal" },
+                        { name: "Health Clubs & Wellness", href: "/services/health-clubs", desc: "Plush spa towels & sauna sheets" },
+                        { name: "Salons & Spas Laundry", href: "/services/salons-spas", desc: "Bleach-safe & massage oil care" },
+                        { name: "Schools & Dorms Laundry", href: "/services/schools-dorms", desc: "Student dorm bundles & campus linen" },
+                        { name: "Shelter Homes & Facilities", href: "/services/shelter-homes", desc: "High-volume institutional washing" },
+                        { name: "Bed & Breakfast Laundry", href: "/services/bed-and-breakfast", desc: "Delicate heirloom & fine cotton care" },
+                      ].map((subItem) => (
+                        <Link
+                          key={subItem.href}
+                          href={subItem.href}
+                          onClick={() => setCommercialDropdownOpen(false)}
+                          className="block px-3 py-2 rounded-lg hover:bg-blue-50 transition-colors group"
+                        >
+                          <div className="text-sm font-semibold text-slate-800 group-hover:text-[#005BD3]">
+                            {subItem.name}
+                          </div>
+                          <div className="text-xs text-slate-500">
+                            {subItem.desc}
+                          </div>
+                        </Link>
+                      ))}
                     </div>
                   </div>
                 )}
