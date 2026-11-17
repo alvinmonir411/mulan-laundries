@@ -60,6 +60,7 @@ export const MobileStickyCall: React.FC<MobileStickyCallProps> = ({
         <a
           href="/pickup-request"
           className="flex items-center justify-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-white py-3 px-3.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all"
+          aria-label="Book free laundry pickup"
           title="Book Free Pickup"
         >
           <Calendar className="w-3.5 h-3.5 text-blue-400" />

@@ -47,12 +47,32 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
   const [hasVideoError, setHasVideoError] = useState(false);
+  // videoReady: false = show poster, true = show video element
+  // We defer video insertion until after page load to protect LCP
+  const [videoReady, setVideoReady] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Aggressive instant video play to avoid poster delay
+  // Defer video insertion until after the page has finished loading.
+  // This ensures the LCP poster image is painted immediately without competing
+  // with video network requests on mobile connections.
+  useEffect(() => {
+    // Use requestIdleCallback where available, otherwise load after a 1s timeout
+    const load = () => setVideoReady(true);
+    if (typeof window !== "undefined") {
+      if ("requestIdleCallback" in window) {
+        const id = (window as Window & { requestIdleCallback: (cb: () => void, opts?: { timeout: number }) => number }).requestIdleCallback(load, { timeout: 1500 });
+        return () => (window as Window & { cancelIdleCallback: (id: number) => void }).cancelIdleCallback(id);
+      } else {
+        const timer = setTimeout(load, 800);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, []);
+
+  // Once the video element is in the DOM, play it and wire IntersectionObserver
   useEffect(() => {
     const videoElement = videoRef.current;
-    if (!videoElement) return;
+    if (!videoElement || !videoReady) return;
 
     videoElement.muted = true;
     const playPromise = videoElement.play();
@@ -62,7 +82,7 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
       });
     }
 
-    // Lazy pause video when scrolled out of view to preserve CPU/GPU & mobile data
+    // Pause when scrolled out of view to conserve CPU/GPU & mobile battery
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -82,7 +102,7 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
 
     observer.observe(videoElement);
     return () => observer.disconnect();
-  }, [isPlaying]);
+  }, [isPlaying, videoReady]);
 
   const togglePlay = () => {
     if (!videoRef.current) return;
@@ -106,12 +126,32 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
     heroVideo === "disabled" ||
     heroVideo.match(/\.(jpe?g|png|webp|avif|gif|svg)$/i);
 
+  // Determine LCP poster: prefer explicit videoPoster, fallback to heroImage
+  const posterSrc = videoPoster || heroImage;
+
   return (
     <section className="relative w-full min-h-[640px] lg:min-h-[760px] xl:min-h-[820px] flex items-center justify-center overflow-hidden bg-slate-950 text-white">
       {/* 1. FULL BACKGROUND VIDEO & POSTER LAYER */}
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden bg-slate-950">
-        {/* Cinematic Ambient Background Video Loop (High Performance & Persistent) */}
-        {!isExplicitImageOnly && !hasVideoError ? (
+
+        {/* ── LCP Poster Image: always rendered, hides once video plays ───── */}
+        {/* This is the Largest Contentful Paint element — keep it priority */}
+        <Image
+          src={posterSrc}
+          alt={heroAlt}
+          fill
+          priority
+          fetchPriority="high"
+          sizes="100vw"
+          className={`object-cover object-center transition-opacity duration-700 ${
+            videoReady && !isExplicitImageOnly && !hasVideoError
+              ? "opacity-0 pointer-events-none"
+              : "opacity-100"
+          }`}
+        />
+
+        {/* ── Ambient Video: only mounted after page load (protects LCP) ─── */}
+        {!isExplicitImageOnly && !hasVideoError && videoReady && (
           <video
             ref={videoRef}
             key={heroVideo}
@@ -119,34 +159,24 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
             loop
             muted
             playsInline
-            preload="metadata"
-            poster={videoPoster || heroImage}
+            preload="none"
+            poster={posterSrc}
             onError={() => setHasVideoError(true)}
             className="absolute inset-0 w-full h-full object-cover object-center scale-[1.02]"
-            aria-label="Mulan Laundries NYC commercial laundry operation background video"
+            aria-hidden="true"
+            tabIndex={-1}
           >
-            {/* Preferred fast webm for high performance & low bandwidth */}
+            {/* WebM first: smaller file, broader modern-browser support */}
             <source src="/videos/mulan-laundry-hero.webm" type="video/webm" />
-            <source src={heroVideo} type="video/mp4" />
-            <source src="/videos/laundry-drum-washing.mp4" type="video/mp4" />
+            {/* MP4 fallback for Safari & older browsers */}
+            <source src="/videos/mulan-laundry-hero.mp4" type="video/mp4" />
           </video>
-        ) : (
-          /* Instant Fallback Poster Image if video is disabled or errors */
-          <Image
-            src={videoPoster || heroImage}
-            alt={heroAlt}
-            fill
-            priority
-            fetchPriority="high"
-            sizes="100vw"
-            className="object-cover object-center"
-          />
         )}
 
         {/* Multi-layered Cinematic Dark Gradient Overlay for Maximum Text Contrast & Readability */}
         <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/70 to-slate-900/60 z-10" />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/50 z-10" />
-        <div className="absolute inset-0 backdrop-blur-[1.5px] z-10 pointer-events-none" />
+        {/* backdrop-blur removed: GPU-compositing hit on mobile, gradients give sufficient contrast */}
       </div>
 
       {/* 2. FOREGROUND CONTENT LAYER */}

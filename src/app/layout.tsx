@@ -13,6 +13,11 @@ const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   display: "swap",
+  // Preload only the most common weights to reduce font payload
+  weight: ["400", "500", "600", "700", "800"],
+  // Explicitly use latin subset only - avoids loading extra charsets
+  preload: true,
+  fallback: ["system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"],
 });
 
 export const metadata: Metadata = {
@@ -154,8 +159,17 @@ export default async function RootLayout({
       <head>
         <link rel="icon" href={faviconUrl} />
         <link rel="shortcut icon" href={faviconUrl} />
+        {/* Preconnect: CDN & Google Fonts (font fetched by Next/font but APIs still hit) */}
         <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+        {/* Preload LCP hero poster image so it starts fetching immediately */}
+        <link
+          rel="preload"
+          as="image"
+          href="/images/laundry-hero-inspiration.jpg"
+          fetchPriority="high"
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}

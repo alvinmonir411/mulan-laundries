@@ -31,7 +31,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -74,10 +74,25 @@ export const Navbar: React.FC<NavbarProps> = ({
                 className="relative"
                 onMouseEnter={() => setServicesDropdownOpen(true)}
                 onMouseLeave={() => setServicesDropdownOpen(false)}
+                onFocus={() => setServicesDropdownOpen(true)}
+                onBlur={(e) => {
+                  // Close only when focus leaves the entire dropdown container
+                  if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+                    setServicesDropdownOpen(false);
+                  }
+                }}
               >
                 <button
-                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-700 hover:text-[#005BD3] transition-colors py-1 focus:outline-none"
+                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-700 hover:text-[#005BD3] transition-colors py-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded"
                   aria-expanded={servicesDropdownOpen}
+                  aria-haspopup="true"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setServicesDropdownOpen((v) => !v);
+                    }
+                    if (e.key === "Escape") setServicesDropdownOpen(false);
+                  }}
                 >
                   <Link href="/services" className="hover:text-[#005BD3]">
                     Services
