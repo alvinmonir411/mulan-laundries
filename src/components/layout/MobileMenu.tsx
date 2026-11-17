@@ -65,7 +65,62 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
 
           {/* Links */}
           <nav className="mt-6 space-y-1">
-            {NAV_LINKS.map((link) => {
+            {NAV_LINKS.map((link: any) => {
+              if (link.isMegaMenu && link.sections) {
+                const isOpen = !!openDropdowns[link.name];
+                return (
+                  <div key={link.name} className="py-2">
+                    <button
+                      onClick={() => toggleDropdown(link.name)}
+                      className="flex items-center justify-between w-full px-3 py-2 text-base font-semibold text-navy-900 hover:bg-slate-50 rounded-lg transition-colors"
+                    >
+                      <span>{link.name}</span>
+                      <ChevronDown
+                        className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
+                          isOpen ? "rotate-180 text-sky-600" : ""
+                        }`}
+                      />
+                    </button>
+                    {isOpen && (
+                      <div className="mt-2 pl-3 space-y-3 border-l-2 border-sky-100">
+                        {link.sections.map((section: any) => {
+                          const isSecOpen = !!openSubMenus[section.category];
+                          return (
+                            <div key={section.category} className="space-y-1">
+                              <button
+                                onClick={() => toggleSubMenu(section.category)}
+                                className="flex items-center justify-between w-full px-2 py-1.5 text-xs font-bold uppercase tracking-wider text-slate-700 hover:text-sky-600 rounded transition-colors"
+                              >
+                                <span>{section.category}</span>
+                                <ChevronDown
+                                  className={`w-3.5 h-3.5 text-slate-400 transition-transform ${
+                                    isSecOpen ? "rotate-180 text-sky-600" : ""
+                                  }`}
+                                />
+                              </button>
+                              {isSecOpen && (
+                                <div className="pl-2 space-y-1 border-l border-sky-200">
+                                  {section.items.map((item: any) => (
+                                    <Link
+                                      key={item.name}
+                                      href={item.href}
+                                      onClick={onClose}
+                                      className="block px-2 py-1.5 text-xs text-slate-600 hover:text-sky-600 hover:bg-sky-50/50 rounded transition-colors"
+                                    >
+                                      {item.name}
+                                    </Link>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
               if (link.dropdown) {
                 const isOpen = !!openDropdowns[link.name];
                 return (
@@ -83,51 +138,16 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
                     </button>
                     {isOpen && (
                       <div className="mt-2 pl-4 space-y-1 border-l-2 border-sky-100">
-                        {link.dropdown.map((sub: any) => {
-                          if (sub.children) {
-                            const isSubOpen = !!openSubMenus[sub.name];
-                            return (
-                              <div key={sub.name} className="py-1">
-                                <button
-                                  onClick={() => toggleSubMenu(sub.name)}
-                                  className="flex items-center justify-between w-full px-3 py-2 text-sm font-semibold text-slate-800 hover:text-sky-600 hover:bg-sky-50/50 rounded-md transition-colors"
-                                >
-                                  <span>{sub.name}</span>
-                                  <ChevronDown
-                                    className={`w-3.5 h-3.5 text-slate-400 transition-transform ${
-                                      isSubOpen ? "rotate-180 text-sky-600" : ""
-                                    }`}
-                                  />
-                                </button>
-                                {isSubOpen && (
-                                  <div className="mt-1 pl-3 space-y-1 border-l border-sky-200">
-                                    {sub.children.map((child: any) => (
-                                      <Link
-                                        key={child.name}
-                                        href={child.href}
-                                        onClick={onClose}
-                                        className="block px-3 py-1.5 text-xs text-slate-600 hover:text-sky-600 hover:bg-sky-50/50 rounded-md transition-colors"
-                                      >
-                                        {child.name}
-                                      </Link>
-                                    ))}
-                                  </div>
-                                )}
-                              </div>
-                            );
-                          }
-
-                          return (
-                            <Link
-                              key={sub.name}
-                              href={sub.href}
-                              onClick={onClose}
-                              className="block px-3 py-2 text-sm text-slate-600 hover:text-sky-600 hover:bg-sky-50/50 rounded-md transition-colors"
-                            >
-                              {sub.name}
-                            </Link>
-                          );
-                        })}
+                        {link.dropdown.map((sub: any) => (
+                          <Link
+                            key={sub.name}
+                            href={sub.href}
+                            onClick={onClose}
+                            className="block px-3 py-2 text-sm text-slate-600 hover:text-sky-600 hover:bg-sky-50/50 rounded-md transition-colors"
+                          >
+                            {sub.name}
+                          </Link>
+                        ))}
                       </div>
                     )}
                   </div>
