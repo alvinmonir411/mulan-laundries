@@ -46,15 +46,23 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
 }) => {
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
-  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [hasVideoError, setHasVideoError] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Lazy pause video when scrolled out of view to preserve CPU/GPU battery
+  // Aggressive instant video play to avoid poster delay
   useEffect(() => {
     const videoElement = videoRef.current;
     if (!videoElement) return;
 
+    videoElement.muted = true;
+    const playPromise = videoElement.play();
+    if (playPromise !== undefined) {
+      playPromise.catch((err) => {
+        console.warn("[HERO VIDEO AUTO-PLAY PREVENTED]", err);
+      });
+    }
+
+    // Lazy pause video when scrolled out of view to preserve CPU/GPU & mobile data
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -69,7 +77,7 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
           }
         });
       },
-      { threshold: 0.15 }
+      { threshold: 0.1 }
     );
 
     observer.observe(videoElement);
@@ -101,22 +109,9 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
   return (
     <section className="relative w-full min-h-[640px] lg:min-h-[760px] xl:min-h-[820px] flex items-center justify-center overflow-hidden bg-slate-950 text-white">
       {/* 1. FULL BACKGROUND VIDEO & POSTER LAYER */}
-      <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
-        {/* Instant LCP Poster Image (Priority Loaded with Zero CLS) */}
-        <Image
-          src={videoPoster || heroImage}
-          alt={heroAlt}
-          fill
-          priority
-          fetchPriority="high"
-          sizes="100vw"
-          className={`object-cover object-center transition-opacity duration-1000 ${
-            !isExplicitImageOnly && isVideoLoaded && !hasVideoError ? "opacity-0" : "opacity-100 scale-105"
-          }`}
-        />
-
-        {/* Cinematic Ambient Background Video Loop */}
-        {!isExplicitImageOnly && !hasVideoError && (
+      <div className="absolute inset-0 w-full h-full z-0 overflow-hidden bg-slate-950">
+        {/* Cinematic Ambient Background Video Loop (High Performance & Persistent) */}
+        {!isExplicitImageOnly && !hasVideoError ? (
           <video
             ref={videoRef}
             key={heroVideo}
@@ -124,20 +119,28 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
             loop
             muted
             playsInline
-            preload="auto"
+            preload="metadata"
             poster={videoPoster || heroImage}
-            onLoadedData={() => setIsVideoLoaded(true)}
             onError={() => setHasVideoError(true)}
-            className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000 scale-[1.03] ${
-              isVideoLoaded ? "opacity-100" : "opacity-0"
-            }`}
+            className="absolute inset-0 w-full h-full object-cover object-center scale-[1.02]"
             aria-label="Mulan Laundries NYC commercial laundry operation background video"
           >
+            {/* Preferred fast webm for high performance & low bandwidth */}
+            <source src="/videos/mulan-laundry-hero.webm" type="video/webm" />
             <source src={heroVideo} type="video/mp4" />
             <source src="/videos/laundry-drum-washing.mp4" type="video/mp4" />
-            <source src="/videos/laundry-facility-machines.mp4" type="video/mp4" />
-            <source src="/videos/mulan-laundry-hero.webm" type="video/webm" />
           </video>
+        ) : (
+          /* Instant Fallback Poster Image if video is disabled or errors */
+          <Image
+            src={videoPoster || heroImage}
+            alt={heroAlt}
+            fill
+            priority
+            fetchPriority="high"
+            sizes="100vw"
+            className="object-cover object-center"
+          />
         )}
 
         {/* Multi-layered Cinematic Dark Gradient Overlay for Maximum Text Contrast & Readability */}
