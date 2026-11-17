@@ -58,11 +58,11 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
   const isVideo = isVideoUrl(heroVideo);
   const slide1Image =
     (!isVideo && heroVideo) ||
-    heroImage ||
+    (!isVideoUrl(heroImage) && heroImage) ||
     "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908752/mulan-laundries/slide1.webp";
   const posterImg =
-    videoPoster ||
-    heroImage ||
+    (!isVideoUrl(videoPoster) && videoPoster) ||
+    (!isVideoUrl(heroImage) && heroImage) ||
     "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908752/mulan-laundries/slide1.webp";
   const videoRef = useRef<HTMLVideoElement>(null);
 
