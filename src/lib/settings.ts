@@ -104,17 +104,10 @@ export async function fetchAllSettings(): Promise<SiteSettings> {
   return readLocalSettings();
 }
 
-// Cached getter with Next.js Cache Tag (60s stale fallback + on-demand revalidateTag)
-export const getSiteSettings = unstable_cache(
-  async (): Promise<SiteSettings> => {
-    return await fetchAllSettings();
-  },
-  ["site-settings-cache-key"],
-  {
-    tags: ["site-settings"],
-    revalidate: 60,
-  }
-);
+// Live getter directly querying Neon DB for real-time zero-reload website updates
+export async function getSiteSettings(): Promise<SiteSettings> {
+  return await fetchAllSettings();
+}
 
 export async function saveSiteSettingsBatch(
   newSettings: Partial<SiteSettings>

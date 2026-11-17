@@ -55,14 +55,81 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
   ctaPrimary = "Book a Free Pickup",
   ctaSecondary = "How It Works",
 }) => {
-  const isVideo = isVideoUrl(heroVideo);
+  const [liveHero, setLiveHero] = useState({
+    titleLine1,
+    titleLine2,
+    subtitle,
+    badge,
+    ctaPrimary,
+    ctaSecondary,
+    heroImage,
+    heroVideo,
+    videoPoster,
+  });
+
+  useEffect(() => {
+    setLiveHero({
+      titleLine1,
+      titleLine2,
+      subtitle,
+      badge,
+      ctaPrimary,
+      ctaSecondary,
+      heroImage,
+      heroVideo,
+      videoPoster,
+    });
+  }, [
+    titleLine1,
+    titleLine2,
+    subtitle,
+    badge,
+    ctaPrimary,
+    ctaSecondary,
+    heroImage,
+    heroVideo,
+    videoPoster,
+  ]);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !("BroadcastChannel" in window)) return;
+    const channel = new BroadcastChannel("mulan_live_sync");
+    channel.onmessage = (event) => {
+      const data = event.data;
+      if (data?.type === "SETTINGS_UPDATED" && data.settings) {
+        setLiveHero((prev) => ({
+          ...prev,
+          titleLine1: data.settings.hero_title_line1 ?? prev.titleLine1,
+          titleLine2: data.settings.hero_title_line2 ?? prev.titleLine2,
+          subtitle: data.settings.hero_subtitle ?? prev.subtitle,
+          badge: data.settings.hero_badge ?? prev.badge,
+          ctaPrimary: data.settings.hero_cta_primary ?? prev.ctaPrimary,
+          ctaSecondary: data.settings.hero_cta_secondary ?? prev.ctaSecondary,
+          heroVideo: data.settings.hero_video_url ?? prev.heroVideo,
+        }));
+      }
+      if (data?.type === "IMAGE_SLOT_UPDATED" && data.slotKey === "hero_main") {
+        setLiveHero((prev) => ({
+          ...prev,
+          heroImage: data.imageUrl,
+        }));
+      }
+    };
+    return () => {
+      try {
+        channel.close();
+      } catch {}
+    };
+  }, []);
+
+  const isVideo = isVideoUrl(liveHero.heroVideo);
   const slide1Image =
-    (!isVideo && heroVideo) ||
-    (!isVideoUrl(heroImage) && heroImage) ||
+    (!isVideo && liveHero.heroVideo) ||
+    (!isVideoUrl(liveHero.heroImage) && liveHero.heroImage) ||
     "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908752/mulan-laundries/slide1.webp";
   const posterImg =
-    (!isVideoUrl(videoPoster) && videoPoster) ||
-    (!isVideoUrl(heroImage) && heroImage) ||
+    (!isVideoUrl(liveHero.videoPoster) && liveHero.videoPoster) ||
+    (!isVideoUrl(liveHero.heroImage) && liveHero.heroImage) ||
     "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908752/mulan-laundries/slide1.webp";
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -72,12 +139,12 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
       id: 1,
       image: slide1Image,
       alt: heroAlt || "Mulan Laundries NYC premier commercial laundry facility and automated washers",
-      badge: badge || "New York Premier Laundry & Linen Management",
-      headlineLine1: titleLine1 || "Clean Clothes,",
-      headlineLine2: titleLine2 || "Fresh Life!",
-      description: subtitle || "Professional laundry & commercial linen management service with hospital-grade hygiene, universal precautions & 24/7 on-time delivery across all 5 NYC boroughs.",
+      badge: liveHero.badge || "New York Premier Laundry & Linen Management",
+      headlineLine1: liveHero.titleLine1 || "Clean Clothes,",
+      headlineLine2: liveHero.titleLine2 || "Fresh Life!",
+      description: liveHero.subtitle || "Professional laundry & commercial linen management service with hospital-grade hygiene, universal precautions & 24/7 on-time delivery across all 5 NYC boroughs.",
       isVideo: isVideo,
-      videoSrc: heroVideo,
+      videoSrc: liveHero.heroVideo,
     },
     {
       id: 2,
@@ -289,16 +356,16 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
               href="/pickup-request"
               className="inline-flex items-center justify-center gap-2.5 px-7 sm:px-8 py-3.5 sm:py-4 bg-[#005BD3] hover:bg-[#004BB5] text-white font-bold text-base rounded-xl shadow-lg hover:shadow-sky-500/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
             >
-              <span>{ctaPrimary}</span>
+              <span>{liveHero.ctaPrimary}</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
 
-            {ctaSecondary && (
+            {liveHero.ctaSecondary && (
               <Link
                 href="/how-it-works"
                 className="inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3.5 sm:py-4 bg-black/40 hover:bg-black/60 text-white border border-white/25 backdrop-blur-md font-bold text-base rounded-xl transition-all shadow-md hover:-translate-y-0.5"
               >
-                <span>{ctaSecondary}</span>
+                <span>{liveHero.ctaSecondary}</span>
               </Link>
             )}
 

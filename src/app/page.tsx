@@ -13,7 +13,8 @@ import { getSiteImages } from "@/lib/images";
 import { getSiteSettings } from "@/lib/settings";
 import { fetchAllTestimonials } from "@/lib/cmsData";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default async function HomePage() {
   const [siteImages, siteSettings, testimonials] = await Promise.all([

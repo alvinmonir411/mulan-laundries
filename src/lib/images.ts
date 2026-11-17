@@ -2,17 +2,10 @@ import { unstable_cache, revalidateTag, revalidatePath } from "next/cache";
 import { fetchAllImages, saveImageSlot } from "./db";
 import { DEFAULT_SITE_IMAGES, SiteImage } from "./defaultImages";
 
-// Cached getter for site images with Next.js Cache Tag
-export const getSiteImages = unstable_cache(
-  async (): Promise<Record<string, SiteImage>> => {
-    return await fetchAllImages();
-  },
-  ["site-images-cache-key"],
-  {
-    tags: ["site-images"],
-    revalidate: 60, // 60s stale fallback + on-demand revalidateTag
-  }
-);
+// Live getter directly querying Neon DB for real-time zero-reload website updates
+export async function getSiteImages(): Promise<Record<string, SiteImage>> {
+  return await fetchAllImages();
+}
 
 export async function getImageBySlot(slotKey: string): Promise<SiteImage> {
   const images = await getSiteImages();

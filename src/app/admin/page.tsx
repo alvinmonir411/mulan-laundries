@@ -57,6 +57,7 @@ import { SiteImage } from "@/lib/defaultImages";
 import { SiteSettings, DEFAULT_SITE_SETTINGS } from "@/lib/settingsTypes";
 import { ContactSubmission } from "@/lib/submissionTypes";
 import { SiteTestimonial, SiteFaq, SitePage } from "@/lib/cmsTypes";
+import { broadcastSiteUpdate } from "@/lib/liveSync";
 
 // Specialized Sub-Components for 9 Modules
 import { HomepageEditor } from "./components/HomepageEditor";
@@ -343,7 +344,11 @@ export default function AdminDashboardPage() {
 
       if (res.ok && data.success) {
         setSettings(data.settings);
-        setSuccessMessage(`✓ ${sectionName} updated successfully in Neon DB! Cache purged live.`);
+        broadcastSiteUpdate({
+          type: "SETTINGS_UPDATED",
+          settings: data.settings,
+        });
+        setSuccessMessage(`✓ ${sectionName} updated successfully in Neon DB! Live sync triggered.`);
         setTimeout(() => setSuccessMessage(null), 5000);
       } else {
         setErrorMessage(data.error || `Failed to update ${sectionName}.`);
@@ -384,7 +389,13 @@ export default function AdminDashboardPage() {
       const data = await res.json();
 
       if (res.ok && data.success) {
-        setSuccessMessage(`✓ Slot '${slot.title}' updated in Neon DB! Website re-rendered.`);
+        broadcastSiteUpdate({
+          type: "IMAGE_SLOT_UPDATED",
+          slotKey: slot.slot_key,
+          imageUrl: slot.image_url,
+          altText: slot.alt_text,
+        });
+        setSuccessMessage(`✓ Slot '${slot.title}' updated in Neon DB! Live sync triggered.`);
         setTimeout(() => setSuccessMessage(null), 5000);
       } else {
         setErrorMessage(data.error || "Failed to update image slot.");
@@ -407,7 +418,12 @@ export default function AdminDashboardPage() {
       });
       const data = await res.json();
       if (res.ok && data.success) {
-        setSuccessMessage(`✓ Image slot restored to default photo in Neon DB!`);
+        broadcastSiteUpdate({
+          type: "IMAGE_SLOT_UPDATED",
+          slotKey,
+          imageUrl: defaultUrl,
+        });
+        setSuccessMessage(`✓ Image slot restored to default photo in Neon DB! Live sync triggered.`);
         setTimeout(() => setSuccessMessage(null), 4000);
       } else {
         setErrorMessage(data.error || "Failed to restore default image.");
@@ -503,6 +519,11 @@ export default function AdminDashboardPage() {
               imageUrl: uploadedUrl,
             }),
           });
+          broadcastSiteUpdate({
+            type: "IMAGE_SLOT_UPDATED",
+            slotKey: targetField,
+            imageUrl: uploadedUrl,
+          });
         } else {
           handleSettingChange(targetField as keyof SiteSettings, uploadedUrl);
           await fetch("/api/admin/settings", {
@@ -511,6 +532,10 @@ export default function AdminDashboardPage() {
             body: JSON.stringify({
               settings: { [targetField]: uploadedUrl },
             }),
+          });
+          broadcastSiteUpdate({
+            type: "SETTINGS_UPDATED",
+            settings: { [targetField]: uploadedUrl },
           });
           // If hero media was uploaded, also update the hero_main image slot so the hero background updates
           if (targetField === "hero_video_url") {
@@ -522,10 +547,15 @@ export default function AdminDashboardPage() {
                 imageUrl: uploadedUrl,
               }),
             });
+            broadcastSiteUpdate({
+              type: "IMAGE_SLOT_UPDATED",
+              slotKey: "hero_main",
+              imageUrl: uploadedUrl,
+            });
           }
         }
 
-        setSuccessMessage(`✓ Uploaded (${provider}) & live triggered!`);
+        setSuccessMessage(`✓ Uploaded (${provider}) & live sync broadcasted!`);
         setTimeout(() => setSuccessMessage(null), 5000);
       }
     } catch (err: any) {
@@ -546,7 +576,8 @@ export default function AdminDashboardPage() {
       const data = await res.json();
       if (res.ok && data.success) {
         setPages((prev) => prev.map((p) => (p.slug === page.slug ? data.page : p)));
-        setSuccessMessage(`✓ Page '${page.title}' updated successfully!`);
+        broadcastSiteUpdate({ type: "PAGES_UPDATED" });
+        setSuccessMessage(`✓ Page '${page.title}' updated successfully! Live sync triggered.`);
         setTimeout(() => setSuccessMessage(null), 4000);
       } else {
         setErrorMessage(data.error || "Failed to update page");
@@ -571,7 +602,8 @@ export default function AdminDashboardPage() {
         } else {
           setTestimonials((prev) => [...prev, data.testimonial]);
         }
-        setSuccessMessage("✓ Testimonial saved successfully!");
+        broadcastSiteUpdate({ type: "TESTIMONIALS_UPDATED" });
+        setSuccessMessage("✓ Testimonial saved successfully! Live sync triggered.");
         setTimeout(() => setSuccessMessage(null), 4000);
       } else {
         setErrorMessage(data.error || "Failed to save testimonial");
@@ -587,7 +619,8 @@ export default function AdminDashboardPage() {
       const data = await res.json();
       if (res.ok && data.success) {
         setTestimonials((prev) => prev.filter((t) => t.id !== id));
-        setSuccessMessage("✓ Testimonial deleted successfully!");
+        broadcastSiteUpdate({ type: "TESTIMONIALS_UPDATED" });
+        setSuccessMessage("✓ Testimonial deleted successfully! Live sync triggered.");
         setTimeout(() => setSuccessMessage(null), 4000);
       } else {
         setErrorMessage(data.error || "Failed to delete testimonial");
@@ -612,7 +645,8 @@ export default function AdminDashboardPage() {
         } else {
           setFaqs((prev) => [...prev, data.faq]);
         }
-        setSuccessMessage("✓ FAQ saved successfully!");
+        broadcastSiteUpdate({ type: "FAQS_UPDATED" });
+        setSuccessMessage("✓ FAQ saved successfully! Live sync triggered.");
         setTimeout(() => setSuccessMessage(null), 4000);
       } else {
         setErrorMessage(data.error || "Failed to save FAQ");
@@ -628,7 +662,8 @@ export default function AdminDashboardPage() {
       const data = await res.json();
       if (res.ok && data.success) {
         setFaqs((prev) => prev.filter((f) => f.id !== id));
-        setSuccessMessage("✓ FAQ deleted successfully!");
+        broadcastSiteUpdate({ type: "FAQS_UPDATED" });
+        setSuccessMessage("✓ FAQ deleted successfully! Live sync triggered.");
         setTimeout(() => setSuccessMessage(null), 4000);
       } else {
         setErrorMessage(data.error || "Failed to delete FAQ");

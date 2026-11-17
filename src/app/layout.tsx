@@ -5,6 +5,7 @@ import { TopBar } from "@/components/layout/TopBar";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { MobileStickyCall } from "@/components/layout/MobileStickyCall";
+import { LiveSiteListener } from "@/components/providers/LiveSiteListener";
 import { BUSINESS_INFO } from "@/data/business";
 import { getSiteImages } from "@/lib/images";
 import { getSiteSettings } from "@/lib/settings";
@@ -160,6 +161,7 @@ export default async function RootLayout({
         />
       </head>
       <body className="font-sans antialiased bg-white text-navy-900 flex flex-col min-h-screen">
+        <LiveSiteListener />
         <TopBar phone={phone} phoneRaw={phoneRaw} />
         <Navbar logoUrl={headerLogo} logoAlt={headerLogoAlt} phone={phone} phoneRaw={phoneRaw} />
         <main className="flex-1">{children}</main>
