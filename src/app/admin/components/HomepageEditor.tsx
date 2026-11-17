@@ -303,23 +303,23 @@ export const HomepageEditor: React.FC<HomepageEditorProps> = ({
                   <div className="flex flex-wrap items-center gap-1.5">
                     {[
                       {
-                        label: "🖼️ Slide 1: Facility Washers",
-                        url: "/images/slide1.webp",
+                        label: "🖼️ Slide 1: Facility Washers (Cloudinary)",
+                        url: "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908752/mulan-laundries/slide1.webp",
                         type: "image",
                       },
                       {
-                        label: "🏨 Slide 2: Luxury Bed Linens",
-                        url: "/images/slide2.webp",
+                        label: "🏨 Slide 2: Luxury Bed Linens (Cloudinary)",
+                        url: "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908957/mulan-laundries/slide2.webp",
                         type: "image",
                       },
                       {
-                        label: "🧺 Slide 3: Clean Folded",
-                        url: "/images/slide3.jpg",
+                        label: "🧺 Slide 3: Clean Folded (Cloudinary)",
+                        url: "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908958/mulan-laundries/slide3.jpg",
                         type: "image",
                       },
                       {
-                        label: "🚚 Slide 4: NYC Delivery Van",
-                        url: "/images/slide4.webp",
+                        label: "🚚 Slide 4: NYC Delivery Van (Cloudinary)",
+                        url: "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908959/mulan-laundries/slide4.webp",
                         type: "image",
                       },
                       {

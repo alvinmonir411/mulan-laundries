@@ -56,8 +56,14 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
   ctaSecondary = "How It Works",
 }) => {
   const isVideo = isVideoUrl(heroVideo);
-  const slide1Image = (!isVideo && heroVideo) || heroImage || "/images/slide1.webp";
-  const posterImg = videoPoster || heroImage || "/images/slide1.webp";
+  const slide1Image =
+    (!isVideo && heroVideo) ||
+    heroImage ||
+    "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908752/mulan-laundries/slide1.webp";
+  const posterImg =
+    videoPoster ||
+    heroImage ||
+    "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908752/mulan-laundries/slide1.webp";
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // Original client slides with priority to custom uploaded hero image / video
@@ -75,7 +81,7 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
     },
     {
       id: 2,
-      image: "/images/slide2.webp",
+      image: "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908957/mulan-laundries/slide2.webp",
       alt: "Hospitality & hotel linen laundry management New York City",
       badge: "5-Star Hotel & Hospitality Linen Specialists",
       headlineLine1: "Pristine Linens,",
@@ -85,7 +91,7 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
     },
     {
       id: 3,
-      image: "/images/slide3.jpg",
+      image: "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908958/mulan-laundries/slide3.jpg",
       alt: "Residential wash and fold door to door laundry pickup service",
       badge: "Residential Door-to-Door Wash & Fold",
       headlineLine1: "Whites & Colors Separated,",
@@ -95,7 +101,7 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
     },
     {
       id: 4,
-      image: "/images/slide4.webp",
+      image: "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908959/mulan-laundries/slide4.webp",
       alt: "Mulan Laundries NYC commercial delivery van and logistics",
       badge: "Serving All 5 Boroughs 24/7/365",
       headlineLine1: "Reliable NYC Pickup,",

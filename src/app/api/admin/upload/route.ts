@@ -32,7 +32,48 @@ export async function POST(req: NextRequest) {
       .toLowerCase();
     const finalFilename = `${baseName}_${Date.now()}${ext}`;
 
-    // 1. If Vercel Blob token is available, use Vercel Blob (industry-standard, supports high-speed CDN streaming for videos and images up to 500MB)
+    // 1. Try Cloudinary First (Global CDN, WebP/AVIF auto-compression)
+    if (
+      process.env.CLOUDINARY_CLOUD_NAME &&
+      process.env.CLOUDINARY_API_KEY &&
+      process.env.CLOUDINARY_API_SECRET
+    ) {
+      try {
+        const cloudinary = (await import("cloudinary")).v2;
+        cloudinary.config({
+          cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+          api_key: process.env.CLOUDINARY_API_KEY,
+          api_secret: process.env.CLOUDINARY_API_SECRET,
+        });
+
+        const bytes = await file.arrayBuffer();
+        const buffer = Buffer.from(bytes);
+        const base64Data = `data:${mimeType};base64,${buffer.toString("base64")}`;
+
+        const uploadRes = await cloudinary.uploader.upload(base64Data, {
+          folder: "mulan-laundries/uploads",
+          use_filename: true,
+          unique_filename: true,
+          resource_type: "auto",
+        });
+
+        if (uploadRes && uploadRes.secure_url) {
+          console.log("[CLOUDINARY UPLOAD SUCCESS]:", uploadRes.secure_url);
+          return NextResponse.json({
+            success: true,
+            url: uploadRes.secure_url,
+            filename: finalFilename,
+            size: file.size,
+            provider: "cloudinary",
+            message: "File uploaded to Cloudinary CDN successfully!",
+          });
+        }
+      } catch (cErr: any) {
+        console.warn("[CLOUDINARY UPLOAD FALLBACK TO BLOB]:", cErr?.message);
+      }
+    }
+
+    // 2. If Vercel Blob token is available, use Vercel Blob
     const blobToken = process.env.BLOB_READ_WRITE_TOKEN;
     if (blobToken) {
       try {
