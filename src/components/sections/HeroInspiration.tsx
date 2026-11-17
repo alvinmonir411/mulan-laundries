@@ -1,14 +1,12 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRight,
-  Play,
-  Pause,
-  Volume2,
-  VolumeX,
+  ChevronLeft,
+  ChevronRight,
   Truck,
   ShieldCheck,
   Clock,
@@ -18,6 +16,46 @@ import {
 } from "lucide-react";
 import { BUSINESS_INFO } from "@/data/business";
 import { ServiceSearchBar } from "@/components/navigation/ServiceSearchBar";
+
+// Original client slides from mulanlaundries.com
+const SLIDES = [
+  {
+    id: 1,
+    image: "/images/slide1.webp",
+    alt: "Mulan Laundries NYC premier commercial laundry facility and automated washers",
+    badge: "New York Premier Laundry & Linen Management",
+    headlineLine1: "Clean Clothes,",
+    headlineLine2: "Fresh Life!",
+    description: "Professional laundry & commercial linen management service with hospital-grade hygiene, universal precautions & 24/7 on-time delivery across all 5 NYC boroughs.",
+  },
+  {
+    id: 2,
+    image: "/images/slide2.webp",
+    alt: "Hospitality & hotel linen laundry management New York City",
+    badge: "5-Star Hotel & Hospitality Linen Specialists",
+    headlineLine1: "Pristine Linens,",
+    headlineLine2: "Five-Star Comfort!",
+    description: "Crisp bedsheets, plush bath towels, and pristine table settings with precision rotary pressing and emergency same-day turnaround for NYC hotels & restaurants.",
+  },
+  {
+    id: 3,
+    image: "/images/slide3.jpg",
+    alt: "Residential wash and fold door to door laundry pickup service",
+    badge: "Residential Door-to-Door Wash & Fold",
+    headlineLine1: "Whites & Colors Separated,",
+    headlineLine2: "Neatly Folded!",
+    description: "Separated with care and washed with hypoallergenic eco-friendly detergents. Cleanly wrapped in protective poly-bags or hung ready to put away.",
+  },
+  {
+    id: 4,
+    image: "/images/slide4.webp",
+    alt: "Mulan Laundries NYC commercial delivery van and logistics",
+    badge: "Serving All 5 Boroughs 24/7/365",
+    headlineLine1: "Reliable NYC Pickup,",
+    headlineLine2: "Guaranteed On-Time!",
+    description: "Processing over 1,000,000 lbs annually. GPS-tracked dispatch routes across Manhattan, Brooklyn, Queens, The Bronx, and Staten Island.",
+  },
+];
 
 interface HeroInspirationProps {
   heroImage?: string;
@@ -33,125 +71,54 @@ interface HeroInspirationProps {
 }
 
 export const HeroInspiration: React.FC<HeroInspirationProps> = ({
-  heroImage = "/images/laundry-hero-inspiration.jpg",
-  heroAlt = "Mulan Laundries high-capacity commercial and residential laundry facility",
-  heroVideo = "/videos/laundry-drum-washing.mp4",
-  videoPoster = "/images/laundry-hero-inspiration.jpg",
-  titleLine1 = "Clean Clothes,",
-  titleLine2 = "Fresh Life!",
-  subtitle = "Professional laundry & commercial linen management service with hospital-grade hygiene, universal precautions & 24/7 on-time delivery across all 5 NYC boroughs.",
-  badge = "New York Premier Laundry & Linen Management",
   ctaPrimary = "Book a Free Pickup",
   ctaSecondary = "How It Works",
 }) => {
-  const [isPlaying, setIsPlaying] = useState(true);
-  const [isMuted, setIsMuted] = useState(true);
-  const [hasVideoError, setHasVideoError] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Play immediately and wire IntersectionObserver
+  // Auto-play slideshow every 6 seconds
   useEffect(() => {
-    const videoElement = videoRef.current;
-    if (!videoElement) return;
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % SLIDES.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, []);
 
-    videoElement.muted = true;
-    const playPromise = videoElement.play();
-    if (playPromise !== undefined) {
-      playPromise.catch((err) => {
-        console.warn("[HERO VIDEO AUTO-PLAY PREVENTED]", err);
-      });
-    }
-
-    // Pause when scrolled out of view to conserve CPU/GPU & mobile battery
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            if (videoElement.paused && isPlaying) {
-              videoElement.play().catch(() => {});
-            }
-          } else {
-            if (!videoElement.paused) {
-              videoElement.pause();
-            }
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    observer.observe(videoElement);
-    return () => observer.disconnect();
-  }, [isPlaying]);
-
-  const togglePlay = () => {
-    if (!videoRef.current) return;
-    if (isPlaying) {
-      videoRef.current.pause();
-      setIsPlaying(false);
-    } else {
-      videoRef.current.play().catch(() => {});
-      setIsPlaying(true);
-    }
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + SLIDES.length) % SLIDES.length);
   };
 
-  const toggleMute = () => {
-    if (!videoRef.current) return;
-    videoRef.current.muted = !isMuted;
-    setIsMuted(!isMuted);
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % SLIDES.length);
   };
 
-  const isExplicitImageOnly =
-    heroVideo === "none" ||
-    heroVideo === "disabled" ||
-    heroVideo.match(/\.(jpe?g|png|webp|avif|gif|svg)$/i);
-
-  // Determine LCP poster: prefer lightweight WebP poster (<60KB) for instant LCP paint on mobile
-  const posterSrc = "/images/hero-optimized-poster.webp";
+  const active = SLIDES[currentSlide];
 
   return (
     <section className="relative w-full min-h-[640px] lg:min-h-[760px] xl:min-h-[820px] flex items-center justify-center overflow-hidden bg-slate-950 text-white">
-      {/* 1. FULL BACKGROUND VIDEO & POSTER LAYER */}
+      {/* 1. BACKGROUND SLIDER IMAGES LAYER */}
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden bg-slate-950">
-
-        {/* ── Background Video Loop: High-performance, WebM first, no layout shift ─── */}
-        {!isExplicitImageOnly && !hasVideoError ? (
-          <video
-            ref={videoRef}
-            key={heroVideo}
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="metadata"
-            poster={posterSrc}
-            onError={() => setHasVideoError(true)}
-            className="absolute inset-0 w-full h-full object-cover object-center scale-[1.02]"
-            aria-hidden="true"
-            tabIndex={-1}
+        {SLIDES.map((slide, idx) => (
+          <div
+            key={slide.id}
+            className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
+              idx === currentSlide ? "opacity-100 scale-100" : "opacity-0 scale-105 pointer-events-none"
+            } transition-transform duration-7000`}
           >
-            {/* Optimized WebM first (only ~800KB) */}
-            <source src="/videos/mulan-laundry-hero.webm" type="video/webm" />
-            {heroVideo && heroVideo.endsWith(".mp4") && <source src={heroVideo} type="video/mp4" />}
-            <source src="/videos/mulan-laundry-hero.mp4" type="video/mp4" />
-          </video>
-        ) : (
-          /* Fallback Poster Image if video is disabled or errors */
-          <Image
-            src={posterSrc}
-            alt={heroAlt}
-            fill
-            priority
-            fetchPriority="high"
-            sizes="100vw"
-            className="object-cover object-center"
-          />
-        )}
+            <Image
+              src={slide.image}
+              alt={slide.alt}
+              fill
+              priority={idx === 0}
+              sizes="100vw"
+              className="object-cover object-center"
+            />
+          </div>
+        ))}
 
-        {/* Multi-layered Cinematic Dark Gradient Overlay for Maximum Text Contrast & Readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/70 to-slate-900/60 z-10" />
+        {/* Multi-layered Cinematic Dark Gradient Overlay for High Contrast & Visual Appeal */}
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/75 to-slate-900/60 z-10" />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950/50 z-10" />
-        {/* backdrop-blur removed: GPU-compositing hit on mobile, gradients give sufficient contrast */}
       </div>
 
       {/* 2. FOREGROUND CONTENT LAYER */}
@@ -162,23 +129,23 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
             <Sparkles className="w-3.5 h-3.5 text-sky-300" />
             <span className="text-xs sm:text-sm font-semibold tracking-wide text-sky-100">
-              {badge}
+              {active.badge}
             </span>
           </div>
 
           {/* Main Headline */}
           <div className="space-y-1">
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08] text-white">
-              <span className="block text-white drop-shadow-sm">{titleLine1}</span>
+              <span className="block text-white drop-shadow-sm">{active.headlineLine1}</span>
               <span className="block bg-gradient-to-r from-sky-400 via-blue-300 to-indigo-300 bg-clip-text text-transparent drop-shadow-sm">
-                {titleLine2}
+                {active.headlineLine2}
               </span>
             </h1>
           </div>
 
           {/* Subheadline */}
           <p className="text-base sm:text-lg md:text-xl text-slate-200 max-w-2xl leading-relaxed font-normal drop-shadow">
-            {subtitle}
+            {active.description}
           </p>
 
           {/* 4 Trust Feature Badges */}
@@ -249,47 +216,39 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
               <Phone className="w-4 h-4 text-sky-400" />
               <span>Call ({BUSINESS_INFO.phone})</span>
             </a>
-
-            <Link
-              href="/how-it-works"
-              className="inline-flex items-center justify-center gap-2 px-6 py-4 text-slate-300 hover:text-white font-semibold text-sm transition-colors"
-            >
-              <div className="w-5 h-5 rounded-full border border-slate-400 flex items-center justify-center text-slate-300">
-                <Play className="w-2.5 h-2.5 fill-current ml-0.5" />
-              </div>
-              <span>{ctaSecondary}</span>
-            </Link>
           </div>
         </div>
       </div>
 
-      {/* 3. FLOATING AMBIENT VIDEO CONTROLS (BOTTOM-RIGHT) */}
-      <div className="absolute bottom-6 right-6 z-30 flex items-center gap-2 bg-slate-900/80 backdrop-blur-md px-3 py-2 rounded-xl border border-white/15 shadow-xl text-xs text-slate-300">
-        <span className="hidden sm:inline-block font-mono text-[11px] text-slate-400 pr-1">
-          Ambient Motion
-        </span>
-
+      {/* Slider Controls (Prev / Next & Dots) */}
+      <div className="absolute bottom-6 right-6 z-30 flex items-center gap-3">
         <button
-          onClick={togglePlay}
-          aria-label={isPlaying ? "Pause video" : "Play video"}
-          className="p-1.5 rounded-lg text-white hover:bg-white/20 transition-colors"
-          title={isPlaying ? "Pause Video" : "Play Video"}
+          onClick={prevSlide}
+          aria-label="Previous slide"
+          className="p-2.5 rounded-full bg-black/40 hover:bg-black/60 text-white border border-white/20 transition-all backdrop-blur-md"
         >
-          {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-current" />}
+          <ChevronLeft className="w-5 h-5" />
         </button>
-
         <button
-          onClick={toggleMute}
-          aria-label={isMuted ? "Unmute video" : "Mute video"}
-          className="p-1.5 rounded-lg text-white hover:bg-white/20 transition-colors"
-          title={isMuted ? "Unmute Sound" : "Mute Sound"}
+          onClick={nextSlide}
+          aria-label="Next slide"
+          className="p-2.5 rounded-full bg-black/40 hover:bg-black/60 text-white border border-white/20 transition-all backdrop-blur-md"
         >
-          {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+          <ChevronRight className="w-5 h-5" />
         </button>
+        <div className="flex items-center gap-2 ml-2">
+          {SLIDES.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentSlide(i)}
+              aria-label={`Go to slide ${i + 1}`}
+              className={`h-2 rounded-full transition-all ${
+                i === currentSlide ? "w-7 bg-sky-400 shadow-md" : "w-2 bg-white/40 hover:bg-white/60"
+              }`}
+            />
+          ))}
+        </div>
       </div>
-
-      {/* Decorative Bottom Wave Transition */}
-      <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-white to-transparent pointer-events-none z-20" />
     </section>
   );
 };
