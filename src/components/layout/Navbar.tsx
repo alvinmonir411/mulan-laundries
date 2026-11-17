@@ -60,8 +60,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               </div>
             </Link>
 
-            {/* Desktop Navigation Links */}
-            <nav className="hidden lg:flex items-center gap-7 xl:gap-9">
+            {/* Desktop Navigation Links (Clean & Spacious) */}
+            <nav className="hidden lg:flex items-center gap-8 xl:gap-10">
               <Link
                 href="/"
                 className="text-sm font-semibold text-[#005BD3] hover:text-blue-700 transition-colors"
@@ -69,7 +69,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 Home
               </Link>
 
-              {/* Services Mega Dropdown (2 Clean Columns: Residential & Commercial) */}
+              {/* Services Dropdown (Clean 2-Column: Residential & Commercial without Extra Text) */}
               <div
                 className="relative"
                 onMouseEnter={() => setServicesDropdownOpen(true)}
@@ -86,146 +86,63 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </button>
 
                 {servicesDropdownOpen && (
-                  <div className="absolute top-full -left-20 w-[780px] bg-white rounded-2xl shadow-2xl border border-slate-100 p-6 mt-1 animate-in fade-in duration-150 z-50">
-                    {/* Top Header */}
-                    <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
-                      <div>
-                        <span className="text-xs font-bold uppercase tracking-wider text-[#005BD3]">
-                          Our Complete Laundry Services
-                        </span>
-                        <p className="text-xs text-slate-500 mt-0.5">
-                          Professional hospital-grade fabric care & 24/7 delivery across all 5 NYC boroughs
-                        </p>
-                      </div>
-                      <Link
-                        href="/services"
-                        onClick={() => setServicesDropdownOpen(false)}
-                        className="text-xs font-bold text-[#005BD3] hover:underline bg-blue-50 px-3 py-1.5 rounded-lg transition-colors"
-                      >
-                        All Services Catalog →
-                      </Link>
-                    </div>
-
-                    {/* 2 Equal Columns: Residential vs Commercial */}
+                  <div className="absolute top-full -left-12 w-[540px] bg-white rounded-2xl shadow-2xl border border-slate-100 p-5 mt-1 animate-in fade-in duration-150 z-50">
                     <div className="grid grid-cols-2 gap-6">
                       {/* Column 1: Residential Services */}
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between pb-1.5 border-b border-slate-100">
-                          <span className="text-xs font-bold uppercase tracking-wider text-slate-800">
-                            Residential Services
-                          </span>
-                          <span className="text-[10px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
-                            Everyday Care
-                          </span>
+                      <div>
+                        <div className="text-[11px] font-bold uppercase tracking-wider text-[#005BD3] pb-2 mb-2 border-b border-slate-100">
+                          Residential Services
                         </div>
-
-                        <div className="space-y-1">
+                        <div className="space-y-0.5">
                           <Link
                             href="/wash-fold"
                             onClick={() => setServicesDropdownOpen(false)}
-                            className="block p-2.5 rounded-xl hover:bg-blue-50/80 transition-colors group"
+                            className="block px-3 py-2 text-sm font-medium text-slate-700 hover:text-[#005BD3] hover:bg-blue-50/70 rounded-lg transition-colors"
                           >
-                            <div className="text-sm font-bold text-slate-900 group-hover:text-[#005BD3]">
-                              Wash & Fold (Drop-Off & Delivery)
-                            </div>
-                            <div className="text-xs text-slate-500 mt-0.5">
-                              Regular clothes, color separated & bundle folded
-                            </div>
+                            Residential Wash & Fold
                           </Link>
-
-                          <Link
-                            href="/wash-fold#pricing"
-                            onClick={() => setServicesDropdownOpen(false)}
-                            className="block p-2.5 rounded-xl hover:bg-blue-50/80 transition-colors group"
-                          >
-                            <div className="text-sm font-bold text-slate-900 group-hover:text-[#005BD3]">
-                              Bedding, Linens & Comforters
-                            </div>
-                            <div className="text-xs text-slate-500 mt-0.5">
-                              Duvets, heavy comforters, sheets & pillowcases
-                            </div>
-                          </Link>
-
-                          <Link
-                            href="/wash-fold"
-                            onClick={() => setServicesDropdownOpen(false)}
-                            className="block p-2.5 rounded-xl hover:bg-blue-50/80 transition-colors group"
-                          >
-                            <div className="text-sm font-bold text-slate-900 group-hover:text-[#005BD3]">
-                              Eco-Friendly & Hypoallergenic
-                            </div>
-                            <div className="text-xs text-slate-500 mt-0.5">
-                              Free & clear detergents safe for sensitive skin
-                            </div>
-                          </Link>
-
                           <Link
                             href="/pickup-request"
                             onClick={() => setServicesDropdownOpen(false)}
-                            className="block p-2.5 rounded-xl bg-blue-50/60 hover:bg-blue-100/70 transition-colors group"
+                            className="block px-3 py-2 text-sm font-medium text-slate-700 hover:text-[#005BD3] hover:bg-blue-50/70 rounded-lg transition-colors"
                           >
-                            <div className="text-sm font-bold text-[#005BD3]">
-                              Schedule Free Doorstep Pickup →
-                            </div>
-                            <div className="text-xs text-slate-600 mt-0.5">
-                              Same-day & next-day 24/7 service NYC
-                            </div>
+                            Pickup & Delivery Laundry
+                          </Link>
+                          <Link
+                            href="/wash-fold#pricing"
+                            onClick={() => setServicesDropdownOpen(false)}
+                            className="block px-3 py-2 text-sm font-medium text-slate-700 hover:text-[#005BD3] hover:bg-blue-50/70 rounded-lg transition-colors"
+                          >
+                            Bedding, Linens & Comforters
                           </Link>
                         </div>
                       </div>
 
                       {/* Column 2: Commercial Services */}
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between pb-1.5 border-b border-slate-100">
-                          <span className="text-xs font-bold uppercase tracking-wider text-slate-800">
-                            Commercial Service Divisions
-                          </span>
-                          <Link
-                            href="/commercial-laundry"
-                            onClick={() => setServicesDropdownOpen(false)}
-                            className="text-[10px] font-bold text-[#005BD3] hover:underline"
-                          >
-                            Overview →
-                          </Link>
+                      <div>
+                        <div className="text-[11px] font-bold uppercase tracking-wider text-[#005BD3] pb-2 mb-2 border-b border-slate-100">
+                          Commercial Services
                         </div>
-
-                        <div className="max-h-[320px] overflow-y-auto pr-1 space-y-1">
-                          <Link
-                            href="/commercial-laundry"
-                            onClick={() => setServicesDropdownOpen(false)}
-                            className="block p-2 rounded-lg bg-slate-50 hover:bg-blue-50 transition-colors group"
-                          >
-                            <div className="text-xs font-bold text-[#005BD3]">
-                              Commercial Facility Overview
-                            </div>
-                            <div className="text-[11px] text-slate-500">
-                              1,000,000+ lbs annual capacity & OSHA/JCAHO
-                            </div>
-                          </Link>
-
+                        <div className="space-y-0.5 max-h-[340px] overflow-y-auto pr-1">
                           {[
-                            { name: "Hospital Laundry Services", href: "/services/hospital-laundry", desc: "Universal precautions & clinical hygiene" },
-                            { name: "Short-Term Residential & Airbnb", href: "/services/short-term-rentals", desc: "Fast guest turnovers & unit-ready sets" },
-                            { name: "Hotels & Hospitality Laundry", href: "/services/hotel-laundry", desc: "Rotary pressing & crisp bedding" },
-                            { name: "Gyms & Fitness Centers", href: "/services/gyms", desc: "Towel swaps & sweat odor removal" },
-                            { name: "Health Clubs & Wellness", href: "/services/health-clubs", desc: "Plush spa towels & sauna sheets" },
-                            { name: "Salons & Spas Laundry", href: "/services/salons-spas", desc: "Bleach-safe & massage oil care" },
-                            { name: "Schools & Dorms Laundry", href: "/services/schools-dorms", desc: "Student dorm bundles & campus linen" },
-                            { name: "Shelter Homes & Facilities", href: "/services/shelter-homes", desc: "High-volume institutional washing" },
-                            { name: "Bed & Breakfast Laundry", href: "/services/bed-and-breakfast", desc: "Delicate heirloom & fine cotton care" },
-                          ].map((subItem) => (
+                            { name: "Commercial Laundry Overview", href: "/commercial-laundry" },
+                            { name: "Hospital Laundry Services", href: "/services/hospital-laundry" },
+                            { name: "Short-Term Rentals & Airbnb", href: "/services/short-term-rentals" },
+                            { name: "Hotels & Hospitality Laundry", href: "/services/hotel-laundry" },
+                            { name: "Gyms & Fitness Centers", href: "/services/gyms" },
+                            { name: "Health Clubs & Wellness", href: "/services/health-clubs" },
+                            { name: "Salons & Spas Laundry", href: "/services/salons-spas" },
+                            { name: "Schools & Dorms Laundry", href: "/services/schools-dorms" },
+                            { name: "Shelter Homes & Facilities", href: "/services/shelter-homes" },
+                            { name: "Bed & Breakfast Laundry", href: "/services/bed-and-breakfast" },
+                          ].map((item) => (
                             <Link
-                              key={subItem.href}
-                              href={subItem.href}
+                              key={item.href}
+                              href={item.href}
                               onClick={() => setServicesDropdownOpen(false)}
-                              className="block p-2 rounded-lg hover:bg-blue-50 transition-colors group"
+                              className="block px-3 py-1.5 text-sm font-medium text-slate-700 hover:text-[#005BD3] hover:bg-blue-50/70 rounded-lg transition-colors"
                             >
-                              <div className="text-xs font-semibold text-slate-800 group-hover:text-[#005BD3]">
-                                {subItem.name}
-                              </div>
-                              <div className="text-[11px] text-slate-500 truncate">
-                                {subItem.desc}
-                              </div>
+                              {item.name}
                             </Link>
                           ))}
                         </div>
@@ -234,14 +151,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                   </div>
                 )}
               </div>
-
-              {/* Wash & Fold Link */}
-              <Link
-                href="/wash-fold"
-                className="text-sm font-semibold text-slate-700 hover:text-[#005BD3] transition-colors whitespace-nowrap"
-              >
-                Wash & Fold
-              </Link>
 
               <Link
                 href="/how-it-works"
