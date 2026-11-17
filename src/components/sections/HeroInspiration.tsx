@@ -47,32 +47,12 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
   const [hasVideoError, setHasVideoError] = useState(false);
-  // videoReady: false = show poster, true = show video element
-  // We defer video insertion until after page load to protect LCP
-  const [videoReady, setVideoReady] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Defer video insertion until after the page has finished loading.
-  // This ensures the LCP poster image is painted immediately without competing
-  // with video network requests on mobile connections.
-  useEffect(() => {
-    // Use requestIdleCallback where available, otherwise load after a 1s timeout
-    const load = () => setVideoReady(true);
-    if (typeof window !== "undefined") {
-      if ("requestIdleCallback" in window) {
-        const id = (window as Window & { requestIdleCallback: (cb: () => void, opts?: { timeout: number }) => number }).requestIdleCallback(load, { timeout: 1500 });
-        return () => (window as Window & { cancelIdleCallback: (id: number) => void }).cancelIdleCallback(id);
-      } else {
-        const timer = setTimeout(load, 800);
-        return () => clearTimeout(timer);
-      }
-    }
-  }, []);
-
-  // Once the video element is in the DOM, play it and wire IntersectionObserver
+  // Play immediately and wire IntersectionObserver
   useEffect(() => {
     const videoElement = videoRef.current;
-    if (!videoElement || !videoReady) return;
+    if (!videoElement) return;
 
     videoElement.muted = true;
     const playPromise = videoElement.play();
@@ -102,7 +82,7 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
 
     observer.observe(videoElement);
     return () => observer.disconnect();
-  }, [isPlaying, videoReady]);
+  }, [isPlaying]);
 
   const togglePlay = () => {
     if (!videoRef.current) return;
@@ -134,24 +114,8 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
       {/* 1. FULL BACKGROUND VIDEO & POSTER LAYER */}
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden bg-slate-950">
 
-        {/* ── LCP Poster Image: always rendered, hides once video plays ───── */}
-        {/* This is the Largest Contentful Paint element — keep it priority */}
-        <Image
-          src={posterSrc}
-          alt={heroAlt}
-          fill
-          priority
-          fetchPriority="high"
-          sizes="100vw"
-          className={`object-cover object-center transition-opacity duration-700 ${
-            videoReady && !isExplicitImageOnly && !hasVideoError
-              ? "opacity-0 pointer-events-none"
-              : "opacity-100"
-          }`}
-        />
-
-        {/* ── Ambient Video: only mounted after page load (protects LCP) ─── */}
-        {!isExplicitImageOnly && !hasVideoError && videoReady && (
+        {/* ── Background Video Loop: High-performance, WebM first, no layout shift ─── */}
+        {!isExplicitImageOnly && !hasVideoError ? (
           <video
             ref={videoRef}
             key={heroVideo}
@@ -159,18 +123,29 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
             loop
             muted
             playsInline
-            preload="none"
+            preload="metadata"
             poster={posterSrc}
             onError={() => setHasVideoError(true)}
             className="absolute inset-0 w-full h-full object-cover object-center scale-[1.02]"
             aria-hidden="true"
             tabIndex={-1}
           >
-            {/* WebM first: smaller file, broader modern-browser support */}
+            {/* Optimized WebM first (only ~800KB) */}
             <source src="/videos/mulan-laundry-hero.webm" type="video/webm" />
-            {/* MP4 fallback for Safari & older browsers */}
+            {heroVideo && heroVideo.endsWith(".mp4") && <source src={heroVideo} type="video/mp4" />}
             <source src="/videos/mulan-laundry-hero.mp4" type="video/mp4" />
           </video>
+        ) : (
+          /* Fallback Poster Image if video is disabled or errors */
+          <Image
+            src={posterSrc}
+            alt={heroAlt}
+            fill
+            priority
+            fetchPriority="high"
+            sizes="100vw"
+            className="object-cover object-center"
+          />
         )}
 
         {/* Multi-layered Cinematic Dark Gradient Overlay for Maximum Text Contrast & Readability */}
