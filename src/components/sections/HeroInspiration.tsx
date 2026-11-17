@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -106,14 +106,25 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
   ];
 
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [animating, setAnimating] = useState(false);
 
-  // Auto-play slideshow every 6 seconds
+  // Smooth slide transition: fade out content → change → fade in
+  const goToSlide = useCallback((next: number) => {
+    if (animating) return;
+    setAnimating(true);
+    setTimeout(() => {
+      setCurrentSlide(next);
+      setTimeout(() => setAnimating(false), 50);
+    }, 500); // wait for fade-out before switching content
+  }, [animating]);
+
+  // Auto-play slideshow every 3.5 seconds
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 1800);
+      goToSlide((currentSlide + 1) % slides.length);
+    }, 3500);
     return () => clearInterval(timer);
-  }, [slides.length]);
+  }, [currentSlide, slides.length, goToSlide]);
 
   // Pause background video when rotated away from slide 1 to conserve GPU/CPU
   useEffect(() => {
@@ -126,11 +137,11 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
   }, [currentSlide]);
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+    goToSlide((currentSlide - 1 + slides.length) % slides.length);
   };
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
+    goToSlide((currentSlide + 1) % slides.length);
   };
 
   const active = slides[currentSlide];
@@ -142,9 +153,11 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
         {slides.map((slide, idx) => (
           <div
             key={slide.id}
-            className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
-              idx === currentSlide ? "opacity-100 scale-100" : "opacity-0 scale-105 pointer-events-none"
-            } transition-transform duration-7000`}
+            className={`absolute inset-0 w-full h-full transition-all duration-700 ease-in-out ${
+              idx === currentSlide
+                ? "opacity-100 scale-100 z-[1]"
+                : "opacity-0 scale-[1.03] z-0 pointer-events-none"
+            }`}
           >
             {slide.isVideo && slide.videoSrc && idx === 0 ? (
               <video
@@ -180,7 +193,11 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
 
       {/* 2. FOREGROUND CONTENT LAYER (Fixed container height so every slide has 100% identical height) */}
       <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 w-full">
-        <div className="max-w-3xl space-y-5 sm:space-y-6">
+        <div
+          className={`max-w-3xl space-y-5 sm:space-y-6 transition-all duration-500 ease-in-out ${
+            animating ? "opacity-0 translate-y-3" : "opacity-100 translate-y-0"
+          }`}
+        >
           {/* Top Badge: Fixed height */}
           <div className="h-8 flex items-center">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/40 hover:bg-black/60 border border-white/20 backdrop-blur-md transition-all shadow-md">
@@ -311,9 +328,9 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
           {slides.map((_, i) => (
             <button
               key={i}
-              onClick={() => setCurrentSlide(i)}
+              onClick={() => goToSlide(i)}
               aria-label={`Go to slide ${i + 1}`}
-              className={`h-2 rounded-full transition-all ${
+              className={`h-2 rounded-full transition-all duration-500 ${
                 i === currentSlide ? "w-7 bg-sky-400 shadow-md" : "w-2 bg-white/40 hover:bg-white/60"
               }`}
             />
