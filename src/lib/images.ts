@@ -10,7 +10,7 @@ export const getSiteImages = unstable_cache(
   ["site-images-cache-key"],
   {
     tags: ["site-images"],
-    revalidate: false, // Cached until explicitly invalidated via revalidateTag
+    revalidate: 60, // 60s stale fallback + on-demand revalidateTag
   }
 );
 
@@ -42,6 +42,7 @@ export async function updateImageAndTriggerRevalidation(
   // Trigger immediate cache purge across all routes where image is placed
   try {
     revalidateTag("site-images", "max");
+    revalidateTag("site-settings", "max");
     revalidatePath("/", "layout");
     revalidatePath("/about");
     revalidatePath("/commercial-laundry");

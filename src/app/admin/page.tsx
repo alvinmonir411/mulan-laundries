@@ -414,14 +414,20 @@ export default function AdminDashboardPage() {
       if (isLargeOrVideo) {
         try {
           const { upload } = await import("@vercel/blob/client");
-          const newBlob = await upload(`uploads/${file.name}`, file, {
+          const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+          const newBlob = await upload(`uploads/${safeName}`, file, {
             access: "public",
             handleUploadUrl: "/api/admin/upload-blob",
           });
           uploadedUrl = newBlob.url;
           provider = "Vercel Blob";
         } catch (clientBlobErr: any) {
-          console.warn("[CLIENT BLOB FALLBACK TO SERVER UPLOAD]:", clientBlobErr);
+          console.warn("[CLIENT BLOB DIRECT UPLOAD ERROR]:", clientBlobErr);
+          if (file.size >= 4.5 * 1024 * 1024) {
+            throw new Error(
+              `Direct upload failed: ${clientBlobErr?.message || "Storage error"}. (File size: ${(file.size / (1024 * 1024)).toFixed(1)}MB. Limit: 150MB).`
+            );
+          }
         }
       }
 

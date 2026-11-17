@@ -263,9 +263,9 @@ export const HomepageEditor: React.FC<HomepageEditorProps> = ({
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
                   <input
                     type="text"
-                    value={settings.hero_video_url || "/videos/laundry-drum-washing.mp4"}
+                    value={settings.hero_video_url || "/images/slide1.webp"}
                     onChange={(e) => onSettingChange("hero_video_url", e.target.value)}
-                    placeholder="/videos/laundry-drum-washing.mp4"
+                    placeholder="/images/slide1.webp"
                     className="flex-1 px-4 py-2.5 text-xs font-mono rounded-xl border border-slate-200 bg-white focus:border-[#005BD3] outline-none shadow-sm"
                   />
 
@@ -298,34 +298,34 @@ export const HomepageEditor: React.FC<HomepageEditorProps> = ({
                 {/* Quick Presets / Selection Pill Buttons */}
                 <div>
                   <span className="block text-[11px] font-bold text-slate-600 mb-1.5">
-                    Click to Use Any Laundry Media:
+                    Click to Use Any Slide Photo or Video:
                   </span>
                   <div className="flex flex-wrap items-center gap-1.5">
                     {[
                       {
-                        label: "🌀 Drum Wash (Video)",
-                        url: "/videos/laundry-drum-washing.mp4",
-                        type: "video",
+                        label: "🖼️ Slide 1: Facility Washers",
+                        url: "/images/slide1.webp",
+                        type: "image",
                       },
                       {
-                        label: "🏭 Facility Machines (Video)",
-                        url: "/videos/laundry-facility-machines.mp4",
-                        type: "video",
+                        label: "🏨 Slide 2: Luxury Bed Linens",
+                        url: "/images/slide2.webp",
+                        type: "image",
                       },
                       {
-                        label: "🧺 Fast Drum Loop (Video)",
+                        label: "🧺 Slide 3: Clean Folded",
+                        url: "/images/slide3.jpg",
+                        type: "image",
+                      },
+                      {
+                        label: "🚚 Slide 4: NYC Delivery Van",
+                        url: "/images/slide4.webp",
+                        type: "image",
+                      },
+                      {
+                        label: "🎥 Optional Drum Loop (MP4 Video)",
                         url: "/videos/mulan-laundry-hero.mp4",
                         type: "video",
-                      },
-                      {
-                        label: "🖼️ High-Res Laundry Poster (Image Only)",
-                        url: "/images/laundry-hero-inspiration.jpg",
-                        type: "image",
-                      },
-                      {
-                        label: "🏢 Commercial Facility (Image Only)",
-                        url: "/images/commercial-laundry.jpg",
-                        type: "image",
                       },
                     ].map((item) => (
                       <button

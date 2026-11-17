@@ -13,6 +13,8 @@ import { getSiteImages } from "@/lib/images";
 import { getSiteSettings } from "@/lib/settings";
 import { fetchAllTestimonials } from "@/lib/cmsData";
 
+export const revalidate = 60;
+
 export default async function HomePage() {
   const [siteImages, siteSettings, testimonials] = await Promise.all([
     getSiteImages(),
@@ -26,8 +28,8 @@ export default async function HomePage() {
       <HeroInspiration
         heroImage={siteImages.hero_main?.image_url}
         heroAlt={siteImages.hero_main?.alt_text}
-        heroVideo={siteSettings.hero_video_url || "/videos/laundry-drum-washing.mp4"}
-        videoPoster={siteImages.hero_main?.image_url || "/images/laundry-hero-inspiration.jpg"}
+        heroVideo={siteSettings.hero_video_url || "/images/slide1.webp"}
+        videoPoster={siteImages.hero_main?.image_url || "/images/slide1.webp"}
         titleLine1={siteSettings.hero_title_line1}
         titleLine2={siteSettings.hero_title_line2}
         subtitle={siteSettings.hero_subtitle}

@@ -104,7 +104,7 @@ export async function fetchAllSettings(): Promise<SiteSettings> {
   return readLocalSettings();
 }
 
-// Cached getter with Next.js Cache Tag
+// Cached getter with Next.js Cache Tag (60s stale fallback + on-demand revalidateTag)
 export const getSiteSettings = unstable_cache(
   async (): Promise<SiteSettings> => {
     return await fetchAllSettings();
@@ -112,7 +112,7 @@ export const getSiteSettings = unstable_cache(
   ["site-settings-cache-key"],
   {
     tags: ["site-settings"],
-    revalidate: false,
+    revalidate: 60,
   }
 );
 

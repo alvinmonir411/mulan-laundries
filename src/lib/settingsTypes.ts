@@ -6,6 +6,7 @@ export interface SiteSettings {
   hero_badge: string;
   hero_cta_primary: string;
   hero_cta_secondary: string;
+  hero_video_url?: string;
   phone: string;
   phone_raw: string;
   email: string;
@@ -26,6 +27,7 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   hero_badge: "New York Premier Laundry & Linen Management",
   hero_cta_primary: "Book a Free Pickup",
   hero_cta_secondary: "How It Works",
+  hero_video_url: "/images/slide1.webp",
   phone: "(917) 365-4366",
   phone_raw: "+19173654366",
   email: "info@mulanlaundries.com",

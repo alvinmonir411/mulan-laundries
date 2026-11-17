@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -30,9 +30,24 @@ interface HeroInspirationProps {
   ctaSecondary?: string;
 }
 
+const isVideoUrl = (url?: string): boolean => {
+  if (!url) return false;
+  const clean = url.split("?")[0].toLowerCase();
+  return (
+    clean.endsWith(".mp4") ||
+    clean.endsWith(".webm") ||
+    clean.endsWith(".mov") ||
+    clean.endsWith(".ogg") ||
+    clean.includes("/video/upload") ||
+    clean.includes("/videos/")
+  );
+};
+
 export const HeroInspiration: React.FC<HeroInspirationProps> = ({
   heroImage,
   heroAlt,
+  heroVideo,
+  videoPoster,
   titleLine1 = "Clean Clothes,",
   titleLine2 = "Fresh Life!",
   subtitle = "Professional laundry & commercial linen management service with hospital-grade hygiene, universal precautions & 24/7 on-time delivery across all 5 NYC boroughs.",
@@ -40,16 +55,23 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
   ctaPrimary = "Book a Free Pickup",
   ctaSecondary = "How It Works",
 }) => {
-  // Original client slides with priority to custom uploaded hero image
+  const isVideo = isVideoUrl(heroVideo);
+  const slide1Image = (!isVideo && heroVideo) || heroImage || "/images/slide1.webp";
+  const posterImg = videoPoster || heroImage || "/images/slide1.webp";
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Original client slides with priority to custom uploaded hero image / video
   const slides = [
     {
       id: 1,
-      image: heroImage || "/images/slide1.webp",
+      image: slide1Image,
       alt: heroAlt || "Mulan Laundries NYC premier commercial laundry facility and automated washers",
       badge: badge || "New York Premier Laundry & Linen Management",
       headlineLine1: titleLine1 || "Clean Clothes,",
       headlineLine2: titleLine2 || "Fresh Life!",
       description: subtitle || "Professional laundry & commercial linen management service with hospital-grade hygiene, universal precautions & 24/7 on-time delivery across all 5 NYC boroughs.",
+      isVideo: isVideo,
+      videoSrc: heroVideo,
     },
     {
       id: 2,
@@ -59,6 +81,7 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
       headlineLine1: "Pristine Linens,",
       headlineLine2: "Five-Star Comfort!",
       description: "Crisp bedsheets, plush bath towels, and pristine table settings with precision rotary pressing and emergency same-day turnaround for NYC hotels & restaurants.",
+      isVideo: false,
     },
     {
       id: 3,
@@ -68,6 +91,7 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
       headlineLine1: "Whites & Colors Separated,",
       headlineLine2: "Neatly Folded!",
       description: "Separated with care and washed with eco-friendly detergents. Cleanly wrapped in protective poly-bags or hung ready to put away.",
+      isVideo: false,
     },
     {
       id: 4,
@@ -77,6 +101,7 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
       headlineLine1: "Reliable NYC Pickup,",
       headlineLine2: "Guaranteed On-Time!",
       description: "Processing over 1,000,000 lbs annually. Operating 24/7 with GPS-tracked dispatch routes across all 5 boroughs of New York City.",
+      isVideo: false,
     },
   ];
 
@@ -90,6 +115,16 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
     return () => clearInterval(timer);
   }, [slides.length]);
 
+  // Pause background video when rotated away from slide 1 to conserve GPU/CPU
+  useEffect(() => {
+    if (!videoRef.current) return;
+    if (currentSlide === 0) {
+      videoRef.current.play().catch(() => {});
+    } else {
+      videoRef.current.pause();
+    }
+  }, [currentSlide]);
+
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
@@ -102,7 +137,7 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
 
   return (
     <section className="relative w-full h-[680px] sm:h-[720px] lg:h-[760px] xl:h-[780px] flex items-center justify-center overflow-hidden bg-slate-950 text-white">
-      {/* 1. BACKGROUND SLIDER IMAGES LAYER */}
+      {/* 1. BACKGROUND SLIDER IMAGES / VIDEO LAYER */}
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden bg-slate-950">
         {slides.map((slide, idx) => (
           <div
@@ -111,18 +146,34 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
               idx === currentSlide ? "opacity-100 scale-100" : "opacity-0 scale-105 pointer-events-none"
             } transition-transform duration-7000`}
           >
-            <Image
-              src={slide.image}
-              alt={slide.alt}
-              fill
-              priority={idx === 0}
-              sizes="100vw"
-              className="object-cover object-center"
-            />
+            {slide.isVideo && slide.videoSrc && idx === 0 ? (
+              <video
+                ref={videoRef}
+                src={slide.videoSrc}
+                poster={posterImg}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                className="w-full h-full object-cover object-center"
+                aria-hidden="true"
+                tabIndex={-1}
+              />
+            ) : (
+              <Image
+                src={slide.image}
+                alt={slide.alt}
+                fill
+                priority={idx === 0}
+                sizes="100vw"
+                className="object-cover object-center"
+              />
+            )}
           </div>
         ))}
 
-        {/* Crisp Cinematic Dark Gradient Overlay (Balanced so images remain vivid and bright while text is perfectly legible) */}
+        {/* Crisp Cinematic Dark Gradient Overlay (Balanced so images/video remain vivid and bright while text is perfectly legible) */}
         <div className="absolute inset-0 bg-gradient-to-r from-slate-950/75 via-slate-950/45 to-transparent z-10" />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-slate-950/20 z-10" />
       </div>
@@ -210,18 +261,28 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
           </div>
 
           {/* Action CTAs */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-4">
+          <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 sm:gap-4 pt-4">
             <Link
               href="/pickup-request"
-              className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-[#005BD3] hover:bg-[#004BB5] text-white font-bold text-base rounded-xl shadow-lg hover:shadow-sky-500/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+              className="inline-flex items-center justify-center gap-2.5 px-7 sm:px-8 py-3.5 sm:py-4 bg-[#005BD3] hover:bg-[#004BB5] text-white font-bold text-base rounded-xl shadow-lg hover:shadow-sky-500/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0"
             >
               <span>{ctaPrimary}</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
 
+            {ctaSecondary && (
+              <Link
+                href="/how-it-works"
+                className="inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3.5 sm:py-4 bg-black/40 hover:bg-black/60 text-white border border-white/25 backdrop-blur-md font-bold text-base rounded-xl transition-all shadow-md hover:-translate-y-0.5"
+              >
+                <span>{ctaSecondary}</span>
+              </Link>
+            )}
+
             <a
               href={`tel:${BUSINESS_INFO.phoneRaw}`}
-              className="inline-flex items-center justify-center gap-2.5 px-7 py-4 bg-black/40 hover:bg-black/60 text-white border border-white/25 backdrop-blur-md font-bold text-base rounded-xl transition-all shadow-md"
+              className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 sm:py-4 bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-md font-semibold text-sm rounded-xl transition-all shadow-md"
+              title={`Call ${BUSINESS_INFO.phone}`}
             >
               <Phone className="w-4 h-4 text-sky-400" />
               <span>Call ({BUSINESS_INFO.phone})</span>
