@@ -34,6 +34,8 @@ const STEPS = [
     subtitle: "Book Online or Call Direct",
     description:
       "Schedule through our simple online pickup form or call our NYC dispatch center at (917) 365-4366. Choose your preferred day, time window, and any special fabric care preferences.",
+    image: "/images/free-pickup.jpg",
+    alt: "Scheduling online laundry pickup in New York City with Mulan Laundries",
     icon: CalendarCheck,
     highlights: ["24/7 online scheduling", "Immediate route confirmation", "Custom washing & folding instructions"],
   },
@@ -42,7 +44,9 @@ const STEPS = [
     title: "Driver Pickup at Doorstep",
     subtitle: "NYC Route Dispatch",
     description:
-      "Our uniformed Mulan route driver arrives during your chosen pickup window. We provide clean, labeled collection bags and safe contactless handling for residential doors and commercial loading docks.",
+      "Our uniformed Mulan route driver arrives during your chosen pickup window. We provide clean, labeled collection bags and safe contactless handling for residential doors, doormen, and commercial loading docks.",
+    image: "/images/residential-services.jpg",
+    alt: "Mulan Laundries NYC driver collecting bagged laundry for delivery and washing",
     icon: Truck,
     highlights: ["GPS-tracked NYC fleet", "Doorman, lobby, or commercial dock pickup", "Secure bag tagging & weight receipt"],
   },
@@ -52,6 +56,8 @@ const STEPS = [
     subtitle: "Expert Wash & Fold / Rotary Press",
     description:
       "Your items are sorted by color and fabric type. We clean using high-efficiency commercial equipment, premium detergents, and temperature-controlled drying. Every batch is cleaned separately — never mixed with other orders.",
+    image: "/images/commercial-facility.jpg",
+    alt: "Commercial washing machines and clinical hygiene laundry cleaning facility",
     icon: Sparkles,
     highlights: ["Never co-mingled with other laundry", "Hypoallergenic & commercial detergent choices", "Precision rotary pressing for bed linens"],
   },
@@ -61,6 +67,8 @@ const STEPS = [
     subtitle: "Delivered Fresh & Ready",
     description:
       "Clothes are crisply folded, paired, bundled in protective clear packaging (or placed on hangers), and returned right to your doorstep or facility linen room on schedule.",
+    image: "/images/washfold.jpg",
+    alt: "Neatly bundled and folded clean laundry ready for doorstep delivery",
     icon: PackageCheck,
     highlights: ["Neat shrink or plastic protective bundle wrap", "Hangers available upon request", "Prompt on-time delivery across all 5 NYC boroughs"],
   },
@@ -73,9 +81,18 @@ export default async function HowItWorksPage() {
 
   return (
     <>
-      {/* Hero Banner */}
+      {/* Hero Banner with Authentic Facility Background */}
       <section className="bg-navy-950 text-white py-16 sm:py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-navy-950 via-navy-900 to-[#005BD3]/20" />
+        <div className="absolute inset-0 opacity-25">
+          <Image
+            src="/images/commercial-facility.jpg"
+            alt="Mulan Laundries NYC commercial laundry facility"
+            fill
+            priority
+            className="object-cover"
+          />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-r from-navy-950 via-navy-950/90 to-[#005BD3]/40" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-400/20 text-xs font-semibold text-blue-300 uppercase tracking-widest mb-4">
@@ -134,12 +151,22 @@ export default async function HowItWorksPage() {
                     isEven ? "lg:flex-row-reverse" : "lg:flex-row"
                   } items-center gap-8 lg:gap-16 bg-white p-8 sm:p-12 rounded-3xl border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow`}
                 >
-                  {/* Visual Step Badge Column */}
-                  <div className="w-full lg:w-5/12 flex flex-col items-center justify-center">
-                    <div className="relative w-36 h-36 sm:w-44 sm:h-44 rounded-3xl bg-gradient-to-br from-blue-500 to-[#001D40] flex items-center justify-center shadow-xl shadow-blue-500/10">
-                      <Icon className="w-16 h-16 sm:w-20 sm:h-20 text-white" />
-                      <div className="absolute -top-3 -left-3 w-12 h-12 rounded-full bg-[#005BD3] text-white flex items-center justify-center font-black text-lg border-4 border-white shadow">
-                        {step.step}
+                  {/* Visual Step Image Column */}
+                  <div className="w-full lg:w-5/12">
+                    <div className="relative h-64 sm:h-80 w-full rounded-2xl overflow-hidden shadow-lg border border-slate-200/80 group">
+                      <Image
+                        src={step.image}
+                        alt={step.alt}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        sizes="(max-width: 1024px) 100vw, 42vw"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
+                      
+                      {/* Step Number Badge */}
+                      <div className="absolute top-4 left-4 flex items-center gap-2 bg-[#005BD3] text-white px-3.5 py-1.5 rounded-full shadow-md font-black text-sm">
+                        <Icon className="w-4 h-4 text-white" />
+                        <span>STEP {step.step}</span>
                       </div>
                     </div>
                   </div>
