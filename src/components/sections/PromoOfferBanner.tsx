@@ -53,16 +53,16 @@ export const PromoOfferBanner: React.FC<PromoOfferBannerProps> = ({
               </div>
             </div>
 
-            {/* Right Graphic (4 cols): Basket of folded towels */}
+            {/* Right Graphic (4 cols): Basket of folded towels / delivery banner */}
             <div className="md:col-span-4 flex items-center justify-center">
-              <div className="relative w-56 h-44 rounded-2xl overflow-hidden border-2 border-white/20 shadow-lg bg-white/10 backdrop-blur-sm">
+              <div className="relative w-full max-w-[340px] aspect-[750/500] rounded-2xl overflow-hidden border-2 border-white/20 shadow-lg bg-white/10 backdrop-blur-sm p-1">
                 <Image
                   src={promoImage}
                   alt={promoAlt}
                   fill
-                  sizes="(max-width: 768px) 100vw, 250px"
+                  sizes="(max-width: 768px) 100vw, 340px"
                   loading="lazy"
-                  className="object-cover"
+                  className="object-contain"
                 />
               </div>
             </div>

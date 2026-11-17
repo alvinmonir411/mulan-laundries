@@ -72,17 +72,16 @@ export const PickupBanner: React.FC<PickupBannerProps> = ({
 
           {/* Right Image */}
           <div className="relative">
-            <div className="relative h-[380px] sm:h-[440px] w-full rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+            <div className="relative h-[380px] sm:h-[440px] w-full rounded-2xl overflow-hidden shadow-2xl border border-white/10 bg-navy-900 p-2 flex items-center justify-center">
               <Image
                 src={pickupImage}
                 alt={pickupAlt}
                 fill
-                className="object-cover"
+                className="object-contain"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-navy-950/80 via-transparent to-transparent" />
             </div>
 
-            <div className="absolute -bottom-6 -left-6 bg-navy-900 border border-navy-800 text-white p-5 rounded-2xl shadow-xl hidden sm:block max-w-xs">
+            <div className="absolute -bottom-6 -left-6 bg-navy-900 border border-navy-800 text-white p-5 rounded-2xl shadow-xl hidden sm:block max-w-xs z-10">
               <span className="text-xs font-bold text-sky-400 uppercase tracking-widest block mb-1">
                 Serving All 5 Boroughs
               </span>

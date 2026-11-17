@@ -153,18 +153,22 @@ export default async function HowItWorksPage() {
                 >
                   {/* Visual Step Image Column */}
                   <div className="w-full lg:w-5/12">
-                    <div className="relative h-64 sm:h-80 w-full rounded-2xl overflow-hidden shadow-lg border border-slate-200/80 group">
+                    <div className="relative h-64 sm:h-80 w-full rounded-2xl overflow-hidden shadow-lg border border-slate-200/80 bg-slate-900 group">
                       <Image
                         src={step.image}
                         alt={step.alt}
                         fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        className={`${
+                          idx === 0 ? "object-contain p-2" : "object-cover group-hover:scale-105"
+                        } transition-transform duration-500`}
                         sizes="(max-width: 1024px) 100vw, 42vw"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
+                      {idx !== 0 && (
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
+                      )}
                       
                       {/* Step Number Badge */}
-                      <div className="absolute top-4 left-4 flex items-center gap-2 bg-[#005BD3] text-white px-3.5 py-1.5 rounded-full shadow-md font-black text-sm">
+                      <div className="absolute top-4 left-4 flex items-center gap-2 bg-[#005BD3] text-white px-3.5 py-1.5 rounded-full shadow-md font-black text-sm z-10">
                         <Icon className="w-4 h-4 text-white" />
                         <span>STEP {step.step}</span>
                       </div>
