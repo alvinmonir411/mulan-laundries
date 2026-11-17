@@ -10,7 +10,7 @@ export const NAV_LINKS = [
       {
         category: "Residential Services",
         items: [
-          { name: "Residential Wash & Fold", href: "/wash-fold" },
+          { name: "Wash & Fold", href: "/wash-fold" },
           { name: "Pickup & Delivery Laundry", href: "/pickup-request" },
           { name: "Bedding, Linens & Comforters", href: "/wash-fold#pricing" },
         ],

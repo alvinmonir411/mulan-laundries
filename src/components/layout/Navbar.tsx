@@ -99,7 +99,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                             onClick={() => setServicesDropdownOpen(false)}
                             className="block px-3 py-2 text-sm font-medium text-slate-700 hover:text-[#005BD3] hover:bg-blue-50/70 rounded-lg transition-colors"
                           >
-                            Residential Wash & Fold
+                            Wash & Fold
                           </Link>
                           <Link
                             href="/pickup-request"
