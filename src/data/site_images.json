@@ -41,11 +41,11 @@
   },
   "service_rotary_pressing": {
     "slot_key": "service_rotary_pressing",
-    "title": "Services: Rotary Pressing / Hotels Card",
+    "title": "Services: Hotel Laundry Services Card",
     "section": "Services",
     "image_url": "/images/hotels.jpg",
-    "alt_text": "Rotary pressing and hotel bedsheets",
-    "updated_at": "2026-11-13T06:07:19.186Z"
+    "alt_text": "Professional hotel laundry, rotary pressing, and pristine linens",
+    "updated_at": "2026-11-17T06:25:00.000Z"
   },
   "service_hospital": {
     "slot_key": "service_hospital",

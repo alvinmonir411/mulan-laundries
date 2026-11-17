@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Sparkles, Shirt, Building2, Wind, ShieldCheck, Home, Star, ArrowRight } from "lucide-react";
+import { Sparkles, Shirt, Building2, Hotel, ShieldCheck, Home, Star, ArrowRight } from "lucide-react";
 import { SiteImage } from "@/lib/defaultImages";
 
 const SERVICES_CARDS = [
@@ -15,18 +15,18 @@ const SERVICES_CARDS = [
   },
   {
     title: "Commercial Linen",
-    desc: "Processing over 1,000,000 lbs/yr for hotels, motels, and facilities.",
+    desc: "Processing over 1,000,000 lbs/yr for hospitality, restaurants, and facilities.",
     defaultImage: "/images/commercial-laundry.jpg",
     slotKey: "service_commercial",
     icon: Building2,
     href: "/commercial-laundry"
   },
   {
-    title: "Rotary Pressing",
-    desc: "Industrial ironing & pressing for crisp, pristine bedsheets and table linens.",
+    title: "Hotel Laundry Services",
+    desc: "Timely linen management, crisp rotary pressing, and pristine guest-ready bedding.",
     defaultImage: "/images/hotels.jpg",
     slotKey: "service_rotary_pressing",
-    icon: Wind,
+    icon: Hotel,
     href: "/services/hotel-laundry"
   },
   {

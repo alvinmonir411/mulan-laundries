@@ -66,8 +66,8 @@ export const HomepageEditor: React.FC<HomepageEditorProps> = ({
     {
       slotKey: "service_rotary_pressing",
       number: "03",
-      title: "Rotary Pressing",
-      desc: "Industrial ironing for crisp bedsheets & napkins.",
+      title: "Hotel Laundry Services",
+      desc: "Linen management, crisp rotary pressing & pristine guest-ready bedding.",
       href: "/services/hotel-laundry",
       defaultImg: "/images/hotels.jpg",
     },
