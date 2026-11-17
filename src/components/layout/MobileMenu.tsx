@@ -14,9 +14,17 @@ interface MobileMenuProps {
 
 export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
   const [openDropdowns, setOpenDropdowns] = useState<Record<string, boolean>>({});
+  const [openSubMenus, setOpenSubMenus] = useState<Record<string, boolean>>({});
 
   const toggleDropdown = (name: string) => {
     setOpenDropdowns((prev) => ({
+      ...prev,
+      [name]: !prev[name],
+    }));
+  };
+
+  const toggleSubMenu = (name: string) => {
+    setOpenSubMenus((prev) => ({
       ...prev,
       [name]: !prev[name],
     }));
@@ -75,16 +83,51 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
                     </button>
                     {isOpen && (
                       <div className="mt-2 pl-4 space-y-1 border-l-2 border-sky-100">
-                        {link.dropdown.map((sub) => (
-                          <Link
-                            key={sub.name}
-                            href={sub.href}
-                            onClick={onClose}
-                            className="block px-3 py-2 text-sm text-slate-600 hover:text-sky-600 hover:bg-sky-50/50 rounded-md transition-colors"
-                          >
-                            {sub.name}
-                          </Link>
-                        ))}
+                        {link.dropdown.map((sub: any) => {
+                          if (sub.children) {
+                            const isSubOpen = !!openSubMenus[sub.name];
+                            return (
+                              <div key={sub.name} className="py-1">
+                                <button
+                                  onClick={() => toggleSubMenu(sub.name)}
+                                  className="flex items-center justify-between w-full px-3 py-2 text-sm font-semibold text-slate-800 hover:text-sky-600 hover:bg-sky-50/50 rounded-md transition-colors"
+                                >
+                                  <span>{sub.name}</span>
+                                  <ChevronDown
+                                    className={`w-3.5 h-3.5 text-slate-400 transition-transform ${
+                                      isSubOpen ? "rotate-180 text-sky-600" : ""
+                                    }`}
+                                  />
+                                </button>
+                                {isSubOpen && (
+                                  <div className="mt-1 pl-3 space-y-1 border-l border-sky-200">
+                                    {sub.children.map((child: any) => (
+                                      <Link
+                                        key={child.name}
+                                        href={child.href}
+                                        onClick={onClose}
+                                        className="block px-3 py-1.5 text-xs text-slate-600 hover:text-sky-600 hover:bg-sky-50/50 rounded-md transition-colors"
+                                      >
+                                        {child.name}
+                                      </Link>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          }
+
+                          return (
+                            <Link
+                              key={sub.name}
+                              href={sub.href}
+                              onClick={onClose}
+                              className="block px-3 py-2 text-sm text-slate-600 hover:text-sky-600 hover:bg-sky-50/50 rounded-md transition-colors"
+                            >
+                              {sub.name}
+                            </Link>
+                          );
+                        })}
                       </div>
                     )}
                   </div>

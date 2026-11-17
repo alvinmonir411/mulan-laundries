@@ -8,13 +8,21 @@ export const NAV_LINKS = [
     dropdown: [
       { name: "All Services Overview", href: "/services", desc: "Browse full commercial & residential laundry catalog" },
       { name: "Residential Wash & Fold", href: "/wash-fold", desc: "Regular washing, drying & bundle folding" },
-      { name: "Commercial Laundry Overview", href: "/commercial-laundry", desc: "1,000,000+ lbs capacity & OSHA/JCAHO standards" },
-      ...COMMERCIAL_SERVICES.map(s => ({
-        name: s.title,
-        href: `/services/${s.slug}`,
-        desc: s.tagline
-      }))
-    ]
+      {
+        name: "Commercial Laundry",
+        href: "/commercial-laundry",
+        desc: "1,000,000+ lbs capacity & OSHA/JCAHO standards",
+        isCommercialParent: true,
+        children: [
+          { name: "Commercial Hub Overview", href: "/commercial-laundry", desc: "Overview of facilities & capabilities" },
+          ...COMMERCIAL_SERVICES.map((s) => ({
+            name: s.title,
+            href: `/services/${s.slug}`,
+            desc: s.tagline,
+          })),
+        ],
+      },
+    ],
   },
   { name: "Wash & Fold", href: "/wash-fold" },
   {
@@ -22,16 +30,16 @@ export const NAV_LINKS = [
     href: "/commercial-laundry",
     dropdown: [
       { name: "Commercial Laundry Overview", href: "/commercial-laundry", desc: "1,000,000+ lbs capacity & institutional coverage" },
-      ...COMMERCIAL_SERVICES.map(s => ({
+      ...COMMERCIAL_SERVICES.map((s) => ({
         name: s.title,
         href: `/services/${s.slug}`,
-        desc: s.tagline
-      }))
-    ]
+        desc: s.tagline,
+      })),
+    ],
   },
   { name: "How It Works", href: "/how-it-works" },
   { name: "About Us", href: "/about" },
-  { name: "Contact Us", href: "/contact" }
+  { name: "Contact Us", href: "/contact" },
 ];
 
 export const FOOTER_LINKS = {
