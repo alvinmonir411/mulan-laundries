@@ -11,11 +11,13 @@ import { IndustriesGrid } from "@/components/sections/IndustriesGrid";
 import { ContactSnippet } from "@/components/sections/ContactSnippet";
 import { getSiteImages } from "@/lib/images";
 import { getSiteSettings } from "@/lib/settings";
+import { fetchAllTestimonials } from "@/lib/cmsData";
 
 export default async function HomePage() {
-  const [siteImages, siteSettings] = await Promise.all([
+  const [siteImages, siteSettings, testimonials] = await Promise.all([
     getSiteImages(),
     getSiteSettings(),
+    fetchAllTestimonials(),
   ]);
 
   return (
@@ -49,8 +51,8 @@ export default async function HomePage() {
       {/* 6. Trust & Quality Badges Bar (5 Horizontal Guarantees) */}
       <TrustBadgesBar />
 
-      {/* 7. What Our Clients Say (5-Star Verified Testimonials) */}
-      <TestimonialInspiration />
+      {/* 7. What Our Clients Say (5-Star Verified Google Testimonials Slider) */}
+      <TestimonialInspiration testimonials={testimonials} />
 
       {/* 8. Business Heritage & Mission Overview (18+ Years NYC) */}
       <BusinessIntro
