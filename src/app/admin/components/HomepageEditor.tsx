@@ -45,6 +45,7 @@ export const HomepageEditor: React.FC<HomepageEditorProps> = ({
   onRestoreDefaultImage,
 }) => {
   const [subTab, setSubTab] = useState<"hero" | "services" | "features">("hero");
+  const [showHeroUrl, setShowHeroUrl] = useState(false);
 
   const serviceCards = [
     {
@@ -249,50 +250,91 @@ export const HomepageEditor: React.FC<HomepageEditorProps> = ({
               </div>
 
               {/* Hero Background Video / Media Upload & Quick Select */}
-              <div className="pt-4 border-t border-slate-200 space-y-3 bg-slate-50 p-4 rounded-xl border">
+              <div className="pt-4 border-t border-slate-200 space-y-4 bg-slate-50/80 p-5 rounded-2xl border border-slate-200">
                 <div className="flex items-center justify-between">
                   <label className="block text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
                     <Video className="w-4 h-4 text-[#005BD3]" />
-                    <span>Hero Media (Video or Image Background)</span>
+                    <span>Hero Media (Active Background Photo or Video)</span>
                   </label>
-                  <span className="text-[10px] font-semibold text-slate-500">
-                    Direct Upload or Instant Pick
+                  <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full">
+                    Cloudinary CDN Active
                   </span>
                 </div>
 
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-                  <input
-                    type="text"
-                    value={settings.hero_video_url || "/images/slide1.webp"}
-                    onChange={(e) => onSettingChange("hero_video_url", e.target.value)}
-                    placeholder="/images/slide1.webp"
-                    className="flex-1 px-4 py-2.5 text-xs font-mono rounded-xl border border-slate-200 bg-white focus:border-[#005BD3] outline-none shadow-sm"
-                  />
-
-                  {/* Direct Upload Button for Video / Image */}
-                  <label
-                    className="cursor-pointer py-2.5 px-4 bg-[#005BD3] hover:bg-[#0048A8] text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shrink-0 shadow-sm"
-                    title="Upload video or image from computer"
-                  >
-                    {uploadingField === "hero_video_url" ? (
-                      <>
-                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                        <span>Uploading...</span>
-                      </>
+                {/* Media Preview & Change Button */}
+                <div className="flex flex-col sm:flex-row items-center gap-4 bg-white p-4 rounded-xl border border-slate-200">
+                  <div className="relative w-full sm:w-44 h-28 bg-slate-100 rounded-lg overflow-hidden border border-slate-200 shrink-0">
+                    {settings.hero_video_url?.match(/\.(mp4|webm|mov)$/i) ? (
+                      <video
+                        src={settings.hero_video_url}
+                        className="w-full h-full object-cover"
+                        muted
+                        loop
+                        autoPlay
+                      />
                     ) : (
-                      <>
-                        <Upload className="w-3.5 h-3.5" />
-                        <span>Upload File</span>
-                      </>
+                      <img
+                        src={settings.hero_video_url || "/images/slide1.webp"}
+                        alt="Hero Preview"
+                        className="w-full h-full object-cover"
+                      />
                     )}
-                    <input
-                      type="file"
-                      accept="video/*,image/*"
-                      className="hidden"
-                      disabled={uploadingField === "hero_video_url"}
-                      onChange={(e) => onFileUpload("hero_video_url", false, e)}
-                    />
-                  </label>
+                  </div>
+
+                  <div className="flex-1 space-y-2 w-full text-center sm:text-left">
+                    <p className="text-xs font-bold text-navy-900">
+                      Currently Live Hero Background
+                    </p>
+                    <p className="text-[11px] text-slate-500">
+                      Upload any high-res photo (PNG, JPG, WebP) or MP4 loop from your computer or phone.
+                    </p>
+                    <label
+                      className="cursor-pointer inline-flex items-center justify-center gap-2 py-2.5 px-5 bg-[#005BD3] hover:bg-[#0048A8] text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-sm"
+                      title="Upload video or image from computer"
+                    >
+                      {uploadingField === "hero_video_url" ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          <span>Uploading to Cloudinary...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Upload className="w-4 h-4" />
+                          <span>Change Hero Media (File Upload)</span>
+                        </>
+                      )}
+                      <input
+                        type="file"
+                        accept="video/*,image/*"
+                        className="hidden"
+                        disabled={uploadingField === "hero_video_url"}
+                        onChange={(e) => onFileUpload("hero_video_url", false, e)}
+                      />
+                    </label>
+                  </div>
+                </div>
+
+                {/* Collapsible CDN URL for Advanced Users */}
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => setShowHeroUrl((p) => !p)}
+                    className="text-[10px] text-slate-400 hover:text-slate-600 flex items-center gap-1 font-medium"
+                  >
+                    <span>⚙️ Advanced: Technical Media URL</span>
+                    <span>{showHeroUrl ? "▲ Hide" : "▼ View"}</span>
+                  </button>
+                  {showHeroUrl && (
+                    <div className="mt-2 flex items-center gap-2">
+                      <input
+                        type="text"
+                        value={settings.hero_video_url || "/images/slide1.webp"}
+                        onChange={(e) => onSettingChange("hero_video_url", e.target.value)}
+                        placeholder="/images/slide1.webp"
+                        className="flex-1 px-3 py-1.5 text-xs font-mono rounded-lg border border-slate-200 bg-white focus:border-[#005BD3] outline-none"
+                      />
+                    </div>
+                  )}
                 </div>
 
                 {/* Quick Presets / Selection Pill Buttons */}

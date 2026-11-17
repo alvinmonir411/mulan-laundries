@@ -51,6 +51,8 @@ export const WebsiteSettings: React.FC<WebsiteSettingsProps> = ({
   onTestNeonDb,
   onPurgeAllCaches,
 }) => {
+  const [showUrl, setShowUrl] = useState<Record<string, boolean>>({});
+  const toggleUrl = (k: string) => setShowUrl((p) => ({ ...p, [k]: !p[k] }));
   return (
     <div className="space-y-8">
       {/* Top Banner */}
@@ -117,17 +119,30 @@ export const WebsiteSettings: React.FC<WebsiteSettingsProps> = ({
                 )}
               </div>
 
-              <input
-                type="text"
-                value={settings.logo_header || ""}
-                onChange={(e) => onSettingChange("logo_header", e.target.value)}
-                placeholder="/images/new-logo.webp"
-                className="w-full px-3 py-2 text-xs font-mono rounded-lg border border-slate-200 outline-none focus:border-[#005BD3] mb-2"
-              />
+              {/* Collapsible CDN Link */}
+              <div className="mb-2">
+                <button
+                  type="button"
+                  onClick={() => toggleUrl("logo_header")}
+                  className="text-[10px] text-slate-400 hover:text-slate-600 flex items-center justify-between w-full py-1"
+                >
+                  <span>⚙️ Advanced: CDN Link</span>
+                  <span>{showUrl.logo_header ? "Hide ▲" : "View ▼"}</span>
+                </button>
+                {showUrl.logo_header && (
+                  <input
+                    type="text"
+                    value={settings.logo_header || ""}
+                    onChange={(e) => onSettingChange("logo_header", e.target.value)}
+                    placeholder="/images/new-logo.webp"
+                    className="w-full px-2.5 py-1 text-[11px] font-mono rounded-lg border border-slate-200 outline-none focus:border-[#005BD3] mt-1"
+                  />
+                )}
+              </div>
             </div>
 
             <div>
-              <label className="cursor-pointer w-full py-2.5 px-3 bg-white hover:bg-slate-100 text-navy-900 border border-slate-200 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-2">
+              <label className="cursor-pointer w-full py-2.5 px-3 bg-white hover:bg-slate-100 text-navy-900 border border-slate-200 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-2 shadow-xs">
                 <Upload className="w-3.5 h-3.5 text-[#005BD3]" />
                 <span>{uploadingField === "logo_header" ? "Uploading..." : "Upload New Header Logo"}</span>
                 <input
@@ -162,17 +177,30 @@ export const WebsiteSettings: React.FC<WebsiteSettingsProps> = ({
                 )}
               </div>
 
-              <input
-                type="text"
-                value={settings.logo_footer || ""}
-                onChange={(e) => onSettingChange("logo_footer", e.target.value)}
-                placeholder="/images/new-logo-footer1.webp"
-                className="w-full px-3 py-2 text-xs font-mono rounded-lg border border-slate-200 outline-none focus:border-[#005BD3] mb-2"
-              />
+              {/* Collapsible CDN Link */}
+              <div className="mb-2">
+                <button
+                  type="button"
+                  onClick={() => toggleUrl("logo_footer")}
+                  className="text-[10px] text-slate-400 hover:text-slate-600 flex items-center justify-between w-full py-1"
+                >
+                  <span>⚙️ Advanced: CDN Link</span>
+                  <span>{showUrl.logo_footer ? "Hide ▲" : "View ▼"}</span>
+                </button>
+                {showUrl.logo_footer && (
+                  <input
+                    type="text"
+                    value={settings.logo_footer || ""}
+                    onChange={(e) => onSettingChange("logo_footer", e.target.value)}
+                    placeholder="/images/new-logo-footer1.webp"
+                    className="w-full px-2.5 py-1 text-[11px] font-mono rounded-lg border border-slate-200 outline-none focus:border-[#005BD3] mt-1"
+                  />
+                )}
+              </div>
             </div>
 
             <div>
-              <label className="cursor-pointer w-full py-2.5 px-3 bg-white hover:bg-slate-100 text-navy-900 border border-slate-200 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-2">
+              <label className="cursor-pointer w-full py-2.5 px-3 bg-white hover:bg-slate-100 text-navy-900 border border-slate-200 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-2 shadow-xs">
                 <Upload className="w-3.5 h-3.5 text-[#005BD3]" />
                 <span>{uploadingField === "logo_footer" ? "Uploading..." : "Upload New Footer Logo"}</span>
                 <input
@@ -207,17 +235,30 @@ export const WebsiteSettings: React.FC<WebsiteSettingsProps> = ({
                 )}
               </div>
 
-              <input
-                type="text"
-                value={settings.favicon_url || ""}
-                onChange={(e) => onSettingChange("favicon_url", e.target.value)}
-                placeholder="/images/new-logo.webp"
-                className="w-full px-3 py-2 text-xs font-mono rounded-lg border border-slate-200 outline-none focus:border-[#005BD3] mb-2"
-              />
+              {/* Collapsible CDN Link */}
+              <div className="mb-2">
+                <button
+                  type="button"
+                  onClick={() => toggleUrl("favicon_url")}
+                  className="text-[10px] text-slate-400 hover:text-slate-600 flex items-center justify-between w-full py-1"
+                >
+                  <span>⚙️ Advanced: CDN Link</span>
+                  <span>{showUrl.favicon_url ? "Hide ▲" : "View ▼"}</span>
+                </button>
+                {showUrl.favicon_url && (
+                  <input
+                    type="text"
+                    value={settings.favicon_url || ""}
+                    onChange={(e) => onSettingChange("favicon_url", e.target.value)}
+                    placeholder="/images/new-logo.webp"
+                    className="w-full px-2.5 py-1 text-[11px] font-mono rounded-lg border border-slate-200 outline-none focus:border-[#005BD3] mt-1"
+                  />
+                )}
+              </div>
             </div>
 
             <div>
-              <label className="cursor-pointer w-full py-2.5 px-3 bg-white hover:bg-slate-100 text-navy-900 border border-slate-200 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-2">
+              <label className="cursor-pointer w-full py-2.5 px-3 bg-white hover:bg-slate-100 text-navy-900 border border-slate-200 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-2 shadow-xs">
                 <Upload className="w-3.5 h-3.5 text-[#005BD3]" />
                 <span>{uploadingField === "favicon_url" ? "Uploading..." : "Upload New Favicon"}</span>
                 <input
