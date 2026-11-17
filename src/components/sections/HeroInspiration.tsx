@@ -106,8 +106,8 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
     heroVideo === "disabled" ||
     heroVideo.match(/\.(jpe?g|png|webp|avif|gif|svg)$/i);
 
-  // Determine LCP poster: prefer explicit videoPoster, fallback to heroImage
-  const posterSrc = videoPoster || heroImage;
+  // Determine LCP poster: prefer lightweight WebP poster (<60KB) for instant LCP paint on mobile
+  const posterSrc = "/images/hero-optimized-poster.webp";
 
   return (
     <section className="relative w-full min-h-[640px] lg:min-h-[760px] xl:min-h-[820px] flex items-center justify-center overflow-hidden bg-slate-950 text-white">
