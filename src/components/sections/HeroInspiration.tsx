@@ -67,7 +67,7 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
       badge: "Residential Door-to-Door Wash & Fold",
       headlineLine1: "Whites & Colors Separated,",
       headlineLine2: "Neatly Folded!",
-      description: "Separated with care and washed with hypoallergenic eco-friendly detergents. Cleanly wrapped in protective poly-bags or hung ready to put away.",
+      description: "Separated with care and washed with eco-friendly detergents. Cleanly wrapped in protective poly-bags or hung ready to put away.",
     },
     {
       id: 4,
@@ -76,7 +76,7 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
       badge: "Serving All 5 Boroughs 24/7/365",
       headlineLine1: "Reliable NYC Pickup,",
       headlineLine2: "Guaranteed On-Time!",
-      description: "Processing over 1,000,000 lbs annually. GPS-tracked dispatch routes across Manhattan, Brooklyn, Queens, The Bronx, and Staten Island.",
+      description: "Processing over 1,000,000 lbs annually. Operating 24/7 with GPS-tracked dispatch routes across all 5 boroughs of New York City.",
     },
   ];
 
@@ -101,7 +101,7 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
   const active = slides[currentSlide];
 
   return (
-    <section className="relative w-full min-h-[640px] lg:min-h-[760px] xl:min-h-[820px] flex items-center justify-center overflow-hidden bg-slate-950 text-white">
+    <section className="relative w-full h-[680px] sm:h-[720px] lg:h-[760px] xl:h-[780px] flex items-center justify-center overflow-hidden bg-slate-950 text-white">
       {/* 1. BACKGROUND SLIDER IMAGES LAYER */}
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden bg-slate-950">
         {slides.map((slide, idx) => (
@@ -127,20 +127,22 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-slate-950/20 z-10" />
       </div>
 
-      {/* 2. FOREGROUND CONTENT LAYER */}
-      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28 w-full">
-        <div className="max-w-3xl space-y-6 sm:space-y-8">
-          {/* Top Badge: Facility & Location Status */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/40 hover:bg-black/60 border border-white/20 backdrop-blur-md transition-all shadow-md">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-            <Sparkles className="w-3.5 h-3.5 text-sky-300" />
-            <span className="text-xs sm:text-sm font-semibold tracking-wide text-sky-100">
-              {active.badge}
-            </span>
+      {/* 2. FOREGROUND CONTENT LAYER (Fixed container height so every slide has 100% identical height) */}
+      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 w-full">
+        <div className="max-w-3xl space-y-5 sm:space-y-6">
+          {/* Top Badge: Fixed height */}
+          <div className="h-8 flex items-center">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/40 hover:bg-black/60 border border-white/20 backdrop-blur-md transition-all shadow-md">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+              <Sparkles className="w-3.5 h-3.5 text-sky-300" />
+              <span className="text-xs sm:text-sm font-semibold tracking-wide text-sky-100">
+                {active.badge}
+              </span>
+            </div>
           </div>
 
-          {/* Main Headline */}
-          <div className="space-y-1">
+          {/* Main Headline: Fixed height to eliminate layout shifts between slides */}
+          <div className="min-h-[90px] sm:min-h-[110px] lg:min-h-[140px] flex flex-col justify-center">
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08] text-white drop-shadow-md">
               <span className="block text-white drop-shadow-lg">{active.headlineLine1}</span>
               <span className="block bg-gradient-to-r from-sky-400 via-blue-300 to-indigo-300 bg-clip-text text-transparent drop-shadow-lg">
@@ -149,13 +151,15 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
             </h1>
           </div>
 
-          {/* Subheadline */}
-          <p className="text-base sm:text-lg md:text-xl text-slate-100 max-w-2xl leading-relaxed font-normal drop-shadow-md">
-            {active.description}
-          </p>
+          {/* Subheadline: Fixed min-height so description length does not jump slide height */}
+          <div className="min-h-[56px] sm:min-h-[64px] flex items-center">
+            <p className="text-base sm:text-lg md:text-xl text-slate-100 max-w-2xl leading-relaxed font-normal drop-shadow-md line-clamp-2 sm:line-clamp-none">
+              {active.description}
+            </p>
+          </div>
 
           {/* 4 Trust Feature Badges */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 pt-2">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 pt-1">
             <div className="flex items-center gap-2.5 p-3 rounded-xl bg-black/40 border border-white/20 backdrop-blur-md shadow-md">
               <div className="w-9 h-9 rounded-lg bg-sky-500/20 text-sky-300 border border-sky-400/30 flex items-center justify-center shrink-0">
                 <Truck className="w-4 h-4" />
