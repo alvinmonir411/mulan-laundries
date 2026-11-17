@@ -111,7 +111,7 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 6000);
+    }, 1800);
     return () => clearInterval(timer);
   }, [slides.length]);
 
