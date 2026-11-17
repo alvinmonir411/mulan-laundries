@@ -392,7 +392,7 @@ export default function AdminDashboardPage() {
     }
   };
 
-  // File Upload Handler (Cloudinary + Local)
+  // File Upload Handler (Vercel Blob Client Direct + Server Upload)
   const handleFileUpload = async (
     targetField: string,
     isSlot: boolean,
@@ -404,20 +404,62 @@ export default function AdminDashboardPage() {
     setUploadingField(targetField);
     setErrorMessage(null);
 
-    const formData = new FormData();
-    formData.append("file", file);
-
     try {
-      const res = await fetch("/api/admin/upload", {
-        method: "POST",
-        body: formData,
-      });
+      let uploadedUrl = "";
+      let provider = "CDN";
 
-      const data = await res.json();
+      // 1. If file is a video or larger than 4MB, upload directly to Vercel Blob (bypasses serverless 4.5MB limit)
+      const isLargeOrVideo = file.size > 4 * 1024 * 1024 || file.type.startsWith("video/") || file.name.match(/\.(mp4|webm|mov)$/i);
 
-      if (res.ok && data.success) {
-        const uploadedUrl = data.url;
+      if (isLargeOrVideo) {
+        try {
+          const { upload } = await import("@vercel/blob/client");
+          const newBlob = await upload(`uploads/${file.name}`, file, {
+            access: "public",
+            handleUploadUrl: "/api/admin/upload-blob",
+          });
+          uploadedUrl = newBlob.url;
+          provider = "Vercel Blob";
+        } catch (clientBlobErr: any) {
+          console.warn("[CLIENT BLOB FALLBACK TO SERVER UPLOAD]:", clientBlobErr);
+        }
+      }
 
+      // 2. If not uploaded via client direct blob, use standard /api/admin/upload
+      if (!uploadedUrl) {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const res = await fetch("/api/admin/upload", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!res.ok) {
+          const errText = await res.text();
+          let parsedError = "File upload failed";
+          try {
+            const jsonErr = JSON.parse(errText);
+            parsedError = jsonErr.error || parsedError;
+          } catch {
+            if (res.status === 413) {
+              parsedError = "File is too large for serverless direct upload (>4.5MB). Please use a compressed video (under 4MB) or MP4.";
+            } else {
+              parsedError = `Server responded with ${res.status}: ${errText.substring(0, 80)}`;
+            }
+          }
+          throw new Error(parsedError);
+        }
+
+        const data = await res.json();
+        if (!data.success) {
+          throw new Error(data.error || "Upload failed");
+        }
+        uploadedUrl = data.url;
+        provider = data.provider || "CDN";
+      }
+
+      if (uploadedUrl) {
         if (isSlot) {
           handleImageFieldChange(targetField, "image_url", uploadedUrl);
           await fetch("/api/admin/images", {
@@ -439,13 +481,11 @@ export default function AdminDashboardPage() {
           });
         }
 
-        setSuccessMessage(`✓ Uploaded (${data.provider || "CDN"}) & live triggered!`);
+        setSuccessMessage(`✓ Uploaded (${provider}) & live triggered!`);
         setTimeout(() => setSuccessMessage(null), 5000);
-      } else {
-        setErrorMessage(data.error || "File upload failed.");
       }
     } catch (err: any) {
-      setErrorMessage(err?.message || "Error uploading image file.");
+      setErrorMessage(err?.message || "Error uploading file.");
     } finally {
       setUploadingField(null);
     }
