@@ -479,6 +479,17 @@ export default function AdminDashboardPage() {
               settings: { [targetField]: uploadedUrl },
             }),
           });
+          // If hero media was uploaded, also update the hero_main image slot so the hero background updates
+          if (targetField === "hero_video_url") {
+            await fetch("/api/admin/images", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                slotKey: "hero_main",
+                imageUrl: uploadedUrl,
+              }),
+            });
+          }
         }
 
         setSuccessMessage(`✓ Uploaded (${provider}) & live triggered!`);
