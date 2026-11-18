@@ -112,6 +112,7 @@ export default function AdminDashboardPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [updatingRef, setUpdatingRef] = useState<string | null>(null);
+  const [deletingSubmissionRef, setDeletingSubmissionRef] = useState<string | null>(null);
 
   // Notification Toasts
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -241,6 +242,30 @@ export default function AdminDashboardPage() {
       setErrorMessage("Network error updating status");
     } finally {
       setUpdatingRef(null);
+    }
+  };
+
+  const handleDeleteSubmission = async (reference_id: string) => {
+    if (!window.confirm(`Are you sure you want to permanently delete lead ${reference_id}? This cannot be undone.`)) {
+      return;
+    }
+    setDeletingSubmissionRef(reference_id);
+    try {
+      const res = await fetch(`/api/admin/submissions?reference_id=${encodeURIComponent(reference_id)}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setSubmissions((prev) => prev.filter((s) => s.reference_id !== reference_id));
+        setSuccessMessage(`✓ Lead ${reference_id} deleted permanently from Neon DB!`);
+        setTimeout(() => setSuccessMessage(null), 4000);
+      } else {
+        setErrorMessage(data.error || "Failed to delete submission");
+      }
+    } catch (e) {
+      setErrorMessage("Network error deleting lead");
+    } finally {
+      setDeletingSubmissionRef(null);
     }
   };
 
@@ -1493,6 +1518,20 @@ export default function AdminDashboardPage() {
                               <option value="In Progress">● In Progress</option>
                               <option value="Completed">● Completed</option>
                             </select>
+
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteSubmission(sub.reference_id)}
+                              disabled={deletingSubmissionRef === sub.reference_id}
+                              className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors border border-transparent hover:border-red-200"
+                              title={`Delete Lead ${sub.reference_id}`}
+                            >
+                              {deletingSubmissionRef === sub.reference_id ? (
+                                <Loader2 className="w-3.5 h-3.5 animate-spin text-red-600" />
+                              ) : (
+                                <Trash2 className="w-3.5 h-3.5" />
+                              )}
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -1523,6 +1562,7 @@ export default function AdminDashboardPage() {
               loadingSubmissions={loadingSubmissions}
               onRefreshSubmissions={() => refreshSubmissions()}
               onUpdateStatus={handleUpdateSubmissionStatus}
+              onDeleteSubmission={handleDeleteSubmission}
             />
           )}
 
