@@ -3,7 +3,7 @@ export const BUSINESS_INFO = {
   tagline: "Best-in-class Commercial Laundry & Linen Management in New York",
   phone: "(917) 365-4366",
   phoneRaw: "+19173654366",
-  email: "info@mulanlaundries.com",
+  email: "mulanlaundries@gmail.com",
   location: "New York City, Bronx",
   fullAddress: "New York City, Bronx, NY",
   hours: "Mon.–Sun. 24x7 (24/7, 365 Days a Year)",

@@ -308,7 +308,7 @@ export const WebsiteSettings: React.FC<WebsiteSettingsProps> = ({
               type="email"
               value={settings.email || ""}
               onChange={(e) => onSettingChange("email", e.target.value)}
-              placeholder="info@mulanlaundries.com"
+              placeholder="mulanlaundries@gmail.com"
               className="w-full px-4 py-2.5 text-sm rounded-xl border border-slate-200 focus:border-[#005BD3] outline-none"
             />
           </div>

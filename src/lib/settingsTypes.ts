@@ -30,7 +30,7 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   hero_video_url: "/images/slide1.webp",
   phone: "(917) 365-4366",
   phone_raw: "+19173654366",
-  email: "info@mulanlaundries.com",
+  email: "mulanlaundries@gmail.com",
   address: "New York City, Bronx, NY",
   operating_hours: "24 Hours a Day / 7 Days a Week",
   favicon_url: "/images/new-logo.webp",

@@ -135,7 +135,7 @@ const DEFAULT_PAGES = [
     slug: "/contact",
     title: "Contact Us",
     meta_title: "Contact Mulan Laundries | 24/7 NYC Laundry Dispatch",
-    meta_description: "Contact Mulan Laundries 24/7 at (917) 365-4366 or info@mulanlaundries.com. NYC laundry and commercial linen specialists ready to assist.",
+    meta_description: "Contact Mulan Laundries 24/7 at (917) 365-4366 or mulanlaundries@gmail.com. NYC laundry and commercial linen specialists ready to assist.",
     heading: "We're Here 24/7 for Your Laundry Needs",
     subheading: "Call, email, or visit us. Our dispatch team is always available.",
     banner_image: "/images/about-4.jpg",
