@@ -155,6 +155,8 @@ export default async function RootLayout({
       <head>
         <link rel="icon" href={faviconUrl} />
         <link rel="shortcut icon" href={faviconUrl} />
+        <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://res.cloudinary.com" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}

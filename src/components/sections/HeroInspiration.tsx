@@ -121,15 +121,27 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
     };
   }, []);
 
+  const optimizeCloudinaryUrl = (url: string, width = 1200) => {
+    if (!url || typeof url !== "string") return url;
+    if (url.includes("res.cloudinary.com") && url.includes("/upload/")) {
+      if (url.includes("f_auto,q_auto")) return url;
+      return url.replace("/upload/", `/upload/f_auto,q_auto,w_${width}/`);
+    }
+    return url;
+  };
+
   const isVideo = isVideoUrl(liveHero.heroVideo);
-  const slide1Image =
+  const rawSlide1Image =
     (!isVideo && liveHero.heroVideo) ||
     (!isVideoUrl(liveHero.heroImage) && liveHero.heroImage) ||
     "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908752/mulan-laundries/slide1.webp";
-  const posterImg =
+  const slide1Image = optimizeCloudinaryUrl(rawSlide1Image, 1200);
+  const posterImg = optimizeCloudinaryUrl(
     (!isVideoUrl(liveHero.videoPoster) && liveHero.videoPoster) ||
     (!isVideoUrl(liveHero.heroImage) && liveHero.heroImage) ||
-    "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908752/mulan-laundries/slide1.webp";
+    "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908752/mulan-laundries/slide1.webp",
+    1200
+  );
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // Original client slides with priority to custom uploaded hero image / video
@@ -147,7 +159,7 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
     },
     {
       id: 2,
-      image: "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908957/mulan-laundries/slide2.webp",
+      image: optimizeCloudinaryUrl("https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908957/mulan-laundries/slide2.webp", 1200),
       alt: "Hospitality & hotel linen laundry management New York City",
       badge: "5-Star Hotel & Hospitality Linen Specialists",
       headlineLine1: "Pristine Linens,",
@@ -157,7 +169,7 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
     },
     {
       id: 3,
-      image: "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908958/mulan-laundries/slide3.jpg",
+      image: optimizeCloudinaryUrl("https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908958/mulan-laundries/slide3.jpg", 1200),
       alt: "Residential wash and fold door to door laundry pickup service",
       badge: "Residential Door-to-Door Wash & Fold",
       headlineLine1: "Whites & Colors Separated,",
@@ -167,7 +179,7 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
     },
     {
       id: 4,
-      image: "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908959/mulan-laundries/slide4.webp",
+      image: optimizeCloudinaryUrl("https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908959/mulan-laundries/slide4.webp", 1200),
       alt: "Mulan Laundries NYC commercial delivery van and logistics",
       badge: "Serving All 5 Boroughs 24/7/365",
       headlineLine1: "Reliable NYC Pickup,",
@@ -251,7 +263,8 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
                 alt={slide.alt}
                 fill
                 priority={idx === 0}
-                sizes="100vw"
+                loading={idx === 0 ? "eager" : "lazy"}
+                sizes="(max-width: 768px) 100vw, 1200px"
                 className="object-cover object-center"
               />
             )}
