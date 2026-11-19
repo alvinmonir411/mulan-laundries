@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createSubmission } from "@/lib/submissions";
+import { sendPickupEmails } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
   try {
@@ -81,6 +82,19 @@ export async function POST(req: NextRequest) {
       status: "New",
     });
 
+    // Send email notifications via Resend (Client & Customer)
+    const emailResult = await sendPickupEmails({
+      referenceId,
+      name: fullName,
+      email: email.trim(),
+      phone: phone.trim(),
+      customerType,
+      pickupDay,
+      message: message.trim(),
+      promoCode: cleanPromo,
+      discountPercent,
+    });
+
     // Log the verified pickup request
     console.log(`[PICKUP REQUEST RECEIVED & STORED IN NEON DB] Ref: ${referenceId}`, {
       client: fullName,
@@ -88,6 +102,7 @@ export async function POST(req: NextRequest) {
       email: email.trim(),
       customerType,
       pickupDay,
+      emailResult,
       messageLength: message.trim().length,
       timestamp: new Date().toISOString()
     });

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createSubmission } from "@/lib/submissions";
+import { sendContactEmails } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
   try {
@@ -64,11 +65,25 @@ export async function POST(req: NextRequest) {
       status: "New",
     });
 
+    // Send email notifications via Resend (Client & Customer)
+    const emailResult = await sendContactEmails({
+      referenceId,
+      name: name.trim(),
+      email: email.trim(),
+      phone: phone.trim(),
+      customerType: customerType || "General Inquiry",
+      subject: subject || (cleanPromo ? `Website Contact [Promo: ${cleanPromo} - ${discountPercent}% OFF]` : "Website Contact Form Inquiry"),
+      message: message.trim(),
+      promoCode: cleanPromo,
+      discountPercent,
+    });
+
     // Log the verified contact inquiry
     console.log(`[CONTACT INQUIRY RECEIVED & STORED IN NEON DB] Ref: ${referenceId}`, {
       name: name.trim(),
       phone: phone.trim(),
       email: email.trim(),
+      emailResult,
       messageLength: message.trim().length,
       timestamp: new Date().toISOString()
     });
