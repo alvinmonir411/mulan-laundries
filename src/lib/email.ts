@@ -8,7 +8,27 @@ const getResendClient = () => {
   return new Resend(apiKey);
 };
 
-export const DEFAULT_CLIENT_EMAIL = process.env.CLIENT_NOTIFICATION_EMAIL || "mulanlaundries@gmail.com";
+export const DEFAULT_CLIENT_EMAILS = [
+  "mulanlaundries@gmail.com",
+  "alvinmonir411@gmail.com",
+];
+
+export const getClientNotificationEmails = (): string[] => {
+  const envEmails = process.env.CLIENT_NOTIFICATION_EMAIL;
+  const list = [...DEFAULT_CLIENT_EMAILS];
+  if (envEmails) {
+    envEmails
+      .split(",")
+      .map((e) => e.trim())
+      .filter(Boolean)
+      .forEach((e) => {
+        if (!list.includes(e)) list.push(e);
+      });
+  }
+  return list;
+};
+
+export const DEFAULT_CLIENT_EMAIL = DEFAULT_CLIENT_EMAILS[0];
 export const DEFAULT_FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "Mulan Laundries <onboarding@resend.dev>";
 
 interface ContactEmailParams {
@@ -133,20 +153,27 @@ export async function sendContactEmails(params: ContactEmailParams) {
 </body>
 </html>`;
 
-    const clientRes = await resend.emails.send({
-      from: DEFAULT_FROM_EMAIL,
-      to: DEFAULT_CLIENT_EMAIL,
-      replyTo: email,
-      subject: `[New Inquiry] ${name} - ${referenceId}`,
-      html: clientHtml,
-    });
+    const recipientList = getClientNotificationEmails();
+    for (const clientTo of recipientList) {
+      try {
+        const clientRes = await resend.emails.send({
+          from: DEFAULT_FROM_EMAIL,
+          to: clientTo,
+          replyTo: email,
+          subject: `[New Inquiry] ${name} - ${referenceId}`,
+          html: clientHtml,
+        });
 
-    if (clientRes.error) {
-      console.error("[RESEND CLIENT EMAIL ERROR]:", clientRes.error);
-      results.clientError = clientRes.error.message;
-    } else {
-      results.clientSent = true;
-      console.log(`[RESEND CLIENT EMAIL SENT]: Ref ${referenceId}`, clientRes.data?.id);
+        if (clientRes.error) {
+          console.warn(`[RESEND CLIENT EMAIL NOTICE for ${clientTo}]:`, clientRes.error.message);
+          if (!results.clientSent) results.clientError = clientRes.error.message;
+        } else {
+          results.clientSent = true;
+          console.log(`[RESEND CLIENT EMAIL SENT to ${clientTo}]: Ref ${referenceId}`, clientRes.data?.id);
+        }
+      } catch (err: any) {
+        console.warn(`[RESEND CLIENT EMAIL EXCEPTION for ${clientTo}]:`, err?.message || err);
+      }
     }
   } catch (err: any) {
     console.error("[RESEND CLIENT EXCEPTION]:", err?.message || err);
@@ -342,20 +369,27 @@ export async function sendPickupEmails(params: PickupEmailParams) {
 </body>
 </html>`;
 
-    const clientRes = await resend.emails.send({
-      from: DEFAULT_FROM_EMAIL,
-      to: DEFAULT_CLIENT_EMAIL,
-      replyTo: email,
-      subject: `[New Pickup Request] ${pickupDay} - ${name} (${customerType})`,
-      html: clientHtml,
-    });
+    const recipientList = getClientNotificationEmails();
+    for (const clientTo of recipientList) {
+      try {
+        const clientRes = await resend.emails.send({
+          from: DEFAULT_FROM_EMAIL,
+          to: clientTo,
+          replyTo: email,
+          subject: `[New Pickup Request] ${pickupDay} - ${name} (${customerType})`,
+          html: clientHtml,
+        });
 
-    if (clientRes.error) {
-      console.error("[RESEND CLIENT PICKUP EMAIL ERROR]:", clientRes.error);
-      results.clientError = clientRes.error.message;
-    } else {
-      results.clientSent = true;
-      console.log(`[RESEND CLIENT PICKUP EMAIL SENT]: Ref ${referenceId}`, clientRes.data?.id);
+        if (clientRes.error) {
+          console.warn(`[RESEND CLIENT PICKUP NOTICE for ${clientTo}]:`, clientRes.error.message);
+          if (!results.clientSent) results.clientError = clientRes.error.message;
+        } else {
+          results.clientSent = true;
+          console.log(`[RESEND CLIENT PICKUP EMAIL SENT to ${clientTo}]: Ref ${referenceId}`, clientRes.data?.id);
+        }
+      } catch (err: any) {
+        console.warn(`[RESEND CLIENT PICKUP EXCEPTION for ${clientTo}]:`, err?.message || err);
+      }
     }
   } catch (err: any) {
     console.error("[RESEND CLIENT PICKUP EXCEPTION]:", err?.message || err);
