@@ -20,8 +20,13 @@ export default async function AboutPage() {
   const images = await getSiteImages();
   const facilityImg = images.about_facility?.image_url || "/images/about-us.webp";
   const facilityAlt = images.about_facility?.alt_text || "Mulan Laundries heritage";
-  const teamImg = images.about_team?.image_url || "/images/about-4.jpg";
-  const teamAlt = images.about_team?.alt_text || "Mulan Laundries dedicated laundry facility team";
+  const rawTeamImg = images.about_team?.image_url;
+  // Guard against any leftover screenshot or pricing card image
+  const teamImg =
+    rawTeamImg && !rawTeamImg.includes("screenshot")
+      ? rawTeamImg
+      : "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908916/mulan-laundries/3449.jpg";
+  const teamAlt = images.about_team?.alt_text || "Mulan Laundries dedicated laundry specialists";
 
   return (
     <>
@@ -81,15 +86,17 @@ export default async function AboutPage() {
             </div>
 
             <div className="relative">
-              <div className="relative h-[440px] w-full rounded-2xl overflow-hidden shadow-card border border-slate-100">
+              <div className="relative h-[460px] sm:h-[500px] w-full rounded-2xl overflow-hidden shadow-card border border-slate-100 group">
                 <Image
                   src={teamImg}
                   alt={teamAlt}
                   fill
-                  className="object-cover"
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 600px"
+                  className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
                 />
               </div>
-              <div className="absolute -bottom-6 -left-6 bg-navy-900 text-white p-6 rounded-2xl shadow-xl max-w-xs border border-navy-800 hidden sm:block">
+              <div className="absolute -bottom-6 -left-4 sm:-bottom-6 sm:-left-6 bg-navy-950/95 backdrop-blur-md text-white p-5 sm:p-6 rounded-2xl shadow-2xl max-w-xs border border-white/10">
                 <span className="text-2xl font-bold text-sky-400 block">18+ Years</span>
                 <span className="text-xs text-slate-300">Of trusted commercial linen expertise in New York.</span>
               </div>

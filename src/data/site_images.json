@@ -99,9 +99,9 @@
     "slot_key": "about_team",
     "title": "About Us: Dedicated Workers & Staff",
     "section": "About",
-    "image_url": "/images/3449.jpg",
-    "alt_text": "Dedicated Mulan Laundries professional laundry specialists",
-    "updated_at": "2026-11-13T09:19:29.385Z"
+    "image_url": "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908916/mulan-laundries/3449.jpg",
+    "alt_text": "Mulan Laundries dedicated laundry specialists with freshly folded towels",
+    "updated_at": "2026-11-19T14:52:00.000Z"
   },
   "pickup_banner": {
     "slot_key": "pickup_banner",

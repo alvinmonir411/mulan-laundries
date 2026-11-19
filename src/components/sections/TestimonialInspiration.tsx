@@ -164,7 +164,7 @@ export const TestimonialInspiration: React.FC<TestimonialInspirationProps> = ({
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white border border-slate-300 text-slate-800 font-bold text-sm shadow-sm hover:border-blue-500 hover:text-[#005BD3] hover:shadow transition-all"
           >
             <MapPin className="w-4 h-4 text-rose-500" />
-            <span>Read All Google Reviews on Google Maps (179 E 105th St, NYC)</span>
+            <span>Read All Google Reviews on Google Maps</span>
             <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
           </a>
         </div>

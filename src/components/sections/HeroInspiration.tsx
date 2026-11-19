@@ -15,7 +15,6 @@ import {
   Phone
 } from "lucide-react";
 import { BUSINESS_INFO } from "@/data/business";
-import { ServiceSearchBar } from "@/components/navigation/ServiceSearchBar";
 
 interface HeroInspirationProps {
   heroImage?: string;
@@ -340,14 +339,6 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
                 <span className="text-[11px] text-slate-200 block">NYC Heritage</span>
               </div>
             </div>
-          </div>
-
-          {/* Quick Service Search Bar */}
-          <div className="pt-2">
-            <ServiceSearchBar
-              variant="hero"
-              placeholder="Search services (e.g. Hotel, Hospital, Wash & Fold, Airbnb)..."
-            />
           </div>
 
           {/* Action CTAs */}
