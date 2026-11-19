@@ -3,12 +3,8 @@
 import React, { useRef, useState, useEffect } from "react";
 import {
   Star,
-  ExternalLink,
-  MapPin,
   ChevronLeft,
   ChevronRight,
-  Quote,
-  ShieldCheck,
   CheckCircle2
 } from "lucide-react";
 import { SiteTestimonial } from "@/lib/cmsTypes";
@@ -153,20 +149,6 @@ export const TestimonialInspiration: React.FC<TestimonialInspirationProps> = ({
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Google Maps Profile Link / Action */}
-        <div className="mt-12 text-center">
-          <a
-            href={googleMapsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white border border-slate-300 text-slate-800 font-bold text-sm shadow-sm hover:border-blue-500 hover:text-[#005BD3] hover:shadow transition-all"
-          >
-            <MapPin className="w-4 h-4 text-rose-500" />
-            <span>Read All Google Reviews on Google Maps</span>
-            <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
-          </a>
         </div>
       </div>
     </section>
