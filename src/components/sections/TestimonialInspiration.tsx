@@ -135,10 +135,10 @@ export const TestimonialInspiration: React.FC<TestimonialInspirationProps> = ({
               {/* Author & Verification Footer */}
               <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
                 <div>
-                  <h4 className="text-xs font-bold text-slate-900 flex items-center gap-1">
+                  <p className="text-xs font-bold text-slate-900 flex items-center gap-1">
                     <span>{r.author}</span>
                     <CheckCircle2 className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                  </h4>
+                  </p>
                   <span className="text-[11px] text-slate-500 block truncate max-w-[210px] mt-0.5">
                     {r.role}
                   </span>

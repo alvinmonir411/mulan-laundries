@@ -157,6 +157,12 @@ export default async function RootLayout({
         <link rel="shortcut icon" href={faviconUrl} />
         <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+        <link
+          rel="preload"
+          as="image"
+          href="https://res.cloudinary.com/dgaiqqh7k/image/upload/f_auto,q_auto,w_1200/v1794908752/mulan-laundries/slide1.webp"
+          fetchPriority="high"
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}

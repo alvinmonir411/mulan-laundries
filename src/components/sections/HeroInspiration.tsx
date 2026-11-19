@@ -264,6 +264,7 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
                 fill
                 priority={idx === 0}
                 loading={idx === 0 ? "eager" : "lazy"}
+                unoptimized
                 sizes="(max-width: 768px) 100vw, 1200px"
                 className="object-cover object-center"
               />
@@ -318,7 +319,7 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
                 <Truck className="w-4 h-4" />
               </div>
               <div>
-                <h4 className="text-xs font-bold text-white leading-tight">Free Pickup</h4>
+                <span className="text-xs font-bold text-white leading-tight block">Free Pickup</span>
                 <span className="text-[11px] text-slate-200 block">& Delivery</span>
               </div>
             </div>
@@ -328,7 +329,7 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
                 <ShieldCheck className="w-4 h-4" />
               </div>
               <div>
-                <h4 className="text-xs font-bold text-white leading-tight">100% Hygienic</h4>
+                <span className="text-xs font-bold text-white leading-tight block">100% Hygienic</span>
                 <span className="text-[11px] text-slate-200 block">OSHA / JCAHO</span>
               </div>
             </div>
@@ -338,7 +339,7 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
                 <Clock className="w-4 h-4" />
               </div>
               <div>
-                <h4 className="text-xs font-bold text-white leading-tight">Express Service</h4>
+                <span className="text-xs font-bold text-white leading-tight block">Express Service</span>
                 <span className="text-[11px] text-slate-200 block">24h Turnaround</span>
               </div>
             </div>
@@ -348,7 +349,7 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
                 <Award className="w-4 h-4" />
               </div>
               <div>
-                <h4 className="text-xs font-bold text-white leading-tight">18+ Years</h4>
+                <span className="text-xs font-bold text-white leading-tight block">18+ Years</span>
                 <span className="text-[11px] text-slate-200 block">NYC Heritage</span>
               </div>
             </div>
@@ -390,27 +391,31 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
         <button
           onClick={prevSlide}
           aria-label="Previous slide"
-          className="p-2.5 rounded-full bg-black/50 hover:bg-black/75 text-white border border-white/20 transition-all backdrop-blur-md"
+          className="w-11 h-11 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/75 text-white border border-white/20 transition-all backdrop-blur-md"
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
         <button
           onClick={nextSlide}
           aria-label="Next slide"
-          className="p-2.5 rounded-full bg-black/50 hover:bg-black/75 text-white border border-white/20 transition-all backdrop-blur-md"
+          className="w-11 h-11 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/75 text-white border border-white/20 transition-all backdrop-blur-md"
         >
           <ChevronRight className="w-5 h-5" />
         </button>
-        <div className="flex items-center gap-2 ml-2">
+        <div className="flex items-center gap-1 ml-1">
           {slides.map((_, i) => (
             <button
               key={i}
               onClick={() => goToSlide(i)}
               aria-label={`Go to slide ${i + 1}`}
-              className={`h-2 rounded-full transition-all duration-500 ${
-                i === currentSlide ? "w-7 bg-sky-400 shadow-md" : "w-2 bg-white/40 hover:bg-white/60"
-              }`}
-            />
+              className="p-2 min-w-[32px] min-h-[44px] flex items-center justify-center focus:outline-none"
+            >
+              <span
+                className={`h-2 rounded-full transition-all duration-500 block ${
+                  i === currentSlide ? "w-7 bg-sky-400 shadow-md" : "w-2 bg-white/40 hover:bg-white/60"
+                }`}
+              />
+            </button>
           ))}
         </div>
       </div>
