@@ -68,13 +68,13 @@ export function LiveSiteListener() {
       }
     };
 
-    // Initial check
-    checkServerVersion();
+    // Initial check delayed to avoid competing with critical first paint
+    const initialTimer = setTimeout(checkServerVersion, 5000);
 
-    // Check periodically (every 3.5s)
-    const interval = setInterval(checkServerVersion, 3500);
+    // Check periodically in background without hammering mobile CPU (every 30s)
+    const interval = setInterval(checkServerVersion, 30000);
 
-    // Check immediately when user focuses the tab
+    // Check immediately when user refocuses the tab
     const handleVisibility = () => {
       if (typeof document !== "undefined" && !document.hidden) {
         checkServerVersion();
@@ -84,6 +84,7 @@ export function LiveSiteListener() {
     window.addEventListener("focus", checkServerVersion);
 
     return () => {
+      clearTimeout(initialTimer);
       if (channel) {
         try {
           channel.close();

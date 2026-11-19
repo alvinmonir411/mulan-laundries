@@ -197,16 +197,18 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
     if (animating) return;
     setAnimating(true);
     setTimeout(() => {
-      setCurrentSlide(next);
+      React.startTransition(() => {
+        setCurrentSlide(next);
+      });
       setTimeout(() => setAnimating(false), 50);
-    }, 500); // wait for fade-out before switching content
+    }, 400);
   }, [animating]);
 
-  // Auto-play slideshow every 3.5 seconds
+  // Auto-play slideshow every 5 seconds (smooth, battery & CPU efficient)
   useEffect(() => {
     const timer = setInterval(() => {
       goToSlide((currentSlide + 1) % slides.length);
-    }, 3500);
+    }, 5000);
     return () => clearInterval(timer);
   }, [currentSlide, slides.length, goToSlide]);
 
@@ -263,9 +265,8 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
                 alt={slide.alt}
                 fill
                 priority={idx === 0}
-                loading={idx === 0 ? "eager" : "lazy"}
-                unoptimized
-                sizes="(max-width: 768px) 100vw, 1200px"
+                quality={75}
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1200px"
                 className="object-cover object-center"
               />
             )}
