@@ -39,7 +39,7 @@ export const MobileStickyCall: React.FC<MobileStickyCallProps> = ({
   return (
     <aside
       aria-label="Mobile Quick Call & Pickup"
-      className={`md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-slate-200/90 shadow-[0_-8px_25px_rgba(0,29,64,0.15)] px-3 py-2.5 transition-all duration-300 ${
+      className={`md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-slate-200/90 shadow-[0_-8px_25px_rgba(0,29,64,0.15)] px-3 py-2.5 pb-[max(0.625rem,env(safe-area-inset-bottom))] transition-all duration-300 ${
         isVisible ? "translate-y-0 opacity-100" : "translate-y-full opacity-0 pointer-events-none"
       }`}
     >

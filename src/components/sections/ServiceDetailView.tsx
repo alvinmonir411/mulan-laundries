@@ -74,7 +74,7 @@ export async function ServiceDetailView({ service }: ServiceDetailViewProps) {
       </section>
 
       {/* Overview & Key Needs */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div className="space-y-6">
@@ -107,7 +107,7 @@ export async function ServiceDetailView({ service }: ServiceDetailViewProps) {
             </div>
 
             <div className="relative">
-              <div className="relative h-[440px] w-full rounded-2xl overflow-hidden shadow-card border border-slate-100">
+              <div className="relative aspect-[16/10] sm:aspect-[4/3] lg:aspect-auto lg:h-[440px] w-full rounded-2xl overflow-hidden shadow-card border border-slate-100">
                 <Image
                   src={heroImage}
                   alt={heroAlt}
@@ -116,7 +116,7 @@ export async function ServiceDetailView({ service }: ServiceDetailViewProps) {
                 />
               </div>
 
-              <div className="absolute -bottom-6 left-6 right-6 sm:left-auto sm:right-6 bg-navy-900 text-white p-6 rounded-2xl shadow-xl border border-navy-800 max-w-sm">
+              <div className="absolute -bottom-6 left-4 right-4 sm:left-auto sm:right-6 bg-navy-900 text-white p-5 sm:p-6 rounded-2xl shadow-xl border border-navy-800 max-w-sm">
                 <span className="text-xs font-bold text-sky-400 uppercase tracking-widest block mb-1">
                   24/7 NYC Dispatch
                 </span>

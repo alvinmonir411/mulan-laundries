@@ -111,7 +111,7 @@ export const TestimonialInspiration: React.FC<TestimonialInspirationProps> = ({
           {activeReviews.map((r, i) => (
             <div
               key={r.id || i}
-              className="w-[310px] sm:w-[350px] shrink-0 snap-start bg-white rounded-2xl p-6 border border-slate-200/80 shadow-subtle hover:shadow-card transition-all flex flex-col justify-between"
+              className="w-[280px] sm:w-[350px] shrink-0 snap-start bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-subtle hover:shadow-card transition-all flex flex-col justify-between"
             >
               <div>
                 {/* Header: Stars + Source Badge */}

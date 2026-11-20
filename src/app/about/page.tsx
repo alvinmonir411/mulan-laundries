@@ -57,7 +57,7 @@ export default async function AboutPage() {
       </section>
 
       {/* Main Narrative Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div className="space-y-6">
@@ -86,7 +86,7 @@ export default async function AboutPage() {
             </div>
 
             <div className="relative">
-              <div className="relative h-[460px] sm:h-[500px] w-full rounded-2xl overflow-hidden shadow-card border border-slate-100 group">
+              <div className="relative aspect-[16/10] sm:aspect-[4/3] lg:aspect-auto lg:h-[500px] w-full rounded-2xl overflow-hidden shadow-card border border-slate-100 group">
                 <Image
                   src={teamImg}
                   alt={teamAlt}
@@ -96,7 +96,7 @@ export default async function AboutPage() {
                   className="object-cover object-top group-hover:scale-105 transition-transform duration-500"
                 />
               </div>
-              <div className="absolute -bottom-6 -left-4 sm:-bottom-6 sm:-left-6 bg-navy-950/95 backdrop-blur-md text-white p-5 sm:p-6 rounded-2xl shadow-2xl max-w-xs border border-white/10">
+              <div className="absolute -bottom-6 left-2 sm:-bottom-6 sm:-left-6 bg-navy-950/95 backdrop-blur-md text-white p-4 sm:p-6 rounded-2xl shadow-2xl max-w-[calc(100%-1rem)] sm:max-w-xs border border-white/10">
                 <span className="text-2xl font-bold text-sky-400 block">18+ Years</span>
                 <span className="text-xs text-slate-300">Of trusted commercial linen expertise in New York.</span>
               </div>

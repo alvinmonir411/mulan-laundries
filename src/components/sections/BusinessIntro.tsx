@@ -14,12 +14,12 @@ export const BusinessIntro: React.FC<BusinessIntroProps> = ({
   aboutAlt = "About Mulan Laundries NYC commercial laundry operations",
 }) => {
   return (
-    <section className="py-20 lg:py-28 bg-white">
+    <section className="py-20 lg:py-28 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left Column: Visual & Heritage Badge */}
           <div className="relative">
-            <div className="relative h-[420px] sm:h-[480px] w-full rounded-2xl overflow-hidden shadow-card border border-slate-100">
+            <div className="relative aspect-[16/10] sm:aspect-[4/3] lg:aspect-auto lg:h-[480px] w-full rounded-2xl overflow-hidden shadow-card border border-slate-100">
               <Image
                 src={aboutImage}
                 alt={aboutAlt}
@@ -32,7 +32,7 @@ export const BusinessIntro: React.FC<BusinessIntroProps> = ({
             </div>
 
             {/* Floating Experience Badge */}
-            <div className="absolute -bottom-6 -right-4 sm:-bottom-8 sm:right-6 bg-navy-900 text-white p-6 rounded-2xl shadow-xl border border-navy-800 max-w-xs">
+            <div className="absolute -bottom-6 right-2 sm:-bottom-8 sm:right-6 bg-navy-900 text-white p-4 sm:p-6 rounded-2xl shadow-xl border border-navy-800 max-w-[calc(100%-1rem)] sm:max-w-xs">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center shrink-0">
                   <Award className="w-6 h-6" />

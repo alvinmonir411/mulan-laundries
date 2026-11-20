@@ -48,7 +48,7 @@ export const ContactForm: React.FC = () => {
     if (formData.promoCode.trim()) {
       const promoUpper = formData.promoCode.trim().toUpperCase();
       if (promoUpper !== "WELCOME20") {
-        errs.promoCode = "ভুল প্রোমো কোড! এই ধরণের কোনো প্রোমো কোড আমাদের নেই। (Invalid promo code)";
+        errs.promoCode = "Invalid promo code. Please enter a valid coupon code (e.g. WELCOME20).";
       }
     }
 
@@ -222,7 +222,7 @@ export const ContactForm: React.FC = () => {
                   placeholder="Your full name"
                   autoComplete="name"
                   aria-invalid={!!errors.name}
-                  className={`w-full px-3.5 py-2.5 text-sm rounded-lg border transition-colors focus:outline-none focus:ring-2 ${
+                  className={`w-full px-3.5 py-2.5 text-base sm:text-sm rounded-lg border transition-colors focus:outline-none focus:ring-2 ${
                     errors.name
                       ? "border-red-300 focus:ring-red-200 bg-red-50/20"
                       : "border-slate-300 focus:border-sky-500 focus:ring-sky-100"
@@ -244,7 +244,7 @@ export const ContactForm: React.FC = () => {
                   placeholder="(917) 000-0000"
                   autoComplete="tel"
                   aria-invalid={!!errors.phone}
-                  className={`w-full px-3.5 py-2.5 text-sm rounded-lg border transition-colors focus:outline-none focus:ring-2 ${
+                  className={`w-full px-3.5 py-2.5 text-base sm:text-sm rounded-lg border transition-colors focus:outline-none focus:ring-2 ${
                     errors.phone
                       ? "border-red-300 focus:ring-red-200 bg-red-50/20"
                       : "border-slate-300 focus:border-sky-500 focus:ring-sky-100"
@@ -267,7 +267,7 @@ export const ContactForm: React.FC = () => {
                 placeholder="name@company.com"
                 autoComplete="email"
                 aria-invalid={!!errors.email}
-                className={`w-full px-3.5 py-2.5 text-sm rounded-lg border transition-colors focus:outline-none focus:ring-2 ${
+                className={`w-full px-3.5 py-2.5 text-base sm:text-sm rounded-lg border transition-colors focus:outline-none focus:ring-2 ${
                   errors.email
                     ? "border-red-300 focus:ring-red-200 bg-red-50/20"
                     : "border-slate-300 focus:border-sky-500 focus:ring-sky-100"
@@ -290,7 +290,7 @@ export const ContactForm: React.FC = () => {
                   onChange={handleChange}
                   placeholder="Enter promo code if you have one"
                   aria-invalid={!!errors.promoCode}
-                  className={`w-full px-3.5 py-2 text-sm uppercase font-mono font-semibold tracking-wider rounded-lg border transition-colors focus:outline-none focus:ring-2 ${
+                  className={`w-full px-3.5 py-2 text-base sm:text-sm uppercase font-mono font-semibold tracking-wider rounded-lg border transition-colors focus:outline-none focus:ring-2 ${
                     errors.promoCode
                       ? "border-red-400 bg-red-50/40 text-red-900 focus:border-red-500 focus:ring-red-100"
                       : formData.promoCode.trim().toUpperCase() === "WELCOME20"
@@ -328,7 +328,7 @@ export const ContactForm: React.FC = () => {
                 onChange={handleChange}
                 placeholder="Tell us about your laundry or linen management requirements..."
                 aria-invalid={!!errors.message}
-                className={`w-full px-3.5 py-2.5 text-sm rounded-lg border transition-colors focus:outline-none focus:ring-2 ${
+                className={`w-full px-3.5 py-2.5 text-base sm:text-sm rounded-lg border transition-colors focus:outline-none focus:ring-2 ${
                   errors.message
                     ? "border-red-300 focus:ring-red-200 bg-red-50/20"
                     : "border-slate-300 focus:border-sky-500 focus:ring-sky-100"

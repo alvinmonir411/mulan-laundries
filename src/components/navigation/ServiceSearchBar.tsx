@@ -294,7 +294,7 @@ export const ServiceSearchBar: React.FC<ServiceSearchBarProps> = ({
             onKeyDown={handleKeyDown}
             placeholder={placeholder}
             aria-label="Search laundry services"
-            className="w-full bg-transparent py-2 px-1 text-sm sm:text-base text-slate-800 placeholder-slate-400 focus:outline-none font-medium"
+            className="w-full bg-transparent py-2 px-1 text-base text-slate-800 placeholder-slate-400 focus:outline-none font-medium"
           />
 
           {query && (
@@ -405,7 +405,7 @@ export const ServiceSearchBar: React.FC<ServiceSearchBarProps> = ({
   // 2. NAVBAR VARIANT (DESKTOP HEADER)
   return (
     <div ref={containerRef} className={`relative ${className}`}>
-      <div className="relative flex items-center bg-slate-100/90 hover:bg-slate-100 focus-within:bg-white rounded-full border border-slate-200 focus-within:border-[#005BD3] focus-within:ring-2 focus-within:ring-blue-100 transition-all duration-200 w-44 sm:w-56 md:w-64 lg:w-60 xl:w-72 px-3 py-1.5">
+      <div className="relative flex items-center bg-slate-100/90 hover:bg-slate-100 focus-within:bg-white rounded-full border border-slate-200 focus-within:border-[#005BD3] focus-within:ring-2 focus-within:ring-blue-100 transition-all duration-200 w-full max-w-full sm:w-56 md:w-64 lg:w-60 xl:w-72 px-3 py-1.5">
         <Search className="w-4 h-4 text-slate-400 shrink-0 mr-2" />
         <input
           ref={inputRef}
@@ -420,7 +420,7 @@ export const ServiceSearchBar: React.FC<ServiceSearchBarProps> = ({
           onKeyDown={handleKeyDown}
           placeholder="Search services..."
           aria-label="Search laundry services"
-          className="w-full bg-transparent text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none font-medium"
+          className="w-full bg-transparent text-base sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none font-medium"
         />
 
         {query && (

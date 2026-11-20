@@ -215,6 +215,8 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
   // Pause background video when rotated away from slide 1 to conserve GPU/CPU
   useEffect(() => {
     if (!videoRef.current) return;
+    videoRef.current.defaultMuted = true;
+    videoRef.current.muted = true;
     if (currentSlide === 0) {
       videoRef.current.play().catch(() => {});
     } else {
@@ -233,7 +235,7 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
   const active = slides[currentSlide];
 
   return (
-    <section className="relative w-full h-[680px] sm:h-[720px] lg:h-[760px] xl:h-[780px] flex items-center justify-center overflow-hidden bg-slate-950 text-white">
+    <section className="relative w-full min-h-[720px] h-auto lg:h-[760px] xl:h-[780px] py-16 sm:py-20 lg:py-0 flex items-center justify-center overflow-hidden bg-slate-950 text-white">
       {/* 1. BACKGROUND SLIDER IMAGES / VIDEO LAYER */}
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden bg-slate-950">
         {slides.map((slide, idx) => (
@@ -297,8 +299,8 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
           </div>
 
           {/* Main Headline: Fixed height to eliminate layout shifts between slides */}
-          <div className="min-h-[90px] sm:min-h-[110px] lg:min-h-[140px] flex flex-col justify-center">
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.08] text-white drop-shadow-md">
+          <div className="min-h-[80px] sm:min-h-[110px] lg:min-h-[140px] flex flex-col justify-center">
+            <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1] text-white drop-shadow-md">
               <span className="block text-white drop-shadow-lg">{active.headlineLine1}</span>
               <span className="block bg-gradient-to-r from-sky-400 via-blue-300 to-indigo-300 bg-clip-text text-transparent drop-shadow-lg">
                 {active.headlineLine2}
@@ -388,32 +390,32 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
       </div>
 
       {/* Slider Controls (Prev / Next & Dots) */}
-      <div className="absolute bottom-6 right-6 z-30 flex items-center gap-3">
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 sm:left-auto sm:translate-x-0 sm:bottom-6 sm:right-6 z-30 flex items-center gap-3">
         <button
           onClick={prevSlide}
           aria-label="Previous slide"
-          className="w-11 h-11 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/75 text-white border border-white/20 transition-all backdrop-blur-md"
+          className="hidden sm:flex w-11 h-11 items-center justify-center rounded-full bg-black/50 hover:bg-black/75 text-white border border-white/20 transition-all backdrop-blur-md"
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
         <button
           onClick={nextSlide}
           aria-label="Next slide"
-          className="w-11 h-11 flex items-center justify-center rounded-full bg-black/50 hover:bg-black/75 text-white border border-white/20 transition-all backdrop-blur-md"
+          className="hidden sm:flex w-11 h-11 items-center justify-center rounded-full bg-black/50 hover:bg-black/75 text-white border border-white/20 transition-all backdrop-blur-md"
         >
           <ChevronRight className="w-5 h-5" />
         </button>
-        <div className="flex items-center gap-1 ml-1">
+        <div className="flex items-center gap-1.5 sm:ml-1 bg-black/40 sm:bg-transparent backdrop-blur-md sm:backdrop-blur-none px-3 py-1.5 sm:p-0 rounded-full border border-white/15 sm:border-none">
           {slides.map((_, i) => (
             <button
               key={i}
               onClick={() => goToSlide(i)}
               aria-label={`Go to slide ${i + 1}`}
-              className="p-2 min-w-[32px] min-h-[44px] flex items-center justify-center focus:outline-none"
+              className="p-1.5 min-w-[28px] min-h-[36px] flex items-center justify-center focus:outline-none"
             >
               <span
                 className={`h-2 rounded-full transition-all duration-500 block ${
-                  i === currentSlide ? "w-7 bg-sky-400 shadow-md" : "w-2 bg-white/40 hover:bg-white/60"
+                  i === currentSlide ? "w-6 sm:w-7 bg-sky-400 shadow-md" : "w-2 bg-white/40 hover:bg-white/60"
                 }`}
               />
             </button>

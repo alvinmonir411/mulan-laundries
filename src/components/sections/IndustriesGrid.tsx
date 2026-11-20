@@ -47,7 +47,7 @@ export const IndustriesGrid: React.FC<IndustriesGridProps> = ({ images }) => {
                 className="bg-white rounded-2xl overflow-hidden border border-slate-200/80 shadow-subtle hover:shadow-card-hover hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between group"
               >
                 {/* Card Image */}
-                <div className="relative h-48 w-full overflow-hidden bg-slate-100">
+                <div className="relative aspect-[16/10] sm:aspect-auto sm:h-48 w-full overflow-hidden bg-slate-100">
                   <Image
                     src={cardImg}
                     alt={cardAlt}

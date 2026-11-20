@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { TopBar } from "@/components/layout/TopBar";
@@ -15,6 +15,14 @@ const inter = Inter({
   variable: "--font-inter",
   display: "swap",
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: "cover",
+  themeColor: "#005BD3",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.mulanlaundries.com"),
@@ -162,11 +170,11 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
         />
       </head>
-      <body className="font-sans antialiased bg-white text-navy-900 flex flex-col min-h-screen">
+      <body className="font-sans antialiased bg-white text-navy-900 flex flex-col min-h-screen overflow-x-hidden max-w-full">
         <LiveSiteListener />
         <TopBar phone={phone} phoneRaw={phoneRaw} />
         <Navbar logoUrl={headerLogo} logoAlt={headerLogoAlt} phone={phone} phoneRaw={phoneRaw} />
-        <main className="flex-1">{children}</main>
+        <main className="flex-1 w-full overflow-x-hidden">{children}</main>
         <Footer
           logoUrl={footerLogo}
           logoAlt={footerLogoAlt}

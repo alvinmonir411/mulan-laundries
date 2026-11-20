@@ -92,7 +92,7 @@ export default async function WashFoldPage() {
             </div>
 
             <div className="space-y-6">
-              <div className="relative h-[380px] w-full rounded-2xl overflow-hidden shadow-card border border-slate-100">
+              <div className="relative aspect-[16/10] sm:aspect-[4/3] lg:aspect-auto lg:h-[380px] w-full rounded-2xl overflow-hidden shadow-card border border-slate-100">
                 <Image
                   src={washFoldImg}
                   alt={washFoldAlt}

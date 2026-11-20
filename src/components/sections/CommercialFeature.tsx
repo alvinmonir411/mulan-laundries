@@ -14,7 +14,7 @@ export const CommercialFeature: React.FC<CommercialFeatureProps> = ({
   commercialAlt = "Commercial laundry services machinery and linen handling",
 }) => {
   return (
-    <section className="py-20 bg-slate-50 border-y border-slate-200/80">
+    <section className="py-20 bg-slate-50 border-y border-slate-200/80 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left Column: Text & Operational Pillars */}
@@ -90,7 +90,7 @@ export const CommercialFeature: React.FC<CommercialFeatureProps> = ({
 
           {/* Right Column: Visual Showcase */}
           <div className="relative order-1 lg:order-2">
-            <div className="relative h-[420px] sm:h-[480px] w-full rounded-2xl overflow-hidden shadow-card border border-slate-200">
+            <div className="relative aspect-[16/10] sm:aspect-[4/3] lg:aspect-auto lg:h-[480px] w-full rounded-2xl overflow-hidden shadow-card border border-slate-200">
               <Image
                 src={commercialImage}
                 alt={commercialAlt}
@@ -103,7 +103,7 @@ export const CommercialFeature: React.FC<CommercialFeatureProps> = ({
             </div>
 
             {/* Floating Volume Stats Box */}
-            <div className="absolute -bottom-6 left-6 right-6 sm:left-10 sm:right-auto bg-navy-900 text-white p-6 rounded-2xl shadow-xl border border-navy-800">
+            <div className="absolute -bottom-6 left-4 right-4 sm:left-10 sm:right-auto bg-navy-900 text-white p-5 sm:p-6 rounded-2xl shadow-xl border border-navy-800">
               <span className="text-xs font-bold text-sky-400 uppercase tracking-widest block mb-1">
                 Annual Processing Capacity
               </span>

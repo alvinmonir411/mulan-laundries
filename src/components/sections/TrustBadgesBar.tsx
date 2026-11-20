@@ -33,7 +33,7 @@ export const TrustBadgesBar: React.FC = () => {
   return (
     <section className="py-10 bg-white border-y border-slate-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 items-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 items-center">
           {trustPoints.map((p, idx) => {
             const Icon = p.icon;
             return (

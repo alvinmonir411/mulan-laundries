@@ -15,7 +15,7 @@ export const PromoOfferBanner: React.FC<PromoOfferBannerProps> = ({
   return (
     <section className="py-12 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-[#005BD3] rounded-3xl p-8 sm:p-12 text-white relative overflow-hidden shadow-xl">
+        <div className="bg-[#005BD3] rounded-3xl p-6 sm:p-12 text-white relative overflow-hidden shadow-xl">
           {/* Subtle Decorative Background Bubbles */}
           <div className="absolute top-0 right-0 w-80 h-80 bg-white/10 rounded-full blur-3xl pointer-events-none" />
 

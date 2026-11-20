@@ -189,7 +189,7 @@ export default async function ServicesHubPage() {
                   key={service.title}
                   className="bg-white rounded-2xl overflow-hidden border border-slate-200/80 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col group"
                 >
-                  <div className="relative h-56 w-full bg-slate-100 overflow-hidden">
+                  <div className="relative aspect-[16/10] sm:aspect-auto sm:h-56 w-full bg-slate-100 overflow-hidden">
                     <Image
                       src={imgUrl}
                       alt={imgAlt}

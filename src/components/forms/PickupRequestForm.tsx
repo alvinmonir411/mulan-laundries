@@ -52,7 +52,7 @@ export const PickupRequestForm: React.FC = () => {
     if (formData.promoCode.trim()) {
       const promoUpper = formData.promoCode.trim().toUpperCase();
       if (promoUpper !== "WELCOME20") {
-        errs.promoCode = "ভুল প্রোমো কোড! এই ধরণের কোনো প্রোমো কোড আমাদের নেই। (Invalid promo code)";
+        errs.promoCode = "Invalid promo code. Please enter a valid coupon code (e.g. WELCOME20).";
       }
     }
 
@@ -219,7 +219,7 @@ export const PickupRequestForm: React.FC = () => {
               placeholder="First name"
               autoComplete="given-name"
               aria-invalid={!!errors.firstName}
-              className={`w-full px-4 py-2.5 text-sm rounded-lg border transition-colors focus:outline-none focus:ring-2 ${
+              className={`w-full px-4 py-2.5 text-base sm:text-sm rounded-lg border transition-colors focus:outline-none focus:ring-2 ${
                 errors.firstName
                   ? "border-red-300 focus:ring-red-200 bg-red-50/20"
                   : "border-slate-300 focus:border-sky-500 focus:ring-sky-100"
@@ -241,7 +241,7 @@ export const PickupRequestForm: React.FC = () => {
               placeholder="Last name"
               autoComplete="family-name"
               aria-invalid={!!errors.lastName}
-              className={`w-full px-4 py-2.5 text-sm rounded-lg border transition-colors focus:outline-none focus:ring-2 ${
+              className={`w-full px-4 py-2.5 text-base sm:text-sm rounded-lg border transition-colors focus:outline-none focus:ring-2 ${
                 errors.lastName
                   ? "border-red-300 focus:ring-red-200 bg-red-50/20"
                   : "border-slate-300 focus:border-sky-500 focus:ring-sky-100"
@@ -266,7 +266,7 @@ export const PickupRequestForm: React.FC = () => {
               placeholder="Eg. (917) 365-4366"
               autoComplete="tel"
               aria-invalid={!!errors.phone}
-              className={`w-full px-4 py-2.5 text-sm rounded-lg border transition-colors focus:outline-none focus:ring-2 ${
+              className={`w-full px-4 py-2.5 text-base sm:text-sm rounded-lg border transition-colors focus:outline-none focus:ring-2 ${
                 errors.phone
                   ? "border-red-300 focus:ring-red-200 bg-red-50/20"
                   : "border-slate-300 focus:border-sky-500 focus:ring-sky-100"
@@ -288,7 +288,7 @@ export const PickupRequestForm: React.FC = () => {
               placeholder="Eg. name@company.com"
               autoComplete="email"
               aria-invalid={!!errors.email}
-              className={`w-full px-4 py-2.5 text-sm rounded-lg border transition-colors focus:outline-none focus:ring-2 ${
+              className={`w-full px-4 py-2.5 text-base sm:text-sm rounded-lg border transition-colors focus:outline-none focus:ring-2 ${
                 errors.email
                   ? "border-red-300 focus:ring-red-200 bg-red-50/20"
                   : "border-slate-300 focus:border-sky-500 focus:ring-sky-100"
@@ -309,7 +309,7 @@ export const PickupRequestForm: React.FC = () => {
               name="customerType"
               value={formData.customerType}
               onChange={handleChange}
-              className="w-full px-4 py-2.5 text-sm rounded-lg border border-slate-300 bg-white text-navy-900 focus:border-sky-500 focus:ring-2 focus:ring-sky-100 transition-colors focus:outline-none"
+              className="w-full px-4 py-2.5 text-base sm:text-sm rounded-lg border border-slate-300 bg-white text-navy-900 focus:border-sky-500 focus:ring-2 focus:ring-sky-100 transition-colors focus:outline-none"
             >
               <option value="Commercial">Commercial Account (Business / Facility)</option>
               <option value="Residential">Residential Customer (Household / Wash & Fold)</option>
@@ -325,7 +325,7 @@ export const PickupRequestForm: React.FC = () => {
               name="pickupDay"
               value={formData.pickupDay}
               onChange={handleChange}
-              className="w-full px-4 py-2.5 text-sm rounded-lg border border-slate-300 bg-white text-navy-900 focus:border-sky-500 focus:ring-2 focus:ring-sky-100 transition-colors focus:outline-none"
+              className="w-full px-4 py-2.5 text-base sm:text-sm rounded-lg border border-slate-300 bg-white text-navy-900 focus:border-sky-500 focus:ring-2 focus:ring-sky-100 transition-colors focus:outline-none"
             >
               <option value="Monday">Monday</option>
               <option value="Tuesday">Tuesday</option>
@@ -352,7 +352,7 @@ export const PickupRequestForm: React.FC = () => {
               onChange={handleChange}
               placeholder="Enter promo code if you have one"
               aria-invalid={!!errors.promoCode}
-              className={`w-full px-4 py-2 text-sm uppercase font-mono font-semibold tracking-wider rounded-lg border transition-colors focus:outline-none focus:ring-2 ${
+              className={`w-full px-4 py-2 text-base sm:text-sm uppercase font-mono font-semibold tracking-wider rounded-lg border transition-colors focus:outline-none focus:ring-2 ${
                 errors.promoCode
                   ? "border-red-400 bg-red-50/40 text-red-900 focus:border-red-500 focus:ring-red-100"
                   : formData.promoCode.trim().toUpperCase() === "WELCOME20"
@@ -391,7 +391,7 @@ export const PickupRequestForm: React.FC = () => {
             onChange={handleChange}
             placeholder="Please provide your pickup address, suite/room details, estimated volume, or special linen handling notes..."
             aria-invalid={!!errors.message}
-            className={`w-full px-4 py-2.5 text-sm rounded-lg border transition-colors focus:outline-none focus:ring-2 ${
+            className={`w-full px-4 py-2.5 text-base sm:text-sm rounded-lg border transition-colors focus:outline-none focus:ring-2 ${
               errors.message
                 ? "border-red-300 focus:ring-red-200 bg-red-50/20"
                 : "border-slate-300 focus:border-sky-500 focus:ring-sky-100"

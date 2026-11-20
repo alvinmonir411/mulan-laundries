@@ -93,7 +93,7 @@ export const ServicesGridInspiration: React.FC<ServicesGridInspirationProps> = (
                 className="bg-white rounded-2xl overflow-hidden border border-slate-200/90 shadow-subtle hover:shadow-card hover:-translate-y-1 transition-all duration-300 flex flex-col group"
               >
                 {/* Photo Top Container */}
-                <div className="relative h-40 w-full overflow-hidden bg-slate-100">
+                <div className="relative aspect-[16/10] sm:aspect-auto sm:h-40 w-full overflow-hidden bg-slate-100">
                   <Image
                     src={imgSrc}
                     alt={imgAlt}
