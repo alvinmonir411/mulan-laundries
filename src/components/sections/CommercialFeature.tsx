@@ -90,25 +90,25 @@ export const CommercialFeature: React.FC<CommercialFeatureProps> = ({
 
           {/* Right Column: Visual Showcase */}
           <div className="relative order-1 lg:order-2">
-            <div className="relative aspect-[16/10] sm:aspect-[4/3] lg:aspect-auto lg:h-[480px] w-full rounded-2xl overflow-hidden shadow-card border border-slate-200">
+            <div className="relative aspect-[4/3] sm:aspect-[4/3] lg:aspect-auto lg:h-[480px] w-full rounded-2xl overflow-hidden shadow-card border border-slate-200">
               <Image
                 src={commercialImage}
                 alt={commercialAlt}
                 fill
                 sizes="(max-width: 1024px) 100vw, 600px"
                 loading="lazy"
-                className="object-cover"
+                className="object-cover object-center"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-navy-950/70 via-transparent to-transparent" />
             </div>
 
             {/* Floating Volume Stats Box */}
-            <div className="absolute -bottom-6 left-4 right-4 sm:left-10 sm:right-auto bg-navy-900 text-white p-5 sm:p-6 rounded-2xl shadow-xl border border-navy-800">
-              <span className="text-xs font-bold text-sky-400 uppercase tracking-widest block mb-1">
-                Annual Processing Capacity
+            <div className="absolute bottom-3 left-3 sm:bottom-auto sm:-bottom-8 sm:left-10 sm:right-auto bg-navy-900/95 backdrop-blur-md text-white p-3.5 sm:p-6 rounded-xl sm:rounded-2xl shadow-xl border border-navy-800/80 max-w-[230px] sm:max-w-xs">
+              <span className="text-[10px] sm:text-xs font-bold text-sky-400 uppercase tracking-widest block mb-0.5 sm:mb-1">
+                Annual Capacity
               </span>
-              <div className="text-3xl font-black text-white">1,000,000+ Lbs</div>
-              <div className="text-xs text-slate-300 mt-1">
+              <div className="text-xl sm:text-3xl font-black text-white leading-tight">1,000,000+ Lbs</div>
+              <div className="text-[11px] sm:text-xs text-slate-300 mt-1 hidden sm:block">
                 Full complement of laundry programs & linen management
               </div>
             </div>

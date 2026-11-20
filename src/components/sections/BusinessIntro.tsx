@@ -19,34 +19,34 @@ export const BusinessIntro: React.FC<BusinessIntroProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left Column: Visual & Heritage Badge */}
           <div className="relative">
-            <div className="relative aspect-[16/10] sm:aspect-[4/3] lg:aspect-auto lg:h-[480px] w-full rounded-2xl overflow-hidden shadow-card border border-slate-100">
+            <div className="relative aspect-[4/3] sm:aspect-[4/3] lg:aspect-auto lg:h-[480px] w-full rounded-2xl overflow-hidden shadow-card border border-slate-100">
               <Image
                 src={aboutImage}
                 alt={aboutAlt}
                 fill
                 sizes="(max-width: 1024px) 100vw, 600px"
                 loading="lazy"
-                className="object-cover"
+                className="object-cover object-center"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-navy-950/60 via-transparent to-transparent" />
             </div>
 
             {/* Floating Experience Badge */}
-            <div className="absolute -bottom-6 right-2 sm:-bottom-8 sm:right-6 bg-navy-900 text-white p-4 sm:p-6 rounded-2xl shadow-xl border border-navy-800 max-w-[calc(100%-1rem)] sm:max-w-xs">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center shrink-0">
-                  <Award className="w-6 h-6" />
+            <div className="absolute bottom-3 right-3 sm:-bottom-8 sm:right-6 bg-navy-900/95 backdrop-blur-md text-white p-3 sm:p-6 rounded-xl sm:rounded-2xl shadow-xl border border-navy-800/80 max-w-[210px] sm:max-w-xs">
+              <div className="flex items-center gap-2.5 sm:gap-3">
+                <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-sky-500/20 text-sky-400 flex items-center justify-center shrink-0">
+                  <Award className="w-5 h-5 sm:w-6 sm:h-6" />
                 </div>
                 <div>
-                  <span className="text-2xl font-black text-white block">18+ Years</span>
-                  <span className="text-xs text-slate-300 uppercase tracking-wider">New York Brand Heritage</span>
+                  <span className="text-lg sm:text-2xl font-black text-white block leading-tight">18+ Years</span>
+                  <span className="text-[10px] sm:text-xs text-slate-300 uppercase tracking-wider block">NYC Heritage</span>
                 </div>
               </div>
             </div>
 
             {/* Secondary Floating Pill */}
-            <div className="absolute top-6 left-6 bg-white/95 backdrop-blur-sm text-navy-900 px-4 py-2 rounded-xl shadow-md border border-slate-100 flex items-center gap-2 text-xs font-bold">
-              <MapPin className="w-4 h-4 text-sky-600" />
+            <div className="absolute top-3 left-3 sm:top-6 sm:left-6 bg-white/95 backdrop-blur-sm text-navy-900 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg sm:rounded-xl shadow-md border border-slate-100 flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs font-bold">
+              <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-sky-600" />
               <span>Headquartered in the Bronx, NYC</span>
             </div>
           </div>

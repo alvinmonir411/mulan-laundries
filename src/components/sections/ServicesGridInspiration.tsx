@@ -93,14 +93,14 @@ export const ServicesGridInspiration: React.FC<ServicesGridInspirationProps> = (
                 className="bg-white rounded-2xl overflow-hidden border border-slate-200/90 shadow-subtle hover:shadow-card hover:-translate-y-1 transition-all duration-300 flex flex-col group"
               >
                 {/* Photo Top Container */}
-                <div className="relative aspect-[16/10] sm:aspect-auto sm:h-40 w-full overflow-hidden bg-slate-100">
+                <div className="relative aspect-[4/3] sm:aspect-auto sm:h-44 w-full overflow-hidden bg-slate-100">
                   <Image
                     src={imgSrc}
                     alt={imgAlt}
                     fill
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 220px"
                     loading="lazy"
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="object-cover object-center group-hover:scale-105 transition-transform duration-300"
                   />
                   {/* Floating Circular Icon (matching inspiration design) */}
                   <div className="absolute -bottom-3 left-4 w-9 h-9 rounded-full bg-white border border-blue-100 shadow-md flex items-center justify-center text-[#005BD3] group-hover:bg-[#005BD3] group-hover:text-white transition-colors">
