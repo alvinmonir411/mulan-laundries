@@ -12,7 +12,7 @@ export const TopBar: React.FC<TopBarProps> = ({
   phoneRaw = BUSINESS_INFO.phoneRaw,
 }) => {
   return (
-    <div className="bg-[#005BD3] text-white text-xs py-2 px-4 border-b border-blue-400/20">
+    <div className="hidden md:block bg-[#005BD3] text-white text-xs py-2 px-4 border-b border-blue-400/20">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2">
         {/* Left: 3 Value Proposition Badges */}
         <div className="flex items-center gap-4 sm:gap-6 flex-wrap justify-center md:justify-start">
