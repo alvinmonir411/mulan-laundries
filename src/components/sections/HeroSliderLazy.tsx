@@ -1,7 +1,7 @@
 "use client";
 
 // Client-side wrapper that lazily loads HeroSliderClient AFTER LCP.
-// This must be a Client Component so that `ssr: false` is allowed.
+// Must be a Client Component so that `ssr: false` is allowed.
 import dynamic from "next/dynamic";
 
 interface SlideData {
@@ -24,9 +24,20 @@ const HeroSliderClient = dynamic(
 export function HeroSliderLazy({
   slides,
   posterImg,
+  ctaPrimary,
+  ctaSecondary,
 }: {
   slides: SlideData[];
   posterImg: string;
+  ctaPrimary?: string;
+  ctaSecondary?: string;
 }) {
-  return <HeroSliderClient slides={slides} posterImg={posterImg} />;
+  return (
+    <HeroSliderClient
+      slides={slides}
+      posterImg={posterImg}
+      ctaPrimary={ctaPrimary}
+      ctaSecondary={ctaSecondary}
+    />
+  );
 }
