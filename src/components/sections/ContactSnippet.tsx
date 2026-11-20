@@ -1,8 +1,13 @@
 import React from "react";
+import dynamic from "next/dynamic";
 import { Phone, Clock, MapPin, Mail, ShieldCheck } from "lucide-react";
 import { BUSINESS_INFO } from "@/data/business";
-import { ContactForm } from "@/components/forms/ContactForm";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+
+const ContactForm = dynamic(
+  () => import("@/components/forms/ContactForm").then((mod) => mod.ContactForm),
+  { ssr: true }
+);
 
 interface ContactSnippetProps {
   phone?: string;

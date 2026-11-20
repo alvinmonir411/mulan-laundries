@@ -3,11 +3,20 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { ChevronDown, ChevronRight, Menu, Phone, Calendar, ArrowRight, Waves, Search } from "lucide-react";
 import { NAV_LINKS } from "@/data/navigation";
 import { BUSINESS_INFO } from "@/data/business";
-import { MobileMenu } from "./MobileMenu";
-import { ServiceSearchBar } from "@/components/navigation/ServiceSearchBar";
+
+const MobileMenu = dynamic(
+  () => import("./MobileMenu").then((mod) => mod.MobileMenu),
+  { ssr: false }
+);
+
+const ServiceSearchBar = dynamic(
+  () => import("@/components/navigation/ServiceSearchBar").then((mod) => mod.ServiceSearchBar),
+  { ssr: true }
+);
 
 interface NavbarProps {
   logoUrl?: string;
@@ -55,7 +64,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                   alt={logoAlt}
                   fill
                   className="object-contain"
-                  priority
                 />
               </div>
             </Link>

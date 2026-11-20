@@ -1,10 +1,10 @@
 import React from "react";
+import dynamic from "next/dynamic";
 import { HeroInspiration } from "@/components/sections/HeroInspiration";
 import { ServicesGridInspiration } from "@/components/sections/ServicesGridInspiration";
 import { HowItWorksInspiration } from "@/components/sections/HowItWorksInspiration";
 import { PromoOfferBanner } from "@/components/sections/PromoOfferBanner";
 import { TrustBadgesBar } from "@/components/sections/TrustBadgesBar";
-import { TestimonialInspiration } from "@/components/sections/TestimonialInspiration";
 import { BusinessIntro } from "@/components/sections/BusinessIntro";
 import { CommercialFeature } from "@/components/sections/CommercialFeature";
 import { IndustriesGrid } from "@/components/sections/IndustriesGrid";
@@ -12,6 +12,11 @@ import { ContactSnippet } from "@/components/sections/ContactSnippet";
 import { getSiteImages } from "@/lib/images";
 import { getSiteSettings } from "@/lib/settings";
 import { fetchAllTestimonials } from "@/lib/cmsData";
+
+const TestimonialInspiration = dynamic(
+  () => import("@/components/sections/TestimonialInspiration").then((mod) => mod.TestimonialInspiration),
+  { ssr: true }
+);
 
 export const revalidate = 60;
 

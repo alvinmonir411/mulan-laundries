@@ -241,7 +241,9 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
         {slides.map((slide, idx) => (
           <div
             key={slide.id}
-            className={`absolute inset-0 w-full h-full transition-all duration-700 ease-in-out ${
+            className={`absolute inset-0 w-full h-full ${
+              animating ? "transition-all duration-700 ease-in-out" : ""
+            } ${
               idx === currentSlide
                 ? "opacity-100 scale-100 z-[1]"
                 : "opacity-0 scale-[1.03] z-0 pointer-events-none"
@@ -267,8 +269,10 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
                 alt={slide.alt}
                 fill
                 priority={idx === 0}
-                quality={75}
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1200px"
+                fetchPriority={idx === 0 ? "high" : "auto"}
+                loading={idx === 0 ? "eager" : "lazy"}
+                unoptimized={idx === 0}
+                sizes="100vw"
                 className="object-cover object-center"
               />
             )}
