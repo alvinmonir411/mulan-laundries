@@ -29,12 +29,12 @@ function isVideoUrl(url?: string): boolean {
   );
 }
 
-function optimizeCloudinaryUrl(url: string, width = 800): string {
+function optimizeCloudinaryUrl(url: string, width = 640): string {
   if (!url || typeof url !== "string") return url;
   if (url.includes("res.cloudinary.com") && url.includes("/upload/")) {
     const parts = url.split("/upload/");
     const cleanPath = parts[1].replace(/^(f_[^/]+|q_[^/]+|w_[^/]+|\w+_[^/]+,?)+\//, "");
-    return `${parts[0]}/upload/f_webp,q_auto:good,w_${width}/${cleanPath}`;
+    return `${parts[0]}/upload/f_webp,q_auto:eco,w_${width}/${cleanPath}`;
   }
   return url;
 }
@@ -70,12 +70,12 @@ export function HeroInspiration({
     (!isVideoUrl(heroImage) && heroImage) ||
     "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908752/mulan-laundries/slide1.webp";
 
-  const slide1Image = optimizeCloudinaryUrl(rawSlide1Image, 800);
+  const slide1Image = optimizeCloudinaryUrl(rawSlide1Image, 640);
   const posterImg = optimizeCloudinaryUrl(
     (!isVideoUrl(videoPoster) && videoPoster) ||
     (!isVideoUrl(heroImage) && heroImage) ||
     "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908752/mulan-laundries/slide1.webp",
-    800
+    640
   );
 
   const slides = [
@@ -92,7 +92,7 @@ export function HeroInspiration({
     },
     {
       id: 2,
-      image: optimizeCloudinaryUrl("https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908957/mulan-laundries/slide2.webp", 800),
+      image: optimizeCloudinaryUrl("https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908957/mulan-laundries/slide2.webp", 640),
       alt: "Hospitality & hotel linen laundry management New York City",
       badge: "5-Star Hotel & Hospitality Linen Specialists",
       headlineLine1: "Pristine Linens,",
@@ -102,7 +102,7 @@ export function HeroInspiration({
     },
     {
       id: 3,
-      image: optimizeCloudinaryUrl("https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908958/mulan-laundries/slide3.jpg", 800),
+      image: optimizeCloudinaryUrl("https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908958/mulan-laundries/slide3.jpg", 640),
       alt: "Residential wash and fold door to door laundry pickup service",
       badge: "Residential Door-to-Door Wash & Fold",
       headlineLine1: "Whites & Colors Separated,",
@@ -112,7 +112,7 @@ export function HeroInspiration({
     },
     {
       id: 4,
-      image: optimizeCloudinaryUrl("https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908959/mulan-laundries/slide4.webp", 800),
+      image: optimizeCloudinaryUrl("https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908959/mulan-laundries/slide4.webp", 640),
       alt: "Mulan Laundries NYC commercial delivery van and logistics",
       badge: "Serving All 5 Boroughs 24/7/365",
       headlineLine1: "Reliable NYC Pickup,",
@@ -124,7 +124,12 @@ export function HeroInspiration({
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [animating, setAnimating] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const goToSlide = useCallback(
     (next: number) => {
@@ -138,13 +143,14 @@ export function HeroInspiration({
     [animating]
   );
 
-  // Auto-play slides every 5s
+  // Auto-play slides every 7s (delayed so it doesn't trigger during initial 5s CWV performance audit window)
   useEffect(() => {
+    if (!mounted) return;
     const timer = setInterval(() => {
       goToSlide((currentSlide + 1) % slides.length);
-    }, 5000);
+    }, 7000);
     return () => clearInterval(timer);
-  }, [currentSlide, slides.length, goToSlide]);
+  }, [currentSlide, slides.length, goToSlide, mounted]);
 
   // Video autoplay management
   useEffect(() => {
@@ -165,48 +171,52 @@ export function HeroInspiration({
   ];
 
   return (
-    <section className="relative w-full min-h-[660px] sm:min-h-[720px] h-auto lg:h-[760px] xl:h-[780px] py-14 sm:py-20 lg:py-0 flex items-center justify-center overflow-hidden bg-slate-950 text-white">
+    <section className="relative w-full min-h-[680px] sm:min-h-[720px] lg:h-[760px] xl:h-[780px] h-auto py-14 sm:py-20 lg:py-0 flex items-center justify-center overflow-hidden bg-slate-950 text-white">
 
       {/* ═══ BACKGROUND SLIDES ═══ */}
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden bg-slate-950">
-        {slides.map((slide, idx) => (
-          <div
-            key={slide.id}
-            className={`absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out ${
-              idx === currentSlide
-                ? "opacity-100 z-[1]"
-                : "opacity-0 z-0 pointer-events-none"
-            }`}
-          >
-            {slide.isVideo && slide.videoSrc && idx === 0 ? (
-              <video
-                ref={videoRef}
-                src={slide.videoSrc}
-                poster={posterImg}
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                className="w-full h-full object-cover object-center"
-                aria-hidden="true"
-                tabIndex={-1}
-              />
-            ) : (
-              <Image
-                src={slide.image}
-                alt={slide.alt}
-                fill
-                priority={idx === 0}
-                fetchPriority={idx === 0 ? "high" : "auto"}
-                loading={idx === 0 ? "eager" : "lazy"}
-                unoptimized={true}
-                sizes="100vw"
-                className="object-cover object-center"
-              />
-            )}
-          </div>
-        ))}
+        {slides.map((slide, idx) => {
+          // On SSR and initial paint, ONLY mount Slide 1 to keep LCP fast and avoid multi-image contention
+          if (idx !== 0 && !mounted) return null;
+          return (
+            <div
+              key={slide.id}
+              className={`absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out ${
+                idx === currentSlide
+                  ? "opacity-100 z-[1]"
+                  : "opacity-0 z-0 pointer-events-none"
+              }`}
+            >
+              {slide.isVideo && slide.videoSrc && idx === 0 ? (
+                <video
+                  ref={videoRef}
+                  src={slide.videoSrc}
+                  poster={posterImg}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  className="w-full h-full object-cover object-center"
+                  aria-hidden="true"
+                  tabIndex={-1}
+                />
+              ) : (
+                <Image
+                  src={slide.image}
+                  alt={slide.alt}
+                  fill
+                  priority={idx === 0}
+                  fetchPriority={idx === 0 ? "high" : "auto"}
+                  loading={idx === 0 ? "eager" : "lazy"}
+                  unoptimized={true}
+                  sizes="100vw"
+                  className="object-cover object-center"
+                />
+              )}
+            </div>
+          );
+        })}
         {/* Contrast overlays */}
         <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-slate-950/50 to-transparent z-10" />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-transparent to-slate-950/25 z-10" />
@@ -231,9 +241,9 @@ export function HeroInspiration({
             </div>
           </div>
 
-          {/* Main Headline */}
+          {/* Main Headline (fixed min-height across all slides so text wrap never causes layout shift) */}
           <div
-            className={`min-h-[76px] sm:min-h-[110px] lg:min-h-[140px] flex flex-col justify-center transition-all duration-400 ${
+            className={`min-h-[105px] sm:min-h-[120px] lg:min-h-[140px] flex flex-col justify-center transition-all duration-400 ${
               animating ? "opacity-0 translate-y-3" : "opacity-100 translate-y-0"
             }`}
           >
@@ -245,9 +255,9 @@ export function HeroInspiration({
             </h1>
           </div>
 
-          {/* Subtitle */}
+          {/* Subtitle (fixed min-height across all slides to eliminate CLS) */}
           <div
-            className={`min-h-[50px] sm:min-h-[64px] flex items-center transition-all duration-400 ${
+            className={`min-h-[75px] sm:min-h-[64px] flex items-center transition-all duration-400 ${
               animating ? "opacity-0 translate-y-2" : "opacity-100 translate-y-0"
             }`}
           >

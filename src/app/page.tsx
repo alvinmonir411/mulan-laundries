@@ -1,5 +1,4 @@
 import React from "react";
-import dynamic from "next/dynamic";
 import { HeroInspiration } from "@/components/sections/HeroInspiration";
 import { ServicesGridInspiration } from "@/components/sections/ServicesGridInspiration";
 import { HowItWorksInspiration } from "@/components/sections/HowItWorksInspiration";
@@ -13,10 +12,7 @@ import { getSiteImages } from "@/lib/images";
 import { getSiteSettings } from "@/lib/settings";
 import { fetchAllTestimonials } from "@/lib/cmsData";
 
-const TestimonialInspiration = dynamic(
-  () => import("@/components/sections/TestimonialInspiration").then((mod) => mod.TestimonialInspiration),
-  { ssr: true }
-);
+import { TestimonialInspiration } from "@/components/sections/TestimonialInspiration";
 
 export const revalidate = 60;
 
@@ -38,17 +34,17 @@ export default async function HomePage() {
     (!isVideoUrl(siteImages.hero_main?.image_url) && siteImages.hero_main?.image_url) ||
     "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908752/mulan-laundries/slide1.webp";
 
-  const getOptimizedHeroUrl = (url: string, width = 800) => {
+  const getOptimizedHeroUrl = (url: string, width = 640) => {
     if (!url || typeof url !== "string") return url;
     if (url.includes("res.cloudinary.com") && url.includes("/upload/")) {
       const parts = url.split("/upload/");
       const cleanPath = parts[1].replace(/^(f_[^/]+|q_[^/]+|w_[^/]+|\w+_[^/]+,?)+\//, "");
-      return `${parts[0]}/upload/f_webp,q_auto:good,w_${width}/${cleanPath}`;
+      return `${parts[0]}/upload/f_webp,q_auto:eco,w_${width}/${cleanPath}`;
     }
     return url;
   };
 
-  const heroPreloadUrl = getOptimizedHeroUrl(rawHeroImage, 800);
+  const heroPreloadUrl = getOptimizedHeroUrl(rawHeroImage, 640);
 
   return (
     <>
