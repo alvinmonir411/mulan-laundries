@@ -121,11 +121,12 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
     };
   }, []);
 
-  const optimizeCloudinaryUrl = (url: string, width = 1200) => {
+  const optimizeCloudinaryUrl = (url: string, width = 800) => {
     if (!url || typeof url !== "string") return url;
     if (url.includes("res.cloudinary.com") && url.includes("/upload/")) {
-      if (url.includes("f_auto,q_auto")) return url;
-      return url.replace("/upload/", `/upload/f_auto,q_auto,w_${width}/`);
+      const parts = url.split("/upload/");
+      const cleanPath = parts[1].replace(/^(f_[^/]+|q_[^/]+|w_[^/]+|\w+_[^/]+,?)+\//, "");
+      return `${parts[0]}/upload/f_webp,q_auto:good,w_${width}/${cleanPath}`;
     }
     return url;
   };
@@ -135,12 +136,12 @@ export const HeroInspiration: React.FC<HeroInspirationProps> = ({
     (!isVideo && liveHero.heroVideo) ||
     (!isVideoUrl(liveHero.heroImage) && liveHero.heroImage) ||
     "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908752/mulan-laundries/slide1.webp";
-  const slide1Image = optimizeCloudinaryUrl(rawSlide1Image, 1200);
+  const slide1Image = optimizeCloudinaryUrl(rawSlide1Image, 800);
   const posterImg = optimizeCloudinaryUrl(
     (!isVideoUrl(liveHero.videoPoster) && liveHero.videoPoster) ||
     (!isVideoUrl(liveHero.heroImage) && liveHero.heroImage) ||
     "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908752/mulan-laundries/slide1.webp",
-    1200
+    800
   );
   const videoRef = useRef<HTMLVideoElement>(null);
 
