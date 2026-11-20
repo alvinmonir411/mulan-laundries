@@ -29,7 +29,7 @@ function isVideoUrl(url?: string): boolean {
   );
 }
 
-function optimizeCloudinaryUrl(url: string, width = 640): string {
+function optimizeCloudinaryUrl(url: string, width = 500): string {
   if (!url || typeof url !== "string") return url;
   if (url.includes("res.cloudinary.com") && url.includes("/upload/")) {
     const parts = url.split("/upload/");
@@ -70,12 +70,12 @@ export function HeroInspiration({
     (!isVideoUrl(heroImage) && heroImage) ||
     "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908752/mulan-laundries/slide1.webp";
 
-  const slide1Image = optimizeCloudinaryUrl(rawSlide1Image, 640);
+  const slide1Image = optimizeCloudinaryUrl(rawSlide1Image, 500);
   const posterImg = optimizeCloudinaryUrl(
     (!isVideoUrl(videoPoster) && videoPoster) ||
     (!isVideoUrl(heroImage) && heroImage) ||
     "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908752/mulan-laundries/slide1.webp",
-    640
+    500
   );
 
   const slides = [
@@ -201,14 +201,21 @@ export function HeroInspiration({
                   aria-hidden="true"
                   tabIndex={-1}
                 />
+              ) : idx === 0 ? (
+                <img
+                  src={slide.image}
+                  alt={slide.alt}
+                  fetchPriority="high"
+                  loading="eager"
+                  decoding="sync"
+                  className="w-full h-full object-cover object-center"
+                />
               ) : (
                 <Image
                   src={slide.image}
                   alt={slide.alt}
                   fill
-                  priority={idx === 0}
-                  fetchPriority={idx === 0 ? "high" : "auto"}
-                  loading={idx === 0 ? "eager" : "lazy"}
+                  loading="lazy"
                   unoptimized={true}
                   sizes="100vw"
                   className="object-cover object-center"

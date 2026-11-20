@@ -34,7 +34,7 @@ export default async function HomePage() {
     (!isVideoUrl(siteImages.hero_main?.image_url) && siteImages.hero_main?.image_url) ||
     "https://res.cloudinary.com/dgaiqqh7k/image/upload/v1794908752/mulan-laundries/slide1.webp";
 
-  const getOptimizedHeroUrl = (url: string, width = 640) => {
+  const getOptimizedHeroUrl = (url: string, width = 500) => {
     if (!url || typeof url !== "string") return url;
     if (url.includes("res.cloudinary.com") && url.includes("/upload/")) {
       const parts = url.split("/upload/");
@@ -44,7 +44,7 @@ export default async function HomePage() {
     return url;
   };
 
-  const heroPreloadUrl = getOptimizedHeroUrl(rawHeroImage, 640);
+  const heroPreloadUrl = getOptimizedHeroUrl(rawHeroImage, 500);
 
   return (
     <>
